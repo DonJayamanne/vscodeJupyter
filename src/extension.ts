@@ -3,7 +3,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { Jupyter } from './main';
-import { CellHelper } from './common/cellHelper';
+import { LanguageProvider } from './common/languageProvider';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -15,13 +15,14 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(jupyter);
 
     return {
-        registerCellIdentifier: (language: string, regEx: RegExp) => {
+        registerLanguageProvider: (language: string, provider: LanguageProvider) => {
             if (typeof language !== 'string' || language.length === 0) {
+                throw new Error(`Argument 'language' is invalid`);
             }
-            if (!(regEx instanceof RegExp)) {
-                throw new Error(`Argument 'regEx' not provided`);
+            if (typeof provider !== 'object' || language === null) {
+                throw new Error(`Argument 'provider' is invalid`);
             }
-            CellHelper.registerCellIdentifier(language, regEx);
+            jupyter.registerLanguageProvider(language, provider);
         }
     };
 }

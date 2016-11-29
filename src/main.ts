@@ -9,6 +9,7 @@ import { CodeHelper } from './common/codeHelper';
 import { KernelManagerImpl } from './kernel-manager';
 import { ParsedIOMessage } from './contracts';
 import { MessageParser } from './jupyter_client/resultParser';
+import { LanguageProvider, LanguageProviders } from './common/languageProvider';
 import * as Rx from 'rx';
 import { Kernel } from '@jupyterlab/services';
 const ws = require('ws');
@@ -40,14 +41,21 @@ export class Jupyter extends vscode.Disposable {
         this.kernelManager.dispose();
         this.disposables.forEach(d => d.dispose());
     }
+    public registerLanguageProvider(language: string, provider: LanguageProvider) {
+        if (typeof language !== 'string' || language.length === 0) {
+            throw new Error(`Argument 'language' is invalid`);
+        }
+        if (typeof provider !== 'object' || language === null) {
+            throw new Error(`Argument 'provider' is invalid`);
+        }
+        LanguageProviders.providers.set(language, provider);
+    }
     private createKernelManager() {
         this.kernelManager = new KernelManagerImpl(this.outputChannel);
 
         // This happend when user changes it from status bar
         this.kernelManager.on('kernelChanged', (kernel: Kernel.IKernel, language: string) => {
-            // if (this.kernel !== kernel && (this.kernel && this.kernel.kernelSpec.language === kernel.kernelSpec.language)) {
             this.onKernelChanged(kernel);
-            // }
         });
     }
     private activate() {
@@ -148,6 +156,20 @@ export class Jupyter extends vscode.Disposable {
             return Promise.resolve();
         }
         return this.codeHelper.getSelectedCode().then(code => {
+            if (LanguageProviders.providers.has(activeEditor.document.languageId)) {
+                let provider = LanguageProviders.providers.get(activeEditor.document.languageId);
+                if (typeof provider.getSelectedCode !== 'function') {
+                    return code;
+                }
+
+                return this.codeHelper.getActiveCell().then(cellRange => {
+                    return LanguageProviders.providers.get(activeEditor.document.languageId).getSelectedCode(code, cellRange);
+                });
+            }
+            else {
+                return code;
+            }
+        }).then(code => {
             this.executeCode(code, activeEditor.document.languageId);
         });
     }

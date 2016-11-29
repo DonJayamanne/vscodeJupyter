@@ -1,17 +1,11 @@
 import { Cell } from '../contracts';
 import { TextDocument, Range } from 'vscode';
 import { JupyterCodeLensProvider } from '../editorIntegration/codeLensProvider';
+import { LanguageProviders } from './languageProvider';
 import * as vscode from 'vscode';
 
 export class CellHelper {
-    private static cellIdentifiers: Map<string, RegExp> = new Map<string, RegExp>();
     constructor(private cellCodeLenses: JupyterCodeLensProvider) {
-        if (!CellHelper.cellIdentifiers.has('python')) {
-            CellHelper.cellIdentifiers.set('python', /^(# %%|#%%|# \<codecell\>|# In\[\d?\]|# In\[ \])(.*)/i);
-        }
-    }
-    static registerCellIdentifier(language: string, regEx: RegExp) {
-        CellHelper.cellIdentifiers.set(language, regEx);
     }
     public getActiveCell(): Thenable<{ cell: vscode.Range, nextCell?: vscode.Range, previousCell?: vscode.Range }> {
         const activeEditor = vscode.window.activeTextEditor;
@@ -80,53 +74,36 @@ export class CellHelper {
         // Setting the cursor to the comment doesn't make sense
         // Quirk 1: Besides the document highlighter doesn't kick in (event' not fired), when you have placed the cursor on a comment
         // Quirk 2: If the first character starts with a %, then for some reason the highlighter doesn't kick in (event' not fired)
-        let firstLineOfCellRange = range;
-        if (range.start.line < range.end.line) {
-            // let line = textEditor.document.lineAt(range.start.line + 1);
-            // let start = new vscode.Position(range.start.line + 1, range.start.character);
-            // firstLineOfCellRange = new vscode.Range(start, range.end);
-            const start = CellHelper.findStartPositionWithCode(document, range.start.line + 1, range.end.line);
-            firstLineOfCellRange = new vscode.Range(start, range.end);
-        }
-        textEditor.selections = [];
-        textEditor.selection = new vscode.Selection(firstLineOfCellRange.start, firstLineOfCellRange.start);
-        textEditor.revealRange(range);
-        vscode.window.showTextDocument(textEditor.document);
-    }
-
-    private static findStartPositionWithCode(document: vscode.TextDocument, startLine: number, endLine: number): vscode.Position {
-        for (let lineNumber = startLine; lineNumber < endLine; lineNumber++) {
-            let line = document.lineAt(startLine);
-            if (line.isEmptyOrWhitespace) {
-                continue;
+        let firstLineOfCellRange = Promise.resolve(range);
+        if (range.start.line < range.end.line && LanguageProviders.providers.has(document.languageId)) {
+            let provider = LanguageProviders.providers.get(document.languageId);
+            if (typeof provider.getFirstLineOfExecutableCode === 'function') {
+                const rangeToSearchIn = new vscode.Range(new vscode.Position(range.start.line + 1, 0), range.end);
+                firstLineOfCellRange = provider.getFirstLineOfExecutableCode(document, rangeToSearchIn);
             }
-            const lineText = line.text;
-            const trimmedLine = lineText.trim();
-            if (trimmedLine.startsWith('#')) {
-                continue;
-            }
-            // Yay we have a line
-            // Remember, we need to set the cursor to a character other than white space
-            // Highlighting doesn't kick in for comments or white space
-            return new vscode.Position(lineNumber, lineText.indexOf(trimmedLine));
         }
 
-        // give up
-        return new vscode.Position(startLine, 0);
+        firstLineOfCellRange.then(range => {
+            textEditor.selections = [];
+            textEditor.selection = new vscode.Selection(range.start, range.start);
+            textEditor.revealRange(range);
+            vscode.window.showTextDocument(textEditor.document);
+        });
     }
+    
     public static getCells(document: TextDocument): Cell[] {
-        if (CellHelper.cellIdentifiers.size === 0) {
-            return [];
-        }
         let language = document.languageId;
-        if (!CellHelper.cellIdentifiers.has(language)) {
+        if (!LanguageProviders.providers.has(language)) {
             return [];
         }
-        let cellIdentifier = CellHelper.cellIdentifiers.get(language);
+        let cellIdentifier = LanguageProviders.providers.get(language).cellIdentifier;
+        if (!(cellIdentifier instanceof RegExp)) {
+            return [];
+        }
         const cells: Cell[] = [];
         for (let index = 0; index < document.lineCount; index++) {
             const line = document.lineAt(index);
-            // clear cache
+            // clear regex cache
             cellIdentifier.lastIndex = -1;
             if (cellIdentifier.test(line.text)) {
                 const results = cellIdentifier.exec(line.text);
