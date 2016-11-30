@@ -1,5 +1,3 @@
-/// <reference path="typings/index.d.ts" />
-
 const transformime = require('transformime');
 const MarkdownTransform = require('transformime-marked');
 const transform = transformime.createTransform([MarkdownTransform]) as Function;
