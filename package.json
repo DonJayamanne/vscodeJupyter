@@ -5,45 +5,114 @@
   "version": "1.0.0",
   "publisher": "donjayamanne",
   "engines": {
-    "vscode": "^1.6.0"
+    "vscode": "^1.7.0"
   },
   "keywords": [
     "python",
     "jupyter",
-    "ipython"
+    "ipython",
+    "julia"
   ],
   "categories": [
     "Other"
   ],
   "activationEvents": [
-    "onCommand:extension.sayHello",
-    "onCommand:jupyter2.runSelectionLine",
-    "onCommand:jupyter2.execCurrentCell",
-    "onCommand:jupyter2.execCurrentCellAndAdvance"
+    "onCommand:jupyter.runSelectionLine",
+    "onCommand:jupyter.execCurrentCell",
+    "onCommand:jupyter.execCurrentCellAndAdvance"
   ],
   "main": "./out/src/extension",
   "contributes": {
+    "keybindings": [
+      {
+        "command": "jupyter.runSelectionLine",
+        "key": "ctrl+alt+enter",
+        "when": "editorFocus && !replaceActive && !searchViewletVisible && !findWidgetVisible"
+      }
+    ],
     "commands": [
       {
-        "command": "extension.sayHello",
-        "title": "Hello World"
-      },
-      {
-        "command": "jupyter2.runSelectionLine",
+        "command": "jupyter.runSelectionLine",
         "title": "Run Selection/Line",
-        "category": "Jupyter2"
+        "category": "Jupyter"
       },
       {
-        "command": "jupyter2.execCurrentCell",
+        "command": "jupyter.execCurrentCell",
         "title": "Run Cell",
-        "category": "Jupyter2"
+        "category": "Jupyter"
       },
       {
-        "command": "jupyter2.execCurrentCellAndAdvance",
+        "command": "jupyter.execCurrentCellAndAdvance",
         "title": "Run Cell and Advance",
-        "category": "Jupyter2"
+        "category": "Jupyter"
+      },
+      {
+        "command": "jupyter:gotToPreviousCell",
+        "title": "Go to Previous Cell",
+        "category": "Jupyter"
+      },
+      {
+        "command": "jupyter:gotToNextCell",
+        "title": "Go to Next Cell",
+        "category": "Jupyter"
       }
-    ]
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Python Configuration",
+      "properties": {
+        "jupyter.appendResults": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to append the results to results window, else clear and display."
+        },
+        "jupyter.pythonPath": {
+          "type": "string",
+          "default": "",
+          "title": "Python Path",
+          "description": "Fully qualified path to Python. Leave empty if you have the Python extension installed."
+        },
+        "jupyter.languages": {
+          "type": "array",
+          "description": "Default settings per language.",
+          "items": {
+            "type": "object",
+            "required": [
+              "languageId"
+            ],
+            "properties": {
+              "languageId": {
+                "type": "string",
+                "title": "Language Identifier",
+                "description": "Language Id (lower case). (Select Language on bottom of VS Code editor, and quick pick list will display language ids in brackets)"
+              },
+              "defaultKernel": {
+                "type": "string",
+                "title": "Defalt Kernel",
+                "description": "Default kernel for the corresponding language"
+              },
+              "startupCode": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "default": [],
+                "title": "Startup Code",
+                "description": "Code executed when the kernel starts. Such as '%matplotlib inline' for Python. Individual lines need to be placed as separate items of the array."
+              }
+            }
+          },
+          "default": [
+            {
+              "languageId": "python",
+              "startupCode": [
+                "%matplotlib inline"
+              ]
+            }
+          ]
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "tsc -p ./ && webpack",
@@ -52,7 +121,6 @@
     "test": "node ./node_modules/vscode/bin/test"
   },
   "devDependencies": {
-    "@types/jquery": "^1.10.31",
     "@types/mocha": "^2.2.32",
     "@types/node": "^6.0.40",
     "@types/rx": "^2.5.33",
@@ -73,7 +141,6 @@
   "dependencies": {
     "@jupyterlab/services": "^0.34.2",
     "anser": "^1.1.0",
-    "node-static": "^0.7.9",
     "requirejs": "^2.3.2",
     "rx": "^4.1.0",
     "socket.io": "^1.4.8",

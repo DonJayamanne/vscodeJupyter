@@ -10,9 +10,9 @@ export class KernelStatus extends vscode.Disposable {
         super(() => { });
         this.disposables = [];
         this.statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
-        this.statusBar.command = 'jupyter2:proxyKernelOptionsCmd';
+        this.statusBar.command = 'jupyter:proxyKernelOptionsCmd';
         this.disposables.push(this.statusBar);
-        this.disposables.push(vscode.commands.registerCommand('jupyter2:proxyKernelOptionsCmd', () => {
+        this.disposables.push(vscode.commands.registerCommand('jupyter:proxyKernelOptionsCmd', () => {
             vscode.commands.executeCommand(Commands.Jupyter.Kernel_Options, this.activeKernal);
         }));
 
@@ -31,20 +31,24 @@ export class KernelStatus extends vscode.Disposable {
         }
     }
     private activeKernal: Kernel.IKernel;
+    private displayName: string;
     public setActiveKernel(kernel: Kernel.IKernel) {
         if (!kernel) {
             this.activeKernal = null;
             return this.statusBar.hide();
         }
         this.activeKernal = kernel;
+        this.displayName = kernel.name;
         kernel.getSpec().then(spec => {
-            this.statusBar.tooltip = `${kernel.name} Kernel for ${spec.language}\nClick for options`;
+            this.statusBar.tooltip = `${spec.display_name}(${spec.name}) Kernel for ${spec.language}\nClick for options`;
+            this.displayName = spec.display_name;
+            this.statusBar.text = `$(flame)${this.displayName} Kernel`;
         });
-        this.statusBar.text = `$(flame)${this.activeKernal.name} Kernel`;
+        this.statusBar.text = `$(flame)${this.displayName} Kernel`;
         this.statusBar.show();
     }
     public setKernelStatus(status: string) {
-        this.statusBar.text = `$(flame)${this.activeKernal.name} Kernel (${status})`;
+        this.statusBar.text = `$(flame)${this.displayName} Kernel (${status})`;
     }
     public dispose() {
         this.disposables.forEach(d => d.dispose());

@@ -3,7 +3,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { Jupyter } from './main';
-import { LanguageProvider } from './common/languageProvider';
+import { LanguageProvider, LanguageProviders } from './common/languageProvider';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -16,13 +16,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     return {
         registerLanguageProvider: (language: string, provider: LanguageProvider) => {
-            if (typeof language !== 'string' || language.length === 0) {
-                throw new Error(`Argument 'language' is invalid`);
-            }
-            if (typeof provider !== 'object' || language === null) {
-                throw new Error(`Argument 'provider' is invalid`);
-            }
-            jupyter.registerLanguageProvider(language, provider);
+            LanguageProviders.registerLanguageProvider(language, provider);
         }
     };
 }

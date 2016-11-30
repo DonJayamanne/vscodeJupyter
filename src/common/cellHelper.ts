@@ -75,12 +75,9 @@ export class CellHelper {
         // Quirk 1: Besides the document highlighter doesn't kick in (event' not fired), when you have placed the cursor on a comment
         // Quirk 2: If the first character starts with a %, then for some reason the highlighter doesn't kick in (event' not fired)
         let firstLineOfCellRange = Promise.resolve(range);
-        if (range.start.line < range.end.line && LanguageProviders.providers.has(document.languageId)) {
-            let provider = LanguageProviders.providers.get(document.languageId);
-            if (typeof provider.getFirstLineOfExecutableCode === 'function') {
-                const rangeToSearchIn = new vscode.Range(new vscode.Position(range.start.line + 1, 0), range.end);
-                firstLineOfCellRange = provider.getFirstLineOfExecutableCode(document, rangeToSearchIn);
-            }
+        if (range.start.line < range.end.line) {
+            let rangeToSearchIn = new vscode.Range(new vscode.Position(range.start.line + 1, 0), range.end);
+            firstLineOfCellRange = LanguageProviders.getFirstLineOfExecutableCode(document.languageId, range, document, rangeToSearchIn);
         }
 
         firstLineOfCellRange.then(range => {
@@ -90,14 +87,11 @@ export class CellHelper {
             vscode.window.showTextDocument(textEditor.document);
         });
     }
-    
+
     public static getCells(document: TextDocument): Cell[] {
         let language = document.languageId;
-        if (!LanguageProviders.providers.has(language)) {
-            return [];
-        }
-        let cellIdentifier = LanguageProviders.providers.get(language).cellIdentifier;
-        if (!(cellIdentifier instanceof RegExp)) {
+        let cellIdentifier = LanguageProviders.cellIdentifier(language);
+        if (!cellIdentifier || !(cellIdentifier instanceof RegExp)) {
             return [];
         }
         const cells: Cell[] = [];

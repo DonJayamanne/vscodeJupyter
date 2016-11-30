@@ -20,7 +20,7 @@ export class MessageParser extends EventEmitter {
         }
         this.outputChannel.appendLine(message);
     }
-    public processResponse(message: KernelMessage.IIOPubMessage, subject: Rx.Subject<ParsedIOMessage>) {
+    public processResponse(message: KernelMessage.IIOPubMessage, observer?: Rx.Observer<ParsedIOMessage>) {
         if (!message) {
             return;
         }
@@ -68,11 +68,11 @@ export class MessageParser extends EventEmitter {
             if (!parsedMesage) {
                 parsedMesage = Helpers.parseIOMessage(message);
             }
-            if (!parsedMesage) {
+            if (!parsedMesage || !observer) {
                 return;
             }
             this.writeToDebugLog(`Shell Result with msg_id = ${msg_id} has message of: '\n${JSON.stringify(message)}`);
-            subject.onNext(parsedMesage);
+            observer.onNext(parsedMesage);
         }
         catch (ex) {
             this.emit('shellmessagepareerror', ex, JSON.stringify(message));

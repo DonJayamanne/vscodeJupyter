@@ -145,9 +145,9 @@
 
 //             // Ok we got the kernelspecs, now create another new jupyter client
 //             // and tell it to start a specific kernel
-//             const jupyter2 = new JupyterClientAdapter(output, __dirname);
+//             const jupyter = new JupyterClientAdapter(output, __dirname);
 //             const kernelNames = Object.keys(kernelSpecs);
-//             jupyter2.startKernel(kernelSpecs[kernelNames[0]].spec).then(startedInfo => {
+//             jupyter.startKernel(kernelSpecs[kernelNames[0]].spec).then(startedInfo => {
 //                 assert.equal(startedInfo.length, 3, 'Information for kernel start incorrect');
 //                 assert.equal(typeof (startedInfo[0]), 'string', 'First part of information for kernel start incorrect');
 //                 assert.equal(typeof (startedInfo[2]), 'string', 'Last part of information for kernel start incorrect');

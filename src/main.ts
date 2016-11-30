@@ -9,7 +9,7 @@ import { CodeHelper } from './common/codeHelper';
 import { KernelManagerImpl } from './kernel-manager';
 import { ParsedIOMessage } from './contracts';
 import { MessageParser } from './jupyter_client/resultParser';
-import { LanguageProvider, LanguageProviders } from './common/languageProvider';
+import { LanguageProviders } from './common/languageProvider';
 import * as Rx from 'rx';
 import { Kernel } from '@jupyterlab/services';
 const ws = require('ws');
@@ -40,15 +40,6 @@ export class Jupyter extends vscode.Disposable {
     public dispose() {
         this.kernelManager.dispose();
         this.disposables.forEach(d => d.dispose());
-    }
-    public registerLanguageProvider(language: string, provider: LanguageProvider) {
-        if (typeof language !== 'string' || language.length === 0) {
-            throw new Error(`Argument 'language' is invalid`);
-        }
-        if (typeof provider !== 'object' || language === null) {
-            throw new Error(`Argument 'provider' is invalid`);
-        }
-        LanguageProviders.providers.set(language, provider);
     }
     private createKernelManager() {
         this.kernelManager = new KernelManagerImpl(this.outputChannel);
@@ -116,7 +107,9 @@ export class Jupyter extends vscode.Disposable {
             kernelForExecution = Promise.resolve(this.kernel);
         }
         else {
-            kernelForExecution = this.kernelManager.startKernelFor(language).then(kernel => this.onKernelChanged(kernel));
+            kernelForExecution = this.kernelManager.startKernelFor(language).then(kernel => {
+                this.kernelManager.setRunningKernelFor(language, kernel);
+            });
         }
         return kernelForExecution.then(() => {
             return this.executeAndDisplay(this.kernel, code).catch(reason => {
@@ -139,39 +132,37 @@ export class Jupyter extends vscode.Disposable {
         return this.display.showResults(observable);
     }
     private executeCodeInKernel(kernel: Kernel.IKernel, code: string): Rx.Observable<ParsedIOMessage> {
-        const observable = new Rx.Subject<ParsedIOMessage>();
-        let future = kernel.requestExecute({ code: code });
-        future.onDone = () => {
-            observable.onCompleted();
-        };
-        future.onIOPub = (msg) => {
-            this.messageParser.processResponse(msg, observable);
-        };
+        let source = Rx.Observable.create<ParsedIOMessage>(observer => {
+            let future = kernel.requestExecute({ code: code });
+            future.onDone = () => {
+                observer.onCompleted();
+            };
+            future.onIOPub = (msg) => {
+                this.messageParser.processResponse(msg, observer);
+            };
+        });
 
-        return observable.asObservable();
+        return source;
+        // const observable = new Rx.Subject<ParsedIOMessage>();
+        // let future = kernel.requestExecute({ code: code });
+        // future.onDone = () => {
+        //     //observable.onCompleted();
+        // };
+        // future.onIOPub = (msg) => {
+        //     this.messageParser.processResponse(msg, observable);
+        // };
+
+        // return observable.asObservable();
     }
-    executeSelection(): Promise<any> {
+    async executeSelection(): Promise<any> {
         const activeEditor = vscode.window.activeTextEditor;
         if (!activeEditor || !activeEditor.document) {
             return Promise.resolve();
         }
-        return this.codeHelper.getSelectedCode().then(code => {
-            if (LanguageProviders.providers.has(activeEditor.document.languageId)) {
-                let provider = LanguageProviders.providers.get(activeEditor.document.languageId);
-                if (typeof provider.getSelectedCode !== 'function') {
-                    return code;
-                }
-
-                return this.codeHelper.getActiveCell().then(cellRange => {
-                    return LanguageProviders.providers.get(activeEditor.document.languageId).getSelectedCode(code, cellRange);
-                });
-            }
-            else {
-                return code;
-            }
-        }).then(code => {
-            this.executeCode(code, activeEditor.document.languageId);
-        });
+        let code = await this.codeHelper.getSelectedCode();
+        let cellRange = await this.codeHelper.getActiveCell();
+        let selectedCode = await LanguageProviders.getSelectedCode(activeEditor.document.languageId, code, cellRange);
+        return this.executeCode(selectedCode, activeEditor.document.languageId);
     }
     private registerCommands() {
         this.disposables.push(vscode.commands.registerCommand(Commands.Jupyter.ExecuteRangeInKernel, (document: vscode.TextDocument, range: vscode.Range) => {
@@ -202,6 +193,9 @@ export class Jupyter extends vscode.Disposable {
         }));
         this.disposables.push(vscode.commands.registerCommand(Commands.Jupyter.Kernel.Restart, () => {
             this.kernelManager.restartKernel(this.kernel).then(kernel => {
+                kernel.getSpec().then(spec => {
+                    this.kernelManager.setRunningKernelFor(spec.language, kernel);
+                });
                 this.onKernelChanged(kernel);
             });
         }));

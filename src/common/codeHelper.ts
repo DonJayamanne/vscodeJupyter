@@ -10,7 +10,14 @@ export class CodeHelper {
 
     public getActiveCell(): Promise<vscode.Range> {
         return new Promise<vscode.Range>((resolve, reject) => {
-            this.cellHelper.getActiveCell().then(info => resolve(info.cell), reason => reject(reason));
+            this.cellHelper.getActiveCell().then(info => {
+                if (info && info.cell) {
+                    resolve(info.cell);
+                }
+                else {
+                    resolve(null);
+                }
+            }, reason => reject(reason));
         });
     }
     public getSelectedCode(): Promise<string> {

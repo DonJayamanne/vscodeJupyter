@@ -111,26 +111,27 @@ export class JupyterDisplay extends vscode.Disposable {
         this.disposables.forEach(d => d.dispose());
     }
 
-    private showKernelOptions(selectedKernel: Kernel.ISpecModel) {
+    private async showKernelOptions(selectedKernel: Kernel.IKernel): Promise<any> {
         let description = '';
-        if (selectedKernel.display_name.toLowerCase().indexOf(selectedKernel.language.toLowerCase()) === -1) {
-            description = selectedKernel.language;
+        let spec = await selectedKernel.getSpec();
+        if (spec.display_name.toLowerCase().indexOf(spec.language.toLowerCase()) === -1) {
+            description = `${spec.name} for ${spec.language}`;
         }
         const options = [
             {
-                label: `Interrupt ${selectedKernel.display_name} Kernel`,
+                label: `Interrupt ${spec.display_name} Kernel`,
                 description: description,
                 command: Commands.Jupyter.Kernel.Interrupt,
                 args: [selectedKernel]
             },
             {
-                label: `Restart ${selectedKernel.display_name} Kernel`,
+                label: `Restart ${spec.display_name} Kernel`,
                 description: description,
                 command: Commands.Jupyter.Kernel.Restart,
                 args: [selectedKernel]
             },
             {
-                label: `Shut Down ${selectedKernel.display_name} Kernel`,
+                label: `Shut Down ${spec.display_name} Kernel`,
                 description: description,
                 command: Commands.Jupyter.Kernel.Shutdown,
                 args: [selectedKernel]
@@ -142,10 +143,10 @@ export class JupyterDisplay extends vscode.Disposable {
                 args: []
             },
             {
-                label: `Select another ${selectedKernel.language} Kernel`,
+                label: `Select another ${spec.language} Kernel`,
                 description: ` `,
                 command: Commands.Jupyter.Kernel.Select,
-                args: [selectedKernel.language]
+                args: [spec.language]
             },
             {
                 label: `Shut Down Notebook`,
@@ -155,11 +156,11 @@ export class JupyterDisplay extends vscode.Disposable {
             },
         ];
 
-        vscode.window.showQuickPick(options).then(option => {
+        return vscode.window.showQuickPick(options).then(option => {
             if (!option || !option.command || option.command.length === 0) {
                 return;
             }
-            vscode.commands.executeCommand(option.command, ...option.args);
+            return vscode.commands.executeCommand(option.command, ...option.args);
         });
     }
 }

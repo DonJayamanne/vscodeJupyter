@@ -3,6 +3,11 @@ import { EventEmitter } from 'events';
 import { formatErrorForLogging } from './common/utils';
 import { createDeferred } from './common/helpers';
 import { Kernel } from '@jupyterlab/services';
+import { LanguageProviders } from './common/languageProvider';
+import { MessageParser } from './jupyter_client/resultParser';
+import * as child_process from 'child_process';
+import { ParsedIOMessage } from './contracts';
+import * as Rx from 'rx';
 const ws = require('ws');
 const xhr = require('xmlhttprequest');
 const requirejs = require('requirejs');
@@ -25,6 +30,41 @@ export class KernelManagerImpl extends EventEmitter {
         this._kernelSpecs = {};
     }
 
+    // private notebookChannel: vscode.OutputChannel;
+    // private proc: child_process.ChildProcess;
+    // private startNotebookServer(): Promise<string> {
+    // this.notebookChannel = vscode.window.createOutputChannel('Jupyter Notebook');
+    // let jupyterConfig = vscode.workspace.getConfiguration('jupyter');
+    // let pythonPath = jupyterConfig.get('pythonPath') as string;
+
+    // if (pythonPath.length === 0) {
+    //     let pyConfig = vscode.workspace.getConfiguration('python');
+    //     pythonPath = pyConfig.get('pythonPath') as string;
+    // }
+    // if (pythonPath.length === 0) {
+    //     pythonPath = 'python';
+    // }
+
+    // return new Promise<string>((resolve, reject) => {
+    //     this.proc = child_process.spawn('pythonPath', ['-m', 'notebook', '--NotebookApp.allow_origin="*"', '--no-browser']);
+    //     this.proc.stdout.setEncoding('utf8');
+    //     this.proc.on('close', (error: Error) => {
+
+    //     });
+    //     this.proc.on('error', error => {
+
+    //     });
+    //     this.proc.stdout.on('data', (data: string) => {
+    //         let lines = data.split('');
+    //         if (lines.some(line => line.indexOf('The Jupyter Notebook is running at') >= 0)) {
+
+    //         }
+    //     });
+    //     this.proc.stdout.on('error', error => {
+
+    //     });
+    // });
+    // }
     public dispose() {
         this.removeAllListeners();
         this._runningKernels.forEach(kernel => {
@@ -117,42 +157,37 @@ export class KernelManagerImpl extends EventEmitter {
         this.destroyRunningKernelFor(language);
         return Kernel.startNew({ baseUrl: BASE_URL, name: kernelSpec.name })
             .then(kernel => {
-                return this.executeStartupCode(kernel).then(() => {
+                return this.executeStartupCode(language, kernel).then(() => {
                     return kernel;
                 });
             });
     }
 
-    private executeStartupCode(kernel: Kernel.IKernel): Promise<any> {
-        // TODO: settings for startup code
-        // if (pythonSettings.jupyter.startupCode.length === 0) {
-        return Promise.resolve();
-        // }
-        // const suffix = ' ' + os.EOL;
-        // let startupCode = pythonSettings.jupyter.startupCode.join(suffix) + suffix;
-        // return new Promise<any>((resolve, reject) => {
-        //     let errorMessage = 'Failed to execute kernel startup code. ';
-        //     kernel.execute(startupCode).subscribe(result => {
-        //         if (result.stream === 'error' && result.type === 'text' && typeof result.message === 'string') {
-        //             errorMessage += 'Details: ' + result.message;
-        //         }
-        //         if (result.stream === 'status' && result.type === 'text' && result.data === 'error') {
-        //             this.outputChannel.appendLine(errorMessage);
-        //             vscode.window.showWarningMessage(errorMessage);
-        //         }
-        //     }, reason => {
-        //         if (reason instanceof KernelRestartedError || reason instanceof KernelShutdownError) {
-        //             return resolve();
-        //         }
-        //         // It doesn't matter if startup code execution Failed
-        //         // Possible they have placed some stuff that is invalid or we have some missing packages (e.g. matplot lib)
-        //         this.outputChannel.appendLine(formatErrorForLogging(reason));
-        //         vscode.window.showWarningMessage(errorMessage);
-        //         resolve();
-        //     }, () => {
-        //         resolve();
-        //     });
-        // });
+    private executeStartupCode(language: string, kernel: Kernel.IKernel): Promise<any> {
+        let startupCode = LanguageProviders.getStartupCode(language);
+        if (typeof startupCode !== 'string' || startupCode.length === 0) {
+            return Promise.resolve();
+        }
+
+        let def = createDeferred<any>();
+        let messageParser = new MessageParser(this.outputChannel);
+        let future = kernel.requestExecute({ code: startupCode, stop_on_error: false });
+        let observable = new Rx.Subject<ParsedIOMessage>();
+        future.onDone = () => {
+            def.resolve();
+        };
+        future.onIOPub = (msg) => {
+            messageParser.processResponse(msg, observable);
+        };
+        observable.subscribe(msg => {
+            if (msg.type === 'text' && msg.data && msg.data['text/plain']) {
+                if (msg.message) {
+                    this.outputChannel.appendLine(msg.message);
+                }
+                this.outputChannel.appendLine(msg.data['text/plain']);
+            }
+        });
+        return def.promise;
     }
 
     public getAllRunningKernels() {
@@ -186,15 +221,21 @@ export class KernelManagerImpl extends EventEmitter {
             if (kernelSpecs.length === 0) {
                 throw new Error('Unable to find a kernel for ' + language);
             }
-            // Todo: default kernel in config
-            // this._defaultKernel
-            // if (pythonSettings.jupyter.defaultKernel.length > 0) {
-            //     const defaultKernel = kernelSpecs.find(spec => spec.display_name === pythonSettings.jupyter.defaultKernel);
-            //     if (defaultKernel) {
-            //         return defaultKernel;
-            //     }
-            // }
-            return kernelSpecs[0];
+            if (kernelSpecs.length === 1) {
+                return kernelSpecs[0];
+            }
+            let defaultKernel = LanguageProviders.getDefaultKernel(language);
+            if (!defaultKernel) {
+                return kernelSpecs[0];
+            }
+
+            let foundSpec = kernelSpecs.find(spec => {
+                if (spec.language.toLowerCase() !== language.toLowerCase()) {
+                    return false;
+                }
+                return (spec.display_name === defaultKernel || spec.name === defaultKernel);
+            });
+            return foundSpec ? foundSpec : kernelSpecs[0];
         });
     }
 
