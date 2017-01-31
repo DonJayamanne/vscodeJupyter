@@ -13,6 +13,24 @@
     "ipython",
     "julia"
   ],
+	"author": {
+		"name": "Don Jayamanne",
+		"email": "don.jayamanne@yahoo.com"
+	},
+	"license": "MIT",
+	"homepage": "https://github.com/DonJayamanne/vscodeJupyter/",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/DonJayamanne/vscodeJupyter"
+	},
+	"bugs": {
+		"url": "https://github.com/DonJayamanne/vscodeJupyter/issues"
+	},
+	"icon": "images/icon.png",
+	"galleryBanner": {
+		"color": "#e46d2e",
+		"theme": "dark"
+	},
   "categories": [
     "Other"
   ],
