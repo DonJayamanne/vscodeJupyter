@@ -1,0 +1,1 @@
+- start notebook using the command 'jupyter notebook'
