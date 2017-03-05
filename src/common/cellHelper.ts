@@ -77,7 +77,10 @@ export class CellHelper {
         let firstLineOfCellRange = Promise.resolve(range);
         if (range.start.line < range.end.line) {
             let rangeToSearchIn = new vscode.Range(new vscode.Position(range.start.line + 1, 0), range.end);
-            firstLineOfCellRange = LanguageProviders.getFirstLineOfExecutableCode(document.languageId, range, document, rangeToSearchIn);
+            let firstLine = LanguageProviders.getFirstLineOfExecutableCode(document.languageId, range, document, rangeToSearchIn);
+            firstLineOfCellRange = firstLine.then(line => {
+                return document.lineAt(line).range;
+            });
         }
 
         firstLineOfCellRange.then(range => {
