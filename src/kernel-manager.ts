@@ -18,7 +18,7 @@ export class KernelManagerImpl extends EventEmitter {
         super();
         this.disposables = [];
         this._runningKernels = new Map<string, Kernel.IKernel>();
-        this._kernelSpecs = {};        
+        this._kernelSpecs = {};
     }
 
     public dispose() {
@@ -38,6 +38,9 @@ export class KernelManagerImpl extends EventEmitter {
         return kernel;
     }
 
+    public clearAllKernels() {
+        this._runningKernels.clear();
+    }
     public destroyRunningKernelFor(language: string): Promise<any> {
         if (!this._runningKernels.has(language)) {
             return Promise.resolve();
@@ -111,7 +114,6 @@ export class KernelManagerImpl extends EventEmitter {
     public startExistingKernel(language: string, connection, connectionFile): Promise<Kernel.IKernel> {
         throw new Error('Start Existing Kernel not implemented');
     }
-
     public startKernel(kernelSpec: Kernel.ISpecModel, language: string): Promise<Kernel.IKernel> {
         return this.getNotebookUrl().then(url => {
             if (!url || url.length === 0) {
@@ -125,9 +127,7 @@ export class KernelManagerImpl extends EventEmitter {
                     });
                 });
         });
-
     }
-
     private executeStartupCode(language: string, kernel: Kernel.IKernel): Promise<any> {
         let startupCode = LanguageProviders.getStartupCode(language);
         if (typeof startupCode !== 'string' || startupCode.length === 0) {
@@ -214,7 +214,6 @@ export class KernelManagerImpl extends EventEmitter {
             return kernelSpecsFromJupyter;
         });
     }
-
     public getKernelSpecsFromJupyter(): Promise<Kernel.ISpecModels> {
         return this.getNotebookUrl().then(url => {
             if (!url || url.length === 0) {

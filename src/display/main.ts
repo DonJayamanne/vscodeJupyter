@@ -44,7 +44,7 @@ export class JupyterDisplay extends vscode.Disposable {
     private notebookUrl: string;
     private canShutdown: boolean;
     public setNotebookUrl(uri: string, canShutdown: boolean) {
-        this.notebookUrl = uri;
+        this.notebookUrl = uri || '';
         this.canShutdown = canShutdown;
     }
     public showResults(results: Rx.Observable<ParsedIOMessage>): Promise<any> {

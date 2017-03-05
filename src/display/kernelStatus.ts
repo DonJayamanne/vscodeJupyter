@@ -18,7 +18,6 @@ export class KernelStatus extends vscode.Disposable {
 
         this.disposables.push(vscode.window.onDidChangeActiveTextEditor(this.onDidChangeActiveTextEditor.bind(this)));
     }
-
     private onDidChangeActiveTextEditor(editor: vscode.TextEditor) {
         const editorsOpened = vscode.workspace.textDocuments.length > 0;
         if ((!editor && editorsOpened) || (editor && editor.document.languageId === PythonLanguage.language)) {

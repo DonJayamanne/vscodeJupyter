@@ -1,4 +1,4 @@
-import { workspace, window, OutputChannel, Terminal } from 'vscode';
+import { workspace, window, OutputChannel, Terminal, Disposable } from 'vscode';
 import { createDeferred } from './common/helpers';
 import { SystemVariables } from './common/systemVariables';
 import { EventEmitter } from 'events';
@@ -6,10 +6,16 @@ const waitOn = require('wait-on');
 
 export class NotebookManager extends EventEmitter {
     private terminal: Terminal;
+    private disposables: Disposable[] = [];
     constructor(private outputChannel: OutputChannel) {
         super();
+        window.onDidCloseTerminal(this.onTerminalShutDown, this, this.disposables);
     }
     dispose() {
+        this.disposables.forEach(d => {
+            d.dispose();
+        });
+        this.disposables = [];
         if (this.terminal) {
             this.terminal.dispose();
             this.terminal = null;
@@ -17,8 +23,26 @@ export class NotebookManager extends EventEmitter {
     }
     private _notebookUrl: string;
     private _notebookUrlStartedByUs: string;
+    setNotebookUrl(url: string) {
+        this._notebookUrl = url;
+        this.emit('onNotebookUrlChanged', url);
+    }
     canShutdown(): boolean {
         return this._notebookUrlStartedByUs === this._notebookUrl;
+    }
+    onTerminalShutDown(e: Terminal) {
+        if (this.terminal === e) {
+            this.shutdown();
+        }
+    }
+    shutdown() {
+        if (this.terminal) {
+            this.terminal.dispose();
+            this.terminal = null;
+            this._notebookUrlStartedByUs = null;
+            this.setNotebookUrl(null);
+        }
+        this.emit('onShutdown');
     }
     startNewNotebook(): Promise<string> {
         this._notebookUrl = null;
@@ -35,7 +59,7 @@ export class NotebookManager extends EventEmitter {
         let args = jupyterSettings.get('notebook.startupArgs', [] as string[]);
         args = args.map(arg => sysVars.resolve(arg));
         if (this.terminal) {
-            this.terminal.dispose();
+            this.shutdown();
         }
         this.terminal = window.createTerminal('Jupyter');
         this.terminal.sendText('cd ' + `'${startupFolder}'`);
@@ -63,7 +87,12 @@ export class NotebookManager extends EventEmitter {
             }
             else {
                 this._notebookUrlStartedByUs = url;
-                def.resolve(url);
+
+                // wait for a second (too soon, and we get errors, cuz jupyter may not have initialized completely)
+                // Yes dirty hack... (hopefully these hack don't pile up)
+                setTimeout(() => {
+                    def.resolve(url);
+                }, 2000);
             }
         });
 
@@ -80,10 +109,6 @@ export class NotebookManager extends EventEmitter {
             def.resolve(value);
         });
         return def.promise;
-    }
-    setNotebookUrl(url: string) {
-        this._notebookUrl = url;
-        this.emit('onNotebookUrlChanged', url);
     }
     getNotebookUrl() {
         if (this._notebookUrl && this._notebookUrl.length > 0) {

@@ -67,12 +67,15 @@ export class Jupyter extends vscode.Disposable {
         this.disposables.push(this.display);
         this.codeHelper = new CodeHelper(this.codeLensProvider);
 
-        this.handleNotebookStart();
+        this.handleNotebookEvents();
     }
-
-    private handleNotebookStart() {
+    private handleNotebookEvents() {
         this.notebookManager.on('onNotebookUrlChanged', (url: string) => {
             this.display.setNotebookUrl(url, this.notebookManager.canShutdown());
+        });
+        this.notebookManager.on('onShutdown', () => {
+            this.kernelManager.clearAllKernels();
+            this.onKernelChanged(null);
         });
     }
     public hasCodeCells(document: vscode.TextDocument, token: vscode.CancellationToken): Promise<boolean> {
@@ -132,7 +135,13 @@ export class Jupyter extends vscode.Disposable {
                 this.outputChannel.appendLine(formatErrorForLogging(reason));
             });
         }).catch(reason => {
-            const message = typeof reason === 'string' ? reason : reason.message;
+            let message = typeof reason === 'string' ? reason : reason.message;
+            if (reason.xhr && reason.xhr.responseText) {
+                message = reason.xhr && reason.xhr.responseText;
+            }
+            if (!message) {
+                message = 'Unknown error';
+            }
             this.outputChannel.appendLine(formatErrorForLogging(reason));
             vscode.window.showErrorMessage(message, 'View Errors').then(item => {
                 if (item === 'View Errors') {
@@ -203,6 +212,9 @@ export class Jupyter extends vscode.Disposable {
                 }
                 this.notebookManager.setNotebookUrl(url);
             });
+        }));
+        this.disposables.push(vscode.commands.registerCommand(Commands.Jupyter.Notebook.ShutDown, () => {
+            this.notebookManager.shutdown();
         }));
     }
     private registerKernelCommands() {
