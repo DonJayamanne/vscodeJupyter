@@ -2,6 +2,7 @@ import { workspace, window, OutputChannel, Terminal } from 'vscode';
 import { createDeferred } from './common/helpers';
 import { SystemVariables } from './common/systemVariables';
 import { EventEmitter } from 'events';
+const waitOn = require('wait-on');
 
 export class NotebookManager extends EventEmitter {
     private terminal: Terminal;
@@ -41,18 +42,30 @@ export class NotebookManager extends EventEmitter {
         this.terminal.sendText('jupyter ' + ['notebook'].concat(args).join(' '));
         this.terminal.show();
 
-        let def = createDeferred<any>();
-        setTimeout(function () {
-            let ipIndex = args.indexOf('--ip');
-            let ip = ipIndex > 0 ? args[ipIndex + 1] : 'localhost';
-            let portIndex = args.indexOf('--port');
-            let port = ipIndex > 0 ? args[portIndex + 1] : '8888';
+        let ipIndex = args.indexOf('--ip');
+        let ip = ipIndex > 0 ? args[ipIndex + 1] : 'localhost';
+        let portIndex = args.indexOf('--port');
+        let port = ipIndex > 0 ? args[portIndex + 1] : '8888';
+        let url = `http://${ip}:${port}/`;
 
-            let url = `http://${ip}:${port}/`;
-            this._notebookUrlStartedByUs = url;
-            this.setNotebookUrl(url);
-            def.resolve(url);
-        }, 5000);
+        this._notebookUrlStartedByUs = null;
+        let def = createDeferred<any>();
+
+        waitOn({
+            resources: [url],
+            delay: 1000, // initial delay in ms, default 0 
+            interval: 100, // poll interval in ms, default 250ms 
+            timeout: 5000, // timeout in ms, default Infinity 
+            reverse: true // optional flag to reverse operation so checks are for resources being NOT available, default false
+        }, (err) => {
+            if (err) {
+                def.reject(`Failed to detect Jupyter Notebook. Set it using 'Set Jupyter Notebook' command`);
+            }
+            else {
+                this._notebookUrlStartedByUs = url;
+                def.resolve(url);
+            }
+        });
 
         return def.promise;
     }
@@ -62,7 +75,7 @@ export class NotebookManager extends EventEmitter {
         window.showInputBox({
             placeHolder: `E.g. http://localhost:8888/`,
             value: 'http://localhost:8888/',
-            prompt: `Please provide the Jupyter Notebook Url 'http://localhost:8888/'`
+            prompt: `Provide the Jupyter Notebook Url 'http://localhost:8888/'`
         }).then(value => {
             def.resolve(value);
         });
