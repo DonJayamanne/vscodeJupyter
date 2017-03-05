@@ -17,6 +17,9 @@ export function activate(context: vscode.ExtensionContext) {
     return {
         registerLanguageProvider: (language: string, provider: LanguageProvider) => {
             LanguageProviders.registerLanguageProvider(language, provider);
+        },
+        hasCodeCells: (document: vscode.TextDocument, token: vscode.CancellationToken) => {
+            return jupyter.hasCodeCells(document, token);
         }
     };
 }
