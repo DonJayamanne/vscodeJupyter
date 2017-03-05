@@ -1,197 +1,192 @@
 {
-  "name": "jupyter",
-  "displayName": "Jupyter",
-  "description": "",
-  "version": "1.0.0",
-  "publisher": "donjayamanne",
-  "engines": {
-    "vscode": "^1.7.0"
-  },
-  "keywords": [
-    "python",
-    "jupyter",
-    "ipython",
-    "julia"
-  ],
-  "author": {
-    "name": "Don Jayamanne",
-    "email": "don.jayamanne@yahoo.com"
-  },
-  "license": "MIT",
-  "homepage": "https://github.com/DonJayamanne/vscodeJupyter/",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/DonJayamanne/vscodeJupyter"
-  },
-  "bugs": {
-    "url": "https://github.com/DonJayamanne/vscodeJupyter/issues"
-  },
-  "icon": "images/icon.png",
-  "galleryBanner": {
-    "color": "#e46d2e",
-    "theme": "dark"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [
-    "onCommand:jupyter.startNotebook",
-    "onCommand:jupyter.selectExistingNotebook",
-    "onCommand:jupyter.runSelectionLine",
-    "onCommand:jupyter.execCurrentCell",
-    "onCommand:jupyter.execCurrentCellAndAdvance"
-  ],
-  "main": "./out/src/extension",
-  "contributes": {
-    "keybindings": [
-      {
-        "command": "jupyter.runSelectionLine",
-        "key": "ctrl+alt+enter",
-        "when": "editorFocus && !replaceActive && !searchViewletVisible && !findWidgetVisible"
-      }
-    ],
-    "commands": [
-      {
-        "command": "jupyter.runSelectionLine",
-        "title": "Run Selection/Line",
-        "category": "Jupyter"
-      },
-      {
-        "command": "jupyter.execCurrentCell",
-        "title": "Run Cell",
-        "category": "Jupyter"
-      },
-      {
-        "command": "jupyter.execCurrentCellAndAdvance",
-        "title": "Run Cell and Advance",
-        "category": "Jupyter"
-      },
-      {
-        "command": "jupyter:gotToPreviousCell",
-        "title": "Go to Previous Cell",
-        "category": "Jupyter"
-      },
-      {
-        "command": "jupyter:gotToNextCell",
-        "title": "Go to Next Cell",
-        "category": "Jupyter"
-      },
-      {
-        "command": "jupyter.startNotebook",
-        "title": "Start a new Jupyter Notebook (output displayed in Jupyter output panel)",
-        "category": "Jupyter"
-      },
-      {
-        "command": "jupyter.setNotebookUrl",
-        "title": "Provide the Url of an existing Jupyter Notebook (e.g. http://localhost:888/)",
-        "category": "Jupyter"
-      }
-    ],
-    "configuration": {
-      "type": "object",
-      "title": "Jupyter Configuration",
-      "properties": {
-        "jupyter.appendResults": {
-          "type": "boolean",
-          "default": true,
-          "description": "Whether to append the results to results window, else clear and display."
-        },
-        "jupyter.languages": {
-          "type": "array",
-          "description": "Default settings per language.",
-          "items": {
-            "type": "object",
-            "required": [
-              "languageId"
-            ],
-            "properties": {
-              "languageId": {
-                "type": "string",
-                "title": "Language Identifier",
-                "description": "Language Id (lower case). (Select Language on bottom of VS Code editor, and quick pick list will display language ids in brackets)"
-              },
-              "defaultKernel": {
-                "type": "string",
-                "title": "Defalt Kernel",
-                "description": "Default kernel for the corresponding language"
-              },
-              "startupCode": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                },
-                "default": [],
-                "title": "Startup Code",
-                "description": "Code executed when the kernel starts. Such as '%matplotlib inline' for Python. Individual lines need to be placed as separate items of the array."
-              }
-            }
-          },
-          "default": [
-            {
-              "languageId": "python",
-              "startupCode": [
-                "%matplotlib inline"
-              ]
-            }
-          ]
-        },
-        "jupyter.notebook.startupFolder": {
-          "type": "string",
-          "default": "${workspaceRoot}",
-          "title": "Startup directory for Jupyter Notebook"
-        },
-        "jupyter.notebook.startupArgs": {
-          "type": "array",
-          "description": "'jupyter notebook' command line arguments. Each argument is a separate item in the array. For a full list type 'jupyter notebook --help' in a terminal window.",
-          "default": [
-            "--no-browser",
-            "--port",
-            "8888"
-          ],
-          "items": {
-            "type": "string"
-          }
-        }
-      }
-    }
-  },
-  "scripts": {
-    "vscode:prepublish": "tsc -p ./ && webpack",
-    "compile": "webpack && tsc -watch -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "node ./node_modules/vscode/bin/test"
-  },
-  "devDependencies": {
-    "@types/mocha": "^2.2.32",
-    "@types/node": "^6.0.40",
-    "@types/rx": "^2.5.33",
-    "@types/socket.io": "^1.4.27",
-    "@types/socket.io-client": "^1.4.27",
-    "@types/uuid": "^3.3.27",
-    "babel-core": "^6.14.0",
-    "babel-loader": "^6.2.5",
-    "babel-preset-es2015": "^6.14.0",
-    "ignore-loader": "^0.1.1",
-    "mocha": "^2.3.3",
-    "ts-loader": "^0.8.2",
-    "tslint": "^3.15.1",
-    "typescript": "^2.0.3",
-    "vscode": "^1.0.0",
-    "webpack": "^1.13.2"
-  },
-  "dependencies": {
-    "@jupyterlab/services": "^0.34.2",
-    "anser": "^1.1.0",
-    "requirejs": "^2.3.2",
-    "rx": "^4.1.0",
-    "socket.io": "^1.4.8",
-    "tmp": "0.0.31",
-    "transformime": "^3.2.0",
-    "transformime-marked": "0.0.1",
-    "vscode-extension-telemetry": "0.0.5",
-    "wait-on": "^2.0.2",
-    "ws": "^1.1.1",
-    "xml2js": "^0.4.17",
-    "xmlhttprequest": "^1.8.0"
-  }
+	"name": "jupyter",
+	"displayName": "Jupyter",
+	"description": "",
+	"version": "1.0.0",
+	"publisher": "donjayamanne",
+	"engines": {
+		"vscode": "^1.7.0"
+	},
+	"keywords": [
+		"python",
+		"jupyter",
+		"ipython",
+		"julia"
+	],
+	"author": {
+		"name": "Don Jayamanne",
+		"email": "don.jayamanne@yahoo.com"
+	},
+	"license": "MIT",
+	"homepage": "https://github.com/DonJayamanne/vscodeJupyter/",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/DonJayamanne/vscodeJupyter"
+	},
+	"bugs": {
+		"url": "https://github.com/DonJayamanne/vscodeJupyter/issues"
+	},
+	"icon": "images/icon.png",
+	"galleryBanner": {
+		"color": "#e46d2e",
+		"theme": "dark"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:jupyter.startNotebook",
+		"onCommand:jupyter.selectExistingNotebook",
+		"onCommand:jupyter.runSelectionLine",
+		"onCommand:jupyter.execCurrentCell",
+		"onCommand:jupyter.execCurrentCellAndAdvance"
+	],
+	"main": "./out/src/extension",
+	"contributes": {
+		"keybindings": [{
+			"command": "jupyter.runSelectionLine",
+			"key": "ctrl+alt+enter",
+			"when": "editorFocus && !replaceActive && !searchViewletVisible && !findWidgetVisible"
+		}],
+		"commands": [{
+				"command": "jupyter.runSelectionLine",
+				"title": "Run Selection/Line",
+				"category": "Jupyter"
+			},
+			{
+				"command": "jupyter.execCurrentCell",
+				"title": "Run Cell",
+				"category": "Jupyter"
+			},
+			{
+				"command": "jupyter.execCurrentCellAndAdvance",
+				"title": "Run Cell and Advance",
+				"category": "Jupyter"
+			},
+			{
+				"command": "jupyter.gotToPreviousCell",
+				"title": "Go to Previous Cell",
+				"category": "Jupyter"
+			},
+			{
+				"command": "jupyter.gotToNextCell",
+				"title": "Go to Next Cell",
+				"category": "Jupyter"
+			},
+			{
+				"command": "jupyter.startNotebook",
+				"title": "Start a new Jupyter Notebook (output displayed in Jupyter output panel)",
+				"category": "Jupyter"
+			},
+			{
+				"command": "jupyter.setNotebookUrl",
+				"title": "Provide the Url of an existing Jupyter Notebook (e.g. http://localhost:888/)",
+				"category": "Jupyter"
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "Jupyter Configuration",
+			"properties": {
+				"jupyter.appendResults": {
+					"type": "boolean",
+					"default": true,
+					"description": "Whether to append the results to results window, else clear and display."
+				},
+				"jupyter.languages": {
+					"type": "array",
+					"description": "Default settings per language.",
+					"items": {
+						"type": "object",
+						"required": [
+							"languageId"
+						],
+						"properties": {
+							"languageId": {
+								"type": "string",
+								"title": "Language Identifier",
+								"description": "Language Id (lower case). (Select Language on bottom of VS Code editor, and quick pick list will display language ids in brackets)"
+							},
+							"defaultKernel": {
+								"type": "string",
+								"title": "Defalt Kernel",
+								"description": "Default kernel for the corresponding language"
+							},
+							"startupCode": {
+								"type": "array",
+								"items": {
+									"type": "string"
+								},
+								"default": [],
+								"title": "Startup Code",
+								"description": "Code executed when the kernel starts. Such as '%matplotlib inline' for Python. Individual lines need to be placed as separate items of the array."
+							}
+						}
+					},
+					"default": [{
+						"languageId": "python",
+						"startupCode": [
+							"%matplotlib inline"
+						]
+					}]
+				},
+				"jupyter.notebook.startupFolder": {
+					"type": "string",
+					"default": "${workspaceRoot}",
+					"title": "Startup directory for Jupyter Notebook"
+				},
+				"jupyter.notebook.startupArgs": {
+					"type": "array",
+					"description": "'jupyter notebook' command line arguments. Each argument is a separate item in the array. For a full list type 'jupyter notebook --help' in a terminal window.",
+					"default": [
+						"--no-browser",
+						"--port",
+						"8888"
+					],
+					"items": {
+						"type": "string"
+					}
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "tsc -p ./ && webpack",
+		"compile": "webpack && tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "node ./node_modules/vscode/bin/test"
+	},
+	"devDependencies": {
+		"@types/mocha": "^2.2.32",
+		"@types/node": "^6.0.40",
+		"@types/rx": "^2.5.33",
+		"@types/socket.io": "^1.4.27",
+		"@types/socket.io-client": "^1.4.27",
+		"@types/uuid": "^3.3.27",
+		"babel-core": "^6.14.0",
+		"babel-loader": "^6.2.5",
+		"babel-preset-es2015": "^6.14.0",
+		"ignore-loader": "^0.1.1",
+		"mocha": "^2.3.3",
+		"ts-loader": "^0.8.2",
+		"tslint": "^3.15.1",
+		"typescript": "^2.0.3",
+		"vscode": "^1.0.0",
+		"webpack": "^1.13.2"
+	},
+	"dependencies": {
+		"@jupyterlab/services": "^0.34.2",
+		"anser": "^1.1.0",
+		"requirejs": "^2.3.2",
+		"rx": "^4.1.0",
+		"socket.io": "^1.4.8",
+		"tmp": "0.0.31",
+		"transformime": "^3.2.0",
+		"transformime-marked": "0.0.1",
+		"vscode-extension-telemetry": "0.0.5",
+		"wait-on": "^2.0.2",
+		"ws": "^1.1.1",
+		"xml2js": "^0.4.17",
+		"xmlhttprequest": "^1.8.0"
+	}
 }
