@@ -29,8 +29,7 @@ export class JupyterDisplay extends vscode.Disposable {
         this.cellOptions = new CellOptions(cellCodeLenses);
         this.disposables.push(this.cellOptions);
         this.server.on('appendResults', appendResults => {
-            // Todo: Configuration
-            // this.appendResults = appendResults === true;
+            vscode.workspace.getConfiguration('jupyter').update('appendResults', appendResults);
         });
         this.server.on('connected', () => {
             this.clientConnected = true;
@@ -40,12 +39,13 @@ export class JupyterDisplay extends vscode.Disposable {
     private displayed = false;
     private clientConnected: boolean;
     private get appendResults(): boolean {
-        // Todo: Configuration
-        return true;
+        return vscode.workspace.getConfiguration('jupyter').get('appendResults', true);
     }
     private notebookUrl: string;
-    public setNoteBookDetails(uri: string) {
+    private canShutdown: boolean;
+    public setNotebookUrl(uri: string, canShutdown: boolean) {
         this.notebookUrl = uri;
+        this.canShutdown = canShutdown;
     }
     public showResults(results: Rx.Observable<ParsedIOMessage>): Promise<any> {
         return this.server.start().then(port => {
@@ -147,15 +147,17 @@ export class JupyterDisplay extends vscode.Disposable {
                 description: ` `,
                 command: Commands.Jupyter.Kernel.Select,
                 args: [spec.language]
-            },
-            {
+            }
+        ];
+
+        if (this.canShutdown) {
+            options.push({
                 label: `Shut Down Notebook`,
                 description: `Notebook running on ${this.notebookUrl}`,
                 command: Commands.Jupyter.Notebook.ShutDown,
                 args: []
-            },
-        ];
-
+            });
+        }
         return vscode.window.showQuickPick(options).then(option => {
             if (!option || !option.command || option.command.length === 0) {
                 return;

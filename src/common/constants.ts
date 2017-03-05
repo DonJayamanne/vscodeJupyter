@@ -6,6 +6,8 @@ export namespace Commands {
         export const Get_All_KernelSpecs_For_Language = 'jupyter.getAllKernelSpecsForLanguage';
         export const Get_All_KernelSpecs = 'jupyter.getAllKernelSpecs';
         export const Kernel_Options = 'jupyter.kernelOptions';
+        export const StartNotebook = 'jupyter.startNotebook';
+        export const SetExistingNotebook = 'jupyter.setNotebookUrl';
         export const StartKernelForKernelSpeck = 'jupyter.sartKernelForKernelSpecs';
         export const ExecuteRangeInKernel = 'jupyter.execRangeInKernel';
         export const ExecuteSelectionOrLineInKernel = 'jupyter.runSelectionLine';

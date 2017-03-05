@@ -12,6 +12,7 @@ import { MessageParser } from './jupyter_client/resultParser';
 import { LanguageProviders } from './common/languageProvider';
 import * as Rx from 'rx';
 import { Kernel } from '@jupyterlab/services';
+import { NotebookManager } from './notebook-manager';
 const ws = require('ws');
 const xhr = require('xmlhttprequest');
 const requirejs = require('requirejs');
@@ -29,6 +30,7 @@ export class Jupyter extends vscode.Disposable {
     private codeLensProvider: JupyterCodeLensProvider;
     private codeHelper: CodeHelper;
     private messageParser: MessageParser;
+    private notebookManager: NotebookManager;
     constructor(private outputChannel: vscode.OutputChannel) {
         super(() => { });
         this.disposables = [];
@@ -42,7 +44,7 @@ export class Jupyter extends vscode.Disposable {
         this.disposables.forEach(d => d.dispose());
     }
     private createKernelManager() {
-        this.kernelManager = new KernelManagerImpl(this.outputChannel);
+        this.kernelManager = new KernelManagerImpl(this.outputChannel, this.notebookManager);
 
         // This happend when user changes it from status bar
         this.kernelManager.on('kernelChanged', (kernel: Kernel.IKernel, language: string) => {
@@ -50,6 +52,8 @@ export class Jupyter extends vscode.Disposable {
         });
     }
     private activate() {
+        this.notebookManager = new NotebookManager(this.outputChannel);
+
         this.createKernelManager();
 
         this.disposables.push(vscode.window.onDidChangeActiveTextEditor(this.onEditorChanged.bind(this)));
@@ -61,6 +65,14 @@ export class Jupyter extends vscode.Disposable {
         this.display = new JupyterDisplay(this.codeLensProvider);
         this.disposables.push(this.display);
         this.codeHelper = new CodeHelper(this.codeLensProvider);
+
+        this.handleNotebookStart();
+    }
+
+    private handleNotebookStart() {
+        this.notebookManager.on('onNotebookUrlChanged', (url: string) => {
+            this.display.setNotebookUrl(url, this.notebookManager.canShutdown());
+        });
     }
     public hasCodeCells(document: vscode.TextDocument, token: vscode.CancellationToken): Promise<boolean> {
         return new Promise<boolean>(resolve => {
@@ -109,6 +121,7 @@ export class Jupyter extends vscode.Disposable {
         else {
             kernelForExecution = this.kernelManager.startKernelFor(language).then(kernel => {
                 this.kernelManager.setRunningKernelFor(language, kernel);
+                return kernel;
             });
         }
         return kernelForExecution.then(() => {
@@ -143,16 +156,6 @@ export class Jupyter extends vscode.Disposable {
         });
 
         return source;
-        // const observable = new Rx.Subject<ParsedIOMessage>();
-        // let future = kernel.requestExecute({ code: code });
-        // future.onDone = () => {
-        //     //observable.onCompleted();
-        // };
-        // future.onIOPub = (msg) => {
-        //     this.messageParser.processResponse(msg, observable);
-        // };
-
-        // return observable.asObservable();
     }
     async executeSelection(): Promise<any> {
         const activeEditor = vscode.window.activeTextEditor;
@@ -185,6 +188,20 @@ export class Jupyter extends vscode.Disposable {
                 return this.kernelManager.startKernel(kernelSpec, language);
             }
             return Promise.resolve();
+        }));
+        this.disposables.push(vscode.commands.registerCommand(Commands.Jupyter.StartNotebook, () => {
+            this.notebookManager.startNewNotebook();
+        }));
+        this.disposables.push(vscode.commands.registerCommand(Commands.Jupyter.SetExistingNotebook, () => {
+            vscode.window.showInputBox({
+                prompt: 'Provide the Url of an existing Jupyter Notebook (e.g. http://localhost:888/)',
+                value: 'http://localhost:8888/'
+            }).then(url => {
+                if (!url) {
+                    return;
+                }
+                this.notebookManager.setNotebookUrl(url);
+            });
         }));
     }
     private registerKernelCommands() {

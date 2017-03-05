@@ -1,7 +1,6 @@
 
 export interface JupyterSettings {
     appendResults: boolean;
-    pythonPath: string;
     languages: JupyterLanguageSetting[];
 }
 

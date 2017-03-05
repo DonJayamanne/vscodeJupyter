@@ -5,66 +5,23 @@ import { createDeferred } from './common/helpers';
 import { Kernel } from '@jupyterlab/services';
 import { LanguageProviders } from './common/languageProvider';
 import { MessageParser } from './jupyter_client/resultParser';
-import * as child_process from 'child_process';
 import { ParsedIOMessage } from './contracts';
 import * as Rx from 'rx';
-const ws = require('ws');
-const xhr = require('xmlhttprequest');
-const requirejs = require('requirejs');
-(global as any).requirejs = requirejs;
-(global as any).XMLHttpRequest = xhr.XMLHttpRequest;
-(global as any).WebSocket = ws;
-
-// The base url of the notebook server.
-const BASE_URL = 'http://localhost:8888';
+import { NotebookManager } from './notebook-manager';
 
 export class KernelManagerImpl extends EventEmitter {
     private _runningKernels: Map<string, Kernel.IKernel>;
     private _kernelSpecs: { [key: string]: Kernel.ISpecModel };
     private _defaultKernel: string;
     private disposables: vscode.Disposable[];
-    constructor(private outputChannel: vscode.OutputChannel) {
+    private _notebookUrl: string;
+    constructor(private outputChannel: vscode.OutputChannel, private notebookManager: NotebookManager) {
         super();
         this.disposables = [];
         this._runningKernels = new Map<string, Kernel.IKernel>();
-        this._kernelSpecs = {};
+        this._kernelSpecs = {};        
     }
 
-    // private notebookChannel: vscode.OutputChannel;
-    // private proc: child_process.ChildProcess;
-    // private startNotebookServer(): Promise<string> {
-    // this.notebookChannel = vscode.window.createOutputChannel('Jupyter Notebook');
-    // let jupyterConfig = vscode.workspace.getConfiguration('jupyter');
-    // let pythonPath = jupyterConfig.get('pythonPath') as string;
-
-    // if (pythonPath.length === 0) {
-    //     let pyConfig = vscode.workspace.getConfiguration('python');
-    //     pythonPath = pyConfig.get('pythonPath') as string;
-    // }
-    // if (pythonPath.length === 0) {
-    //     pythonPath = 'python';
-    // }
-
-    // return new Promise<string>((resolve, reject) => {
-    //     this.proc = child_process.spawn('pythonPath', ['-m', 'notebook', '--NotebookApp.allow_origin="*"', '--no-browser']);
-    //     this.proc.stdout.setEncoding('utf8');
-    //     this.proc.on('close', (error: Error) => {
-
-    //     });
-    //     this.proc.on('error', error => {
-
-    //     });
-    //     this.proc.stdout.on('data', (data: string) => {
-    //         let lines = data.split('');
-    //         if (lines.some(line => line.indexOf('The Jupyter Notebook is running at') >= 0)) {
-
-    //         }
-    //     });
-    //     this.proc.stdout.on('error', error => {
-
-    //     });
-    // });
-    // }
     public dispose() {
         this.removeAllListeners();
         this._runningKernels.forEach(kernel => {
@@ -73,6 +30,9 @@ export class KernelManagerImpl extends EventEmitter {
         this._runningKernels.clear();
     }
 
+    private getNotebookUrl() {
+        return this.notebookManager.getNotebookUrl();
+    }
     public setRunningKernelFor(language: string, kernel: Kernel.IKernel) {
         this._runningKernels.set(language, kernel);
         this.emit('kernelChanged', kernel, language);
@@ -154,13 +114,19 @@ export class KernelManagerImpl extends EventEmitter {
     }
 
     public startKernel(kernelSpec: Kernel.ISpecModel, language: string): Promise<Kernel.IKernel> {
-        this.destroyRunningKernelFor(language);
-        return Kernel.startNew({ baseUrl: BASE_URL, name: kernelSpec.name })
-            .then(kernel => {
-                return this.executeStartupCode(language, kernel).then(() => {
-                    return kernel;
+        return this.getNotebookUrl().then(url => {
+            if (!url || url.length === 0) {
+                return Promise.reject('Notebook not selected/started');
+            }
+            this.destroyRunningKernelFor(language);
+            return Kernel.startNew({ baseUrl: url, name: kernelSpec.name })
+                .then(kernel => {
+                    return this.executeStartupCode(language, kernel).then(() => {
+                        return kernel;
+                    });
                 });
-            });
+        });
+
     }
 
     private executeStartupCode(language: string, kernel: Kernel.IKernel): Promise<any> {
@@ -251,10 +217,14 @@ export class KernelManagerImpl extends EventEmitter {
     }
 
     public getKernelSpecsFromJupyter(): Promise<Kernel.ISpecModels> {
-        return Kernel.getSpecs({ baseUrl: BASE_URL }).then(specs => {
-            this._defaultKernel = specs.default;
-            return specs;
+        return this.getNotebookUrl().then(url => {
+            if (!url || url.length === 0) {
+                return Promise.reject<Kernel.ISpecModels>('Notebook not selected/started');
+            }
+            return Kernel.getSpecs({ baseUrl: url }).then(specs => {
+                this._defaultKernel = specs.default;
+                return specs;
+            });
         });
-        // return this.jupyterClient.getAllKernelSpecs();
     }
 }

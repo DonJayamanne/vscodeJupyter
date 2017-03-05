@@ -66,7 +66,7 @@ export class LanguageProviders {
     public static getFirstLineOfExecutableCode(language: string, defaultRange: Range, document: TextDocument, range: Range): Promise<Position> {
         return LanguageProviders.providers.has(language) ?
             LanguageProviders.providers.get(language).getFirstLineOfExecutableCode(document, range) :
-            Promise.resolve(defaultRange);
+            Promise.resolve(defaultRange.start);
     }
     private static getLanguageSetting(language: string): JupyterLanguageSetting {
         let jupyterConfig = workspace.getConfiguration('jupyter');

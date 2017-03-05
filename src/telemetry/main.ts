@@ -50,7 +50,7 @@ export class Delays {
     }
 }
 
-const extensionId = "donjayamanne.python";
+const extensionId = "donjayamanne.jupyter";
 const extension = extensions.getExtension(extensionId);
 const extensionVersion = extension.packageJSON.version;
 const aiKey = "fce7a3d5-4665-4404-b786-31a6306749a6";
