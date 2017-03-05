@@ -1,10 +1,7 @@
-import { Disposable } from 'vscode';
 import { workspace, window, OutputChannel, Terminal } from 'vscode';
 import { createDeferred } from './common/helpers';
-import * as fs from 'fs';
 import { SystemVariables } from './common/systemVariables';
 import { EventEmitter } from 'events';
-const RunningText = 'The Jupyter Notebook is running at:';
 
 export class NotebookManager extends EventEmitter {
     private terminal: Terminal;

@@ -14,7 +14,6 @@ export class KernelManagerImpl extends EventEmitter {
     private _kernelSpecs: { [key: string]: Kernel.ISpecModel };
     private _defaultKernel: string;
     private disposables: vscode.Disposable[];
-    private _notebookUrl: string;
     constructor(private outputChannel: vscode.OutputChannel, private notebookManager: NotebookManager) {
         super();
         this.disposables = [];

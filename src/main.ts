@@ -53,6 +53,7 @@ export class Jupyter extends vscode.Disposable {
     }
     private activate() {
         this.notebookManager = new NotebookManager(this.outputChannel);
+        this.disposables.push(this.notebookManager);
 
         this.createKernelManager();
 
