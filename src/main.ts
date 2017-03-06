@@ -59,14 +59,19 @@ export class Jupyter extends vscode.Disposable {
 
         this.disposables.push(vscode.window.onDidChangeActiveTextEditor(this.onEditorChanged.bind(this)));
         this.codeLensProvider = new JupyterCodeLensProvider();
-        this.disposables.push(vscode.languages.registerCodeLensProvider(PythonLanguage, this.codeLensProvider));
-        this.disposables.push(vscode.languages.registerDocumentSymbolProvider(PythonLanguage, new JupyterSymbolProvider()));
+        //this.disposables.push(vscode.languages.registerCodeLensProvider(PythonLanguage, this.codeLensProvider));
+        let symbolProvider = new JupyterSymbolProvider();
+        //this.disposables.push(vscode.languages.registerDocumentSymbolProvider(PythonLanguage, symbolProvider));
         this.status = new KernelStatus();
         this.disposables.push(this.status);
         this.display = new JupyterDisplay(this.codeLensProvider);
         this.disposables.push(this.display);
         this.codeHelper = new CodeHelper(this.codeLensProvider);
 
+        LanguageProviders.getInstance().on('onLanguageProviderRegistered', (language: string) => {
+            this.disposables.push(vscode.languages.registerCodeLensProvider(language, this.codeLensProvider));
+            this.disposables.push(vscode.languages.registerDocumentSymbolProvider(language, symbolProvider));
+        });
         this.handleNotebookEvents();
     }
     private handleNotebookEvents() {

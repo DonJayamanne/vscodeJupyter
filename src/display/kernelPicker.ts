@@ -14,10 +14,10 @@ export class KernelPicker extends vscode.Disposable {
     }
 
     private registerCommands() {
-        this.disposables.push(vscode.commands.registerCommand(Commands.Jupyter.Kernel.Select, this.selectkernel.bind(this, PythonLanguage.language)));
+        this.disposables.push(vscode.commands.registerCommand(Commands.Jupyter.Kernel.Select, this.selectkernel.bind(this)));
     }
 
-    private selectkernel(language?: string): Promise<Kernel.ISpecModel> {
+    private selectkernel(language: string = PythonLanguage.language): Promise<Kernel.ISpecModel> {
         return new Promise<Kernel.ISpecModel>(resolve => {
             const command = language ? Commands.Jupyter.Get_All_KernelSpecs_For_Language : Commands.Jupyter.Get_All_KernelSpecs;
             vscode.commands.executeCommand(command, language).then((kernelSpecs: Kernel.ISpecModel[]) => {

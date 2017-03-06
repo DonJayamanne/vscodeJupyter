@@ -4,7 +4,7 @@
 import * as vscode from 'vscode';
 import { Jupyter } from './main';
 import { LanguageProvider, LanguageProviders } from './common/languageProvider';
-
+import { registerDefaults } from './languages/main'
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -13,6 +13,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     let jupyter = new Jupyter(outputChannel);
     context.subscriptions.push(jupyter);
+    registerDefaults();
 
     return {
         registerLanguageProvider: (language: string, provider: LanguageProvider) => {

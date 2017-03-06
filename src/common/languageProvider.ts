@@ -1,6 +1,7 @@
 import { Range, Position, TextDocument, workspace } from 'vscode';
 import { JupyterLanguageSetting } from './contracts';
 import { EOL } from 'os';
+import { EventEmitter } from 'events';
 
 /**
  * Language providers 
@@ -43,7 +44,17 @@ export interface LanguageProvider {
     getFirstLineOfExecutableCode(document: TextDocument, range: Range): Promise<Position>;
 }
 
-export class LanguageProviders {
+export class LanguageProviders extends EventEmitter {
+    constructor() {
+        super();
+    }
+    private static languageProviders: LanguageProviders = new LanguageProviders();
+    raiseLanguageProvderRegistered(language: string) {
+        this.emit('onLanguageProviderRegistered', language);
+    }
+    public static getInstance(): LanguageProviders {
+        return LanguageProviders.languageProviders;
+    }
     private static providers: Map<string, LanguageProvider> = new Map<string, LanguageProvider>();
     public static registerLanguageProvider(language: string, provider: LanguageProvider) {
         if (typeof language !== 'string' || language.length === 0) {
@@ -52,7 +63,11 @@ export class LanguageProviders {
         if (typeof provider !== 'object' || language === null) {
             throw new Error(`Argument 'provider' is invalid`);
         }
+        let languageRegistered = LanguageProviders.providers.has(language);
         LanguageProviders.providers.set(language, provider);
+        if (!languageRegistered) {
+            LanguageProviders.getInstance().raiseLanguageProvderRegistered(language);
+        }
     }
     public static cellIdentifier(language: string): RegExp {
         return LanguageProviders.providers.has(language) ?
