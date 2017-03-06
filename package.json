@@ -9,7 +9,9 @@
 	},
 	"keywords": [
 		"python",
-		"jupyter"
+		"jupyter",
+		"ijavascript",
+		"datascience"
 	],
 	"author": {
 		"name": "Don Jayamanne",

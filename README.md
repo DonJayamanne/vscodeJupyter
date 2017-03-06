@@ -8,6 +8,8 @@ An extension with rich support for [Jupyter](http://jupyter.org/)
 * Install [Jupyter](http://jupyter.org/install.html)  
   + You're ready to use it.
 
+## Tested with Python and JavaScript Kernels
+
 ## Sample Python usage  
 * Create a Python file with the following text  
 ```python
