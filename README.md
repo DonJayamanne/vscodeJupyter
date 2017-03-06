@@ -1,70 +1,43 @@
-<<<<<<< 3987a9df1d67bad46b739cd3d8dfe29d0d182b5a
-# vscodeJupyter
-Jupyter for Visual Studio Code
-=======
-# vscodejupyter README
+# Jupyter
 
-This is the README for your extension "vscodejupyter". After writing up a brief description, we recommend including the following sections.
+An extension with rich support for [Jupyter](http://jupyter.org/)  
 
-## Features
+## Quick Start
+* Install the extension
+* When using Python, install the [Python extension](https://marketplace.visualstudio.com/items?itemName=donjayamanne.python) as well. 
+* Install [Jupyter](http://jupyter.org/install.html)  
+  + You're ready to use it.
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+## Sample Python usage  
+* Create a Python file with the following text  
+```python
+#%%
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+import numpy as np
 
-For example if there is an image subfolder under your extension project workspace:
+x = np.linspace(0, 20, 100)
+plt.plot(x, np.sin(x))
+plt.show() 
+```
+* Click on the code lens ```Run Cell```
 
-\!\[feature X\]\(images/feature-x.png\)
+## [Documentation](https://github.com/DonJayamanne/vscodejupyter/wiki)
+For further information and details continue through to the [documentation](https://github.com/DonJayamanne/vscodejupyter/wiki).
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+## [Issues, Feature Requests and Contributions](https://github.com/DonJayamanne/vscodejupyter/issues)
+* Contributions are always welcome. Fork it, modify it and create a pull request.  
+* Any and all feedback is appreciated and welcome.  
 
-## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+## [Roadmap](https://github.com/DonJayamanne/vscodeJupyter/wiki/Roadmap)
 
-## Extension Settings
+![Scientific Tools](https://raw.githubusercontent.com/DonJayamanne/pythonVSCodeDocs/master/images/jupyter/examples.gif)
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
 
-For example:
+## Source
+[GitHub](https://github.com/DonJayamanne/vscodejupyter)
 
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on OSX or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on OSX or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (OSX) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
->>>>>>> initial draft
+                
+## License
+[MIT](https://raw.githubusercontent.com/DonJayamanne/vscodejupyter/master/LICENSE)

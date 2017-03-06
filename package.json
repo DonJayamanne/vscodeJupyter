@@ -5,7 +5,7 @@
 	"version": "1.0.0",
 	"publisher": "donjayamanne",
 	"engines": {
-		"vscode": "^1.7.0"
+		"vscode": "^1.9.0"
 	},
 	"keywords": [
 		"python",
@@ -39,7 +39,10 @@
 		"onCommand:jupyter.selectExistingNotebook",
 		"onCommand:jupyter.runSelectionLine",
 		"onCommand:jupyter.execCurrentCell",
-		"onCommand:jupyter.execCurrentCellAndAdvance"
+		"onCommand:jupyter.execCurrentCellAndAdvance",
+		"onCommand:jupyter.gotToPreviousCell",
+		"onCommand:jupyter.gotToNextCell",
+		"onCommand:jupyter.setNotebookUrl",
 	],
 	"main": "./out/src/extension",
 	"contributes": {
