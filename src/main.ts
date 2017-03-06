@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { JupyterDisplay } from './display/main';
 import { KernelStatus } from './display/kernelStatus';
-import { Commands, PythonLanguage } from './common/constants';
+import { Commands } from './common/constants';
 import { JupyterCodeLensProvider } from './editorIntegration/codeLensProvider';
 import { JupyterSymbolProvider } from './editorIntegration/symbolProvider';
 import { formatErrorForLogging } from './common/utils';
@@ -13,12 +13,6 @@ import { LanguageProviders } from './common/languageProvider';
 import * as Rx from 'rx';
 import { Kernel } from '@jupyterlab/services';
 import { NotebookManager } from './notebook-manager';
-const ws = require('ws');
-const xhr = require('xmlhttprequest');
-const requirejs = require('requirejs');
-(global as any).requirejs = requirejs;
-(global as any).XMLHttpRequest = xhr.XMLHttpRequest;
-(global as any).WebSocket = ws;
 
 // Todo: Refactor the error handling and displaying of messages
 export class Jupyter extends vscode.Disposable {
@@ -59,9 +53,7 @@ export class Jupyter extends vscode.Disposable {
 
         this.disposables.push(vscode.window.onDidChangeActiveTextEditor(this.onEditorChanged.bind(this)));
         this.codeLensProvider = new JupyterCodeLensProvider();
-        //this.disposables.push(vscode.languages.registerCodeLensProvider(PythonLanguage, this.codeLensProvider));
         let symbolProvider = new JupyterSymbolProvider();
-        //this.disposables.push(vscode.languages.registerDocumentSymbolProvider(PythonLanguage, symbolProvider));
         this.status = new KernelStatus();
         this.disposables.push(this.status);
         this.display = new JupyterDisplay(this.codeLensProvider);
@@ -234,9 +226,11 @@ export class Jupyter extends vscode.Disposable {
                 this.onKernelChanged(kernel);
             });
         }));
-        this.disposables.push(vscode.commands.registerCommand(Commands.Jupyter.Kernel.Shutdown, () => {
-            this.kernelManager.destroyRunningKernelFor('python');
-            this.onKernelChanged();
+        this.disposables.push(vscode.commands.registerCommand(Commands.Jupyter.Kernel.Shutdown, (kernel: Kernel.IKernel) => {
+            kernel.getSpec().then(spec => {
+                this.kernelManager.destroyRunningKernelFor(spec.language);
+                this.onKernelChanged();
+            });
         }));
     }
 };

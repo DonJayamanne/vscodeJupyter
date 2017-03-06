@@ -33,6 +33,7 @@ export class KernelManagerImpl extends EventEmitter {
         return this.notebookManager.getNotebookUrl();
     }
     public setRunningKernelFor(language: string, kernel: Kernel.IKernel) {
+        language = language.toLowerCase();
         this._runningKernels.set(language, kernel);
         this.emit('kernelChanged', kernel, language);
         return kernel;
@@ -42,6 +43,7 @@ export class KernelManagerImpl extends EventEmitter {
         this._runningKernels.clear();
     }
     public destroyRunningKernelFor(language: string): Promise<any> {
+        language = language.toLowerCase();
         if (!this._runningKernels.has(language)) {
             return Promise.resolve();
         }
@@ -101,6 +103,7 @@ export class KernelManagerImpl extends EventEmitter {
     }
 
     public restartRunningKernelFor(language: string): Promise<Kernel.IKernel> {
+        language = language.toLowerCase();
         const kernel = this._runningKernels.get(language);
         return this.restartKernel(kernel);
     }
@@ -160,6 +163,7 @@ export class KernelManagerImpl extends EventEmitter {
     }
 
     public getRunningKernelFor(language: string): Kernel.IKernel {
+        language = language.toLowerCase();
         return this._runningKernels.has(language) ? this._runningKernels.get(language) : null;
     }
 
@@ -209,7 +213,7 @@ export class KernelManagerImpl extends EventEmitter {
         return this.getKernelSpecsFromJupyter().then(kernelSpecsFromJupyter => {
             this._kernelSpecs = kernelSpecsFromJupyter.kernelspecs;
             if (Object.keys(this._kernelSpecs).length === 0) {
-                throw new Error('No kernel specs found, Install or update IPython/Jupyter to a later version');
+                throw new Error('No kernel specs found, Install or update Jupyter to a later version');
             }
             return kernelSpecsFromJupyter;
         });

@@ -1,6 +1,6 @@
 import { extensions } from "vscode";
-import * as typings from './typings';
-const TelemetryReporter: any = require("vscode-extension-telemetry");
+import { } from 'vscode-extension-telemetry';
+const TelemetryReporter = require('vscode-extension-telemetry');
 
 // Borrowed from omnisharpServer.ts (omnisharp-vscode)
 export class Delays {
@@ -52,9 +52,9 @@ export class Delays {
 
 const extensionId = "donjayamanne.jupyter";
 const extension = extensions.getExtension(extensionId);
-const extensionVersion = extension.packageJSON.version;
+const extensionVersion = extension.packageJSON.version as string;
 const aiKey = "fce7a3d5-4665-4404-b786-31a6306749a6";
-let reporter: typings.TelemetryReporter;
+let reporter: any;
 
 /**
  * Sends a telemetry event
@@ -67,6 +67,18 @@ export function sendTelemetryEvent(eventName: string, properties?: {
 }, measures?: {
     [key: string]: number;
 }) {
-    reporter = reporter ? reporter : new TelemetryReporter.TelemetryReporter(extensionId, extensionVersion, aiKey);
-    reporter.sendTelemetryEvent.apply(reporter, arguments);
+    // Check out later (no idea why default import isn't being picked up)
+    try {
+        reporter = reporter ? reporter : new TelemetryReporter(extensionId, extensionVersion, aiKey);
+    }
+    catch (ex) {
+        reporter = reporter ? reporter : new TelemetryReporter.default(extensionId, extensionVersion, aiKey);
+    }
+
+    try {
+        reporter.sendTelemetryEvent.apply(reporter, arguments);
+    }
+    catch (ex) {
+
+    }
 }
