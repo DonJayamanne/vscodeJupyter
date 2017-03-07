@@ -8,3 +8,5 @@ requirements.txt
 tsconfig.json
 tslint.json
 webpack.config.js
+browser/**
+browserdist/**
