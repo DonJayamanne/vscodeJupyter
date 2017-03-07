@@ -48,9 +48,15 @@ $ npm run build
 
 ## Note
 
+<<<<<<< HEAD
 - Since webpack 2 is still in beta, related dependencies can occur ``UNMET PEER DEPENDENCY`` errors.  
 To avoid error, use **npm >=3.0.0**
 - This boilerplate doesn't contain any testing frameworks. Use something that suits your taste.  
+=======
+- Since webpack 2 is still in beta, related dependencies can occur ``UNMET PEER DEPENDENCY`` errors.
+To avoid error, use **npm >=3.0.0**
+- This boilerplate doesn't contain any testing frameworks. Use something that suits your taste.
+>>>>>>> 59ed4b312bad8a4f08c90f1f28bd6a68c20b8e3b
 (such as [Mocha](https://github.com/mochajs/mocha), [Jasmine](https://github.com/jasmine/jasmine), or [Jest](https://github.com/facebook/jest))
 
 # License

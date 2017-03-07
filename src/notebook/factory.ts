@@ -57,7 +57,11 @@ export class NotebookFactory extends EventEmitter {
             return url;
         });
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 59ed4b312bad8a4f08c90f1f28bd6a68c20b8e3b
     private startNotebook(): Promise<Notebook> {
         let sysVars = new SystemVariables();
         let jupyterSettings = workspace.getConfiguration('jupyter');
@@ -85,9 +89,15 @@ export class NotebookFactory extends EventEmitter {
                 let url = `${protocol}://${ip}:${nextAvailablePort}`;
                 waitOn({
                     resources: [url],
+<<<<<<< HEAD
                     delay: 1000, // initial delay in ms, default 0 
                     interval: 100, // poll interval in ms, default 250ms 
                     timeout: 5000, // timeout in ms, default Infinity 
+=======
+                    delay: 1000, // initial delay in ms, default 0
+                    interval: 100, // poll interval in ms, default 250ms
+                    timeout: 5000, // timeout in ms, default Infinity
+>>>>>>> 59ed4b312bad8a4f08c90f1f28bd6a68c20b8e3b
                     reverse: true // optional flag to reverse operation so checks are for resources being NOT available, default false
                 }, (err) => {
                     if (err) {

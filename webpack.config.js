@@ -32,7 +32,11 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.ts', '.tsx'],
     // Fix webpack's default behavior to not load packages with jsnext:main module
+<<<<<<< HEAD
     // https://github.com/Microsoft/TypeScript/issues/11677 
+=======
+    // https://github.com/Microsoft/TypeScript/issues/11677
+>>>>>>> 59ed4b312bad8a4f08c90f1f28bd6a68c20b8e3b
     mainFields: ['main']
   },
   module: {
@@ -47,7 +51,11 @@ module.exports = {
           configFileName: './browser/tsconfig.json'
         }
       },
+<<<<<<< HEAD
       // css 
+=======
+      // css
+>>>>>>> 59ed4b312bad8a4f08c90f1f28bd6a68c20b8e3b
       {
         test: /\.css$/,
         loader: ExtractTextPlugin.extract({
@@ -67,7 +75,11 @@ module.exports = {
           ]
         })
       },
+<<<<<<< HEAD
       // static assets 
+=======
+      // static assets
+>>>>>>> 59ed4b312bad8a4f08c90f1f28bd6a68c20b8e3b
       {
         test: /\.html$/,
         loader: 'html-loader'
