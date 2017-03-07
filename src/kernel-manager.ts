@@ -118,7 +118,8 @@ export class KernelManagerImpl extends EventEmitter {
         throw new Error('Start Existing Kernel not implemented');
     }
     public startKernel(kernelSpec: Kernel.ISpecModel, language: string): Promise<Kernel.IKernel> {
-        return this.getNotebookUrl().then(url => {
+        let def = createDeferred<Kernel.IKernel>();
+        this.getNotebookUrl().then(url => {
             if (!url || url.length === 0) {
                 return Promise.reject('Notebook not selected/started');
             }
@@ -129,7 +130,11 @@ export class KernelManagerImpl extends EventEmitter {
                         return kernel;
                     });
                 });
-        });
+        })
+            .then(def.resolve.bind(def))
+            .catch(def.reject.bind(def));
+
+        return def.promise;
     }
     private executeStartupCode(language: string, kernel: Kernel.IKernel): Promise<any> {
         let startupCode = LanguageProviders.getStartupCode(language);
