@@ -38,8 +38,10 @@ export class KernelStatus extends vscode.Disposable {
         }
         this.activeKernal = kernel;
         this.displayName = kernel.name;
+        this.statusBar.tooltip = `Running on ${kernel.baseUrl}`;
         kernel.getSpec().then(spec => {
-            this.statusBar.tooltip = `${spec.display_name}(${spec.name}) Kernel for ${spec.language}\nClick for options`;
+            this.statusBar.tooltip = `${spec.display_name}(${spec.name}) Kernel for ${spec.language}` +
+                `\nRunning on ${kernel.baseUrl}\nClick for options`;
             this.displayName = spec.display_name;
             this.statusBar.text = `$(flame)${this.displayName} Kernel`;
         });

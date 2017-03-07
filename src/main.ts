@@ -12,7 +12,7 @@ import { MessageParser } from './jupyter_client/resultParser';
 import { LanguageProviders } from './common/languageProvider';
 import * as Rx from 'rx';
 import { Kernel } from '@jupyterlab/services';
-import { NotebookManager } from './notebook-manager';
+import { NotebookManager, Notebook, inputNotebookDetails, selectExistingNotebook } from './notebook/manager';
 
 // Todo: Refactor the error handling and displaying of messages
 export class Jupyter extends vscode.Disposable {
@@ -67,8 +67,8 @@ export class Jupyter extends vscode.Disposable {
         this.handleNotebookEvents();
     }
     private handleNotebookEvents() {
-        this.notebookManager.on('onNotebookUrlChanged', (url: string) => {
-            this.display.setNotebookUrl(url, this.notebookManager.canShutdown());
+        this.notebookManager.on('onNotebookChanged', (nb: Notebook) => {
+            this.display.setNotebook(nb, this.notebookManager.canShutdown(nb));
         });
         this.notebookManager.on('onShutdown', () => {
             this.kernelManager.clearAllKernels();
@@ -108,8 +108,6 @@ export class Jupyter extends vscode.Disposable {
         this.status.setActiveKernel(this.kernel);
     }
     executeCode(code: string, language: string): Promise<any> {
-        // telemetryHelper.sendTelemetryEvent(telemetryContracts.Jupyter.Usage);
-
         let kernelForExecution: Promise<Kernel.IKernel>;
 
         const kernelToUse = this.kernelManager.getRunningKernelFor(language);
@@ -199,15 +197,14 @@ export class Jupyter extends vscode.Disposable {
         this.disposables.push(vscode.commands.registerCommand(Commands.Jupyter.StartNotebook, () => {
             this.notebookManager.startNewNotebook();
         }));
-        this.disposables.push(vscode.commands.registerCommand(Commands.Jupyter.SetExistingNotebook, () => {
-            vscode.window.showInputBox({
-                prompt: 'Provide the Url of an existing Jupyter Notebook (e.g. http://localhost:888/)',
-                value: 'http://localhost:8888/'
-            }).then(url => {
-                if (!url) {
-                    return;
-                }
-                this.notebookManager.setNotebookUrl(url);
+        this.disposables.push(vscode.commands.registerCommand(Commands.Jupyter.ProvideNotebookDetails, () => {
+            inputNotebookDetails().then(nb => {
+                this.notebookManager.setNotebook(nb);
+            });
+        }));
+        this.disposables.push(vscode.commands.registerCommand(Commands.Jupyter.SelectExistingNotebook, () => {
+            selectExistingNotebook().then(nb => {
+                this.notebookManager.setNotebook(nb);
             });
         }));
         this.disposables.push(vscode.commands.registerCommand(Commands.Jupyter.Notebook.ShutDown, () => {

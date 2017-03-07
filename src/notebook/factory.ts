@@ -4,58 +4,68 @@ import { SystemVariables } from '../common/systemVariables';
 import { EventEmitter } from 'events';
 import { Notebook } from './contracts';
 import { getAvailablePort } from './portUtils';
-import { getAvailableNotebooks } from './utils';
+import { getAvailableNotebooks, waitForNotebookToStart } from './utils';
+import { spawn, ChildProcess } from 'child_process';
+import { ProgressBar } from '../display/progressBar';
 
-const waitOn = require('wait-on');
+const tcpPortUsed = require('tcp-port-used');
 export class NotebookFactory extends EventEmitter {
-    private terminal: Terminal;
+    private proc: ChildProcess;
+    private notebookOutputChannel: OutputChannel;
     private disposables: Disposable[] = [];
     constructor(private outputChannel: OutputChannel) {
         super();
-        window.onDidCloseTerminal(this.onTerminalShutDown, this, this.disposables);
+        this.notebookOutputChannel = window.createOutputChannel('Jupyter Notebook');
+        this.disposables.push(this.notebookOutputChannel);
     }
     dispose() {
         this.disposables.forEach(d => {
             d.dispose();
         });
         this.disposables = [];
-        if (this.terminal) {
-            this.terminal.dispose();
-            this.terminal = null;
-        }
+        this.shutdown();
     }
-    private _notebookUrl: string;
     private _notebookUrlInfo: Notebook;
 
     canShutdown(url: string): boolean {
-        return this._notebookUrl.toLowerCase() === url.toLowerCase();
-    }
-    onTerminalShutDown(e: Terminal) {
-        if (this.terminal === e) {
-            this.shutdown();
+        if (!this._notebookUrlInfo) {
+            return false;
         }
+        let ourUrl = this._notebookUrlInfo.baseUrl.toLowerCase();
+        url = url.toUpperCase();
+
+        // Assuming we have '/' at the ends of the urls
+        return ourUrl.indexOf(url) === 0 || url.indexOf(ourUrl) === 0;
     }
     shutdown() {
-        if (this.terminal) {
-            this.terminal.dispose();
-            this.terminal = null;
-            this._notebookUrl = null;
+        if (this.proc) {
+            try {
+                this.proc.kill();
+            }
+            catch (ex) { }
+            this.proc = null;
             this._notebookUrlInfo = null;
         }
+        this.notebookOutputChannel.clear();
         this.emit('onShutdown');
     }
     private startJupyterNotebookInTerminal(startupFolder: string, args: string[]) {
-        this.terminal = window.createTerminal('Jupyter');
-        this.terminal.sendText('cd ' + `'${startupFolder}'`);
-        this.terminal.sendText('jupyter ' + ['notebook'].concat(args).join(' '));
-        this.terminal.show();
+        this.notebookOutputChannel.appendLine('Starting Jupyter Notebook');
+        this.notebookOutputChannel.appendLine('jupyter ' + ['notebook'].concat(args).join(' '));
+
+        this.proc = spawn('jupyter', ['notebook'].concat(args), { cwd: startupFolder });
+        this.proc.stderr.on('data', data => {
+            this.notebookOutputChannel.append(data.toString());
+        });
     }
     startNewNotebook(): Promise<Notebook> {
-        this._notebookUrl = null;
         this._notebookUrlInfo = null;
-        return this.startNotebook().then(url => {
+        this.notebookOutputChannel.clear();
+        let prom = this.startNotebook().then(url => {
             return url;
         });
+        ProgressBar.Instance.setProgressMessage('Starting Notebook', prom);
+        return prom;
     }
     private startNotebook(): Promise<Notebook> {
         let sysVars = new SystemVariables();
@@ -64,61 +74,45 @@ export class NotebookFactory extends EventEmitter {
 
         let args = jupyterSettings.get('notebook.startupArgs', [] as string[]);
         args = args.map(arg => sysVars.resolve(arg));
-        if (this.terminal) {
+        if (this.proc) {
             this.shutdown();
         }
 
         let ipIndex = args.findIndex(arg => arg.indexOf('--ip') === 0);
-        let ip = ipIndex > 0 ? args[ipIndex + 1].trim().split('=')[1] : 'localhost';
+        let ip = ipIndex > 0 ? args[ipIndex].trim().split('=')[1] : 'localhost';
         let portIndex = args.findIndex(arg => arg.indexOf('--port') === 0);
-        let port = portIndex > 0 ? args[portIndex + 1].trim().split('=')[1] : '8888';
+        let port = portIndex > 0 ? parseInt(args[portIndex].trim().split('=')[1]) : 8888;
         let protocol = args.filter(arg => arg.indexOf('--certfile') === 0).length > 0 ? 'https' : 'http';
 
-        let def = createDeferred<Notebook>();
+        // Ensure CORS
+        if (args.findIndex(arg => arg.indexOf('--NotebookApp.allow_origin') === -1)) {
+            args.push('--NotebookApp.allow_origin="*"');
+        }
 
-        getAvailablePort(protocol, ip, parseInt(port))
-            .catch(() => Promise.resolve(parseInt(port)))
+        let def = createDeferred<Notebook>();
+        const retryIntervalMs = 250;
+        const timeoutMs = 10000;
+        let url = `${protocol}://${ip}:${port}`;
+
+        getAvailablePort(protocol, ip, port)
+            .catch(() => Promise.resolve(port))
             .then(nextAvailablePort => {
                 this.startJupyterNotebookInTerminal(startupFolder, args);
-
-                let url = `${protocol}://${ip}:${nextAvailablePort}`;
-                waitOn({
-                    resources: [url],
-                    delay: 1000, // initial delay in ms, default 0 
-                    interval: 100, // poll interval in ms, default 250ms 
-                    timeout: 5000, // timeout in ms, default Infinity 
-                    reverse: true // optional flag to reverse operation so checks are for resources being NOT available, default false
-                }, (err) => {
-                    if (err) {
-                        def.reject(`Failed to detect Jupyter Notebook. Please use 'Select Jupyter Notebook' command`);
-                        return;
-                    }
-
-                    // wait for a second (too soon, and we get errors, cuz jupyter may not have initialized completely)
-                    // Yes dirty hack... (hopefully these hack don't pile up)
-                    setTimeout(() => {
-                        this._notebookUrl = url;
-                        let startedNotebookInfo: Notebook = {
-                            startupFolder: startupFolder,
-                            token: '',
-                            baseUrl: url
-                        }
-                        getAvailableNotebooks()
-                            .catch(ex => {
-                                this.outputChannel.appendLine('Unable to find the started Jupyter Notebook, assuming defaults');
-                                return Promise.resolve([]);
-                            })
-                            .then(items => {
-                                items.forEach(item => {
-                                    if (item.baseUrl.indexOf(url) === 0) {
-                                        startedNotebookInfo = item;
-                                    }
-                                });
-                                def.resolve(startedNotebookInfo);
-                            });
-                    }, 2000);
-
-                });
+                return nextAvailablePort;
+            })
+            .then(nextAvailablePort => {
+                url = `${protocol}://${ip}:${nextAvailablePort}`;
+                return tcpPortUsed.waitUntilUsed(nextAvailablePort, retryIntervalMs, timeoutMs);
+            })
+            .then(() => {
+                // Just because the port is in use doesn't mean Notebook has fully started
+                // Now try to get a list of available notebooks
+                return waitForNotebookToStart(url, retryIntervalMs, timeoutMs);
+            }).then(nb => {
+                def.resolve(nb);
+            })
+            .catch(() => {
+                def.reject(`Failed to detect Jupyter Notebook. Please use 'Select Jupyter Notebook' command`);
             });
 
         return def.promise;

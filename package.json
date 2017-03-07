@@ -40,7 +40,7 @@
     "onCommand:jupyter.execCurrentCellAndAdvance",
     "onCommand:jupyter.gotToPreviousCell",
     "onCommand:jupyter.gotToNextCell",
-    "onCommand:jupyter.setNotebookUrl"
+    "onCommand:jupyter.provideNotebookDetails"
   ],
   "main": "./out/src/extension",
   "contributes": {
@@ -83,8 +83,13 @@
         "category": "Jupyter"
       },
       {
-        "command": "jupyter.setNotebookUrl",
-        "title": "Provide the Url of an existing Jupyter Notebook (e.g. http://localhost:888/)",
+        "command": "jupyter.provideNotebookDetails",
+        "title": "Enter the details of a local/remote Jupyter Notebook (url and optionally the token)",
+        "category": "Jupyter"
+      },
+      {
+        "command": "jupyter.selectExistingNotebook",
+        "title": "Select an existing (locally running) Jupyter Notebook (e.g. http://localhost:8888/)",
         "category": "Jupyter"
       }
     ],
@@ -227,11 +232,11 @@
     "requirejs": "^2.3.3",
     "rx": "^4.1.0",
     "socket.io": "^1.7.3",
+    "tcp-port-used": "^0.1.2",
     "tmp": "0.0.31",
     "transformime": "^3.2.0",
     "transformime-marked": "0.0.1",
     "vscode-extension-telemetry": "0.0.5",
-    "wait-on": "^2.0.2",
     "ws": "^2.2.0",
     "xmlhttprequest": "^1.8.0"
   }

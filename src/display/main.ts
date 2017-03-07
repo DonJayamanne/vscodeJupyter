@@ -8,6 +8,9 @@ import { Server } from './server';
 import { ParsedIOMessage } from '../contracts';
 import { createDeferred } from '../common/helpers';
 import { Kernel } from '@jupyterlab/services';
+import { Notebook } from '../notebook/contracts';
+
+export { ProgressBar } from './progressBar'
 
 const jupyterSchema = 'jupyter-result-viewer';
 const previewUri = vscode.Uri.parse(jupyterSchema + '://authority/jupyter');
@@ -43,8 +46,8 @@ export class JupyterDisplay extends vscode.Disposable {
     }
     private notebookUrl: string;
     private canShutdown: boolean;
-    public setNotebookUrl(uri: string, canShutdown: boolean) {
-        this.notebookUrl = uri || '';
+    public setNotebook(nb: Notebook, canShutdown: boolean) {
+        this.notebookUrl = (nb && nb.baseUrl) || '';
         this.canShutdown = canShutdown;
     }
     public showResults(results: Rx.Observable<ParsedIOMessage>): Promise<any> {

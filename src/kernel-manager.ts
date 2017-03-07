@@ -7,7 +7,8 @@ import { LanguageProviders } from './common/languageProvider';
 import { MessageParser } from './jupyter_client/resultParser';
 import { ParsedIOMessage } from './contracts';
 import * as Rx from 'rx';
-import { NotebookManager } from './notebook-manager';
+import { NotebookManager } from './notebook/manager';
+import { ProgressBar } from './display/progressBar';
 
 export class KernelManagerImpl extends EventEmitter {
     private _runningKernels: Map<string, Kernel.IKernel>;
@@ -29,8 +30,8 @@ export class KernelManagerImpl extends EventEmitter {
         this._runningKernels.clear();
     }
 
-    private getNotebookUrl() {
-        return this.notebookManager.getNotebookUrl();
+    private getNotebook() {
+        return this.notebookManager.getNotebook();
     }
     public setRunningKernelFor(language: string, kernel: Kernel.IKernel) {
         language = language.toLowerCase();
@@ -119,20 +120,21 @@ export class KernelManagerImpl extends EventEmitter {
     }
     public startKernel(kernelSpec: Kernel.ISpecModel, language: string): Promise<Kernel.IKernel> {
         let def = createDeferred<Kernel.IKernel>();
-        this.getNotebookUrl().then(nb => {
-            let url = <string><any>nb;
-            if (!url || url.length === 0) {
+        this.getNotebook().then(nb => {
+            if (!nb || nb.baseUrl.length === 0) {
                 return Promise.reject('Notebook not selected/started');
             }
             this.destroyRunningKernelFor(language);
-            let options: Kernel.IOptions = { baseUrl: url, name: kernelSpec.name };
-            // if (nb.token) { options.token = nb.token };
-            return Kernel.startNew(options)
+            let options: Kernel.IOptions = { baseUrl: nb.baseUrl, name: kernelSpec.name };
+            if (nb.token) { options.token = nb.token };
+            let promise = Kernel.startNew(options)
                 .then(kernel => {
                     return this.executeStartupCode(language, kernel).then(() => {
                         return kernel;
                     });
                 });
+            ProgressBar.Instance.setProgressMessage('Starting Kernel', promise);
+            return promise;
         })
             .then(def.resolve.bind(def))
             .catch(def.reject.bind(def));
@@ -227,17 +229,18 @@ export class KernelManagerImpl extends EventEmitter {
         });
     }
     public getKernelSpecsFromJupyter(): Promise<Kernel.ISpecModels> {
-        return this.getNotebookUrl().then(nb => {
-            let url = <string><any>nb;
-            if (!url || url.length === 0) {
+        return this.getNotebook().then(nb => {
+            if (!nb || nb.baseUrl.length === 0) {
                 return Promise.reject<Kernel.ISpecModels>('Notebook not selected/started');
             }
-            let options: Kernel.IOptions = { baseUrl: url };
-            //if (nb.token) { options.token = nb.token };
-            return Kernel.getSpecs(options).then(specs => {
+            let options: Kernel.IOptions = { baseUrl: nb.baseUrl };
+            if (nb.token) { options.token = nb.token };
+            let promise = Kernel.getSpecs(options).then(specs => {
                 this._defaultKernel = specs.default;
                 return specs;
             });
+            ProgressBar.Instance.setProgressMessage('Getting Kernel Specs', promise);
+            return promise;
         });
     }
 }
