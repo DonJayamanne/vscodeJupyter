@@ -4,6 +4,12 @@ import { SystemVariables } from './common/systemVariables';
 import { EventEmitter } from 'events';
 const waitOn = require('wait-on');
 
+export interface NotebookUrl {
+    url: string;
+    token?: string;
+    startupFolder?: string;
+};
+
 export class NotebookManager extends EventEmitter {
     private terminal: Terminal;
     private disposables: Disposable[] = [];
@@ -23,9 +29,28 @@ export class NotebookManager extends EventEmitter {
     }
     private _notebookUrl: string;
     private _notebookUrlStartedByUs: string;
+    private parseUrl(url: string): NotebookUrl {
+        let parts = url.split('::').filter(part => part !== '::');
+        let urlWithToken = parts.shift();
+        let startupFolder = url.indexOf('::') > 0 ? parts[1] : null;
+        let token = '';
+        let urlOnly = urlWithToken;
+        if (urlWithToken.indexOf('token=') > 0) {
+            token = urlWithToken.split('=')[1].trim();
+            urlOnly = urlWithToken.split('?')[0].trim();
+        }
+        let item: NotebookUrl = {
+            startupFolder: startupFolder,
+            url: urlOnly
+        }
+        if (token.length > 0) {
+            item.token = token;
+        }
+        return item;
+    }
     setNotebookUrl(url: string) {
         this._notebookUrl = url;
-        this.emit('onNotebookUrlChanged', url);
+        this.emit('onNotebookUrlChanged', this.parseUrl(url));
     }
     canShutdown(): boolean {
         return this._notebookUrlStartedByUs === this._notebookUrl;
@@ -110,13 +135,13 @@ export class NotebookManager extends EventEmitter {
         });
         return def.promise;
     }
-    getNotebookUrl() {
+    getNotebookUrl(): Promise<NotebookUrl> {
         if (this._notebookUrl && this._notebookUrl.length > 0) {
-            return Promise.resolve(this._notebookUrl);
+            return Promise.resolve(this.parseUrl(this._notebookUrl));
         }
         const startNew = 'Start a new Jupyter Notebook';
         const selectExisting = 'Select an existing (url) Jupyter Notebook';
-        let def = createDeferred<string>();
+        let def = createDeferred<NotebookUrl>();
         window.showQuickPick([startNew, selectExisting]).then(option => {
             if (!option) {
                 return def.resolve();
