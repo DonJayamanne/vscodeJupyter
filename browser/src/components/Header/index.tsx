@@ -15,7 +15,6 @@ class Header extends React.Component<HeaderProps, HeaderState> {
   constructor(props?: HeaderProps, context?: any) {
     super(props, context);
   }
-
   render() {
     return (
       <header>
@@ -24,7 +23,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
             checked={this.props.appendResults}
             onChange={() => this.props.toggleAppendResults()} />
           Append Results
-          </label>
+        </label>
         <button onClick={() => this.props.clearResults()}>Clear Results</button>
       </header>
     );

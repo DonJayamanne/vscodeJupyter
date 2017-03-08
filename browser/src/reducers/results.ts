@@ -3,7 +3,7 @@ import * as Actions from '../constants/actions';
 
 const initialState: NotebookResultsState = [];
 
-export default handleActions<NotebookResultsState, NotebookOutput>({
+export default handleActions<NotebookResultsState, any>({
   [Actions.ADD_RESULT]: (state, action) => {
     return [action.payload, ...state];
   },

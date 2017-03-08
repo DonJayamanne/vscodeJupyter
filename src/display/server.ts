@@ -6,6 +6,7 @@ import * as express from 'express';
 import { Express } from 'express';
 import * as path from 'path';
 import * as cors from 'cors';
+const uniqid = require('uniqid');
 export class Server extends EventEmitter {
     private server: SocketIO.Server;
     private app: Express;
@@ -42,6 +43,9 @@ export class Server extends EventEmitter {
 
         let rootDirectory = path.join(__dirname, '..', '..', 'browser');
         this.app.use(express.static(rootDirectory));
+        // Required by transformime
+        // It will look in the path http://localhost:port/resources/MathJax/MathJax.js
+        this.app.use(express.static(path.join(__dirname, '..', '..', '..', 'node_modules', 'mathjax-electron')));
         this.app.use(cors());
         this.app.get('/', function (req, res, next) {
             res.sendFile(path.join(rootDirectory, 'index.html'));
@@ -61,18 +65,23 @@ export class Server extends EventEmitter {
         this.server.on('connection', this.onSocketConnection.bind(this));
         return def.promise;
     }
+
+    private buffer: any[] = [];
+    public clearBuffer() {
+        this.buffer = [];
+    }
     public sendResults(data: any[]) {
-        this.broadcast('results', data);
+        // Add an id to each item (poor separation of concerns... but what ever)
+        let results = data.map(item => { return { id: uniqid('x'), value: item }; });
+        this.buffer = this.buffer.concat(results);
+        this.broadcast('results', results);
+    }
+
+    public sendSetting(name: string, value: any) {
+        this.broadcast(name, value);
     }
     private broadcast(eventName: string, data: any) {
-        this.clients = this.clients.filter(client => client && client.connected);
-        this.clients.forEach(client => {
-            try {
-                client.emit(eventName, data);
-            }
-            catch (ex) {
-            }
-        });
+        this.server.emit(eventName, data);
     }
 
     private onSocketConnection(socket: SocketIO.Socket) {
@@ -91,10 +100,19 @@ export class Server extends EventEmitter {
             this.responsePromises.delete(data.id);
             def.resolve(true);
         });
-        socket.on('appendResults', (data: { append: string }) => {
-            this.emit('appendResults', data.append);
+        socket.on('settings.appendResults', (data: any) => {
+            this.emit('settings.appendResults', data);
+        });
+        socket.on('clearResults', () => {
+            this.buffer = [];
+        });
+        socket.on('results.ack', () => {
+            this.buffer = [];
         });
         this.emit('connected');
+
+        // Someone is connected, send them the data we have
+        socket.emit('results', this.buffer);
     }
 
     private responsePromises: Map<string, Deferred<boolean>>;

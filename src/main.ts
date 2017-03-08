@@ -56,7 +56,7 @@ export class Jupyter extends vscode.Disposable {
         let symbolProvider = new JupyterSymbolProvider();
         this.status = new KernelStatus();
         this.disposables.push(this.status);
-        this.display = new JupyterDisplay(this.codeLensProvider);
+        this.display = new JupyterDisplay(this.codeLensProvider, this.outputChannel);
         this.disposables.push(this.display);
         this.codeHelper = new CodeHelper(this.codeLensProvider);
 

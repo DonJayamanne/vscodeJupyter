@@ -2,19 +2,17 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { RootState } from '../../reducers';
-import * as TodoActions from '../../actions/todos';
 import * as ResultActions from '../../actions/results';
 import Header from '../../components/Header';
-import MainSection from '../../components/MainSection';
+import ResultList from '../../components/ResultList'
 import * as style from './style.css';
 
 import * as io from 'socket.io-client';
 
 interface AppProps {
-  todos: TodoItemData[];
   settings: NotebookResultSettings;
-  actions: typeof TodoActions;
-  resultActions: typeof ResultActions
+  resultActions: typeof ResultActions;
+  results: NotebookResultsState;
 };
 
 interface AppState {
@@ -30,17 +28,36 @@ class App extends React.Component<AppProps, AppState>{
     this.socket.on('connect', () => {
       // Do nothing
     });
+    this.socket.on('settings.appendResults', (value: any) => {
+      this.props.resultActions.setAppendResults(value);
+    });
+    this.socket.on('clientExists', (data: any) => {
+      this.socket.emit('clientExists', { id: data.id });
+    });
+    this.socket.on('results', (value: NotebookOutput[]) => {
+      this.socket.emit('results.ack');
+      this.props.resultActions.addResults(value);
+    });
+  }
+
+  private toggleAppendResults() {
+    this.socket.emit('settings.appendResults', !this.props.settings.appendResults);
+  }
+  private clearResults() {
+    this.socket.emit('clearResults');
+    this.props.resultActions.clearResults();
   }
   render() {
-    const { todos, actions, children, resultActions, settings } = this.props;
+    const { children, resultActions, settings } = this.props;
 
     return (
-      <div className={style.normal}>
+      <div>
         <Header
           appendResults={settings.appendResults}
-          clearResults={() => resultActions.clearResults()}
-          toggleAppendResults={() => resultActions.setAppendResults()}>
+          clearResults={() => this.clearResults()}
+          toggleAppendResults={() => this.toggleAppendResults()}>
         </Header>
+        <ResultList results={this.props.results}></ResultList>
         {children}
       </div>
     );
@@ -49,14 +66,13 @@ class App extends React.Component<AppProps, AppState>{
 
 function mapStateToProps(state: RootState) {
   return {
-    todos: state.todos,
-    settings: state.settings
+    settings: state.settings,
+    results: state.results
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(TodoActions as any, dispatch),
     resultActions: bindActionCreators(ResultActions as any, dispatch)
   };
 }

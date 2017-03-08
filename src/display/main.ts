@@ -9,6 +9,7 @@ import { ParsedIOMessage } from '../contracts';
 import { createDeferred } from '../common/helpers';
 import { Kernel } from '@jupyterlab/services';
 import { Notebook } from '../notebook/contracts';
+import { formatErrorForLogging } from '../common/utils';
 
 export { ProgressBar } from './progressBar'
 
@@ -20,7 +21,7 @@ export class JupyterDisplay extends vscode.Disposable {
     private previewWindow: TextDocumentContentProvider;
     private cellOptions: CellOptions;
     private server: Server;
-    constructor(cellCodeLenses: JupyterCodeLensProvider) {
+    constructor(cellCodeLenses: JupyterCodeLensProvider, private outputChannel: vscode.OutputChannel) {
         super(() => { });
         this.disposables = [];
         this.server = new Server();
@@ -31,18 +32,28 @@ export class JupyterDisplay extends vscode.Disposable {
         this.disposables.push(vscode.workspace.registerTextDocumentContentProvider(jupyterSchema, this.previewWindow));
         this.cellOptions = new CellOptions(cellCodeLenses);
         this.disposables.push(this.cellOptions);
-        this.server.on('appendResults', appendResults => {
-            vscode.workspace.getConfiguration('jupyter').update('appendResults', appendResults);
+        this.server.on('settings.appendResults', append => {
+            vscode.workspace.getConfiguration('jupyter').update('appendResults', append, true)
+                .then(() => {
+                    this.server.sendSetting('settings.appendResults', this.appendResults);
+                }, reason => {
+                    this.outputChannel.appendLine(formatErrorForLogging(reason));
+                    vscode.window.showErrorMessage('Failed to update the setting', 'View Errors')
+                        .then(item => {
+                            if (item === 'View Errors') {
+                                this.outputChannel.show();
+                            }
+                        });
+                });
         });
         this.server.on('connected', () => {
             this.clientConnected = true;
         });
     }
 
-    private displayed = false;
     private clientConnected: boolean;
     private get appendResults(): boolean {
-        return vscode.workspace.getConfiguration('jupyter').get('appendResults', true);
+        return vscode.workspace.getConfiguration('jupyter').get<boolean>('appendResults', true);
     }
     private notebookUrl: string;
     private canShutdown: boolean;
@@ -59,10 +70,8 @@ export class JupyterDisplay extends vscode.Disposable {
             return sendDataToResultView.then(clientConnected => {
                 // If connected to result view, then send results over sockets as they arrive
                 if (clientConnected) {
+                    this.server.clearBuffer();
                     results.subscribe(result => {
-                        if (typeof result.data['text/html'] === 'string') {
-                            result.data['text/html'] = result.data['text/html'].replace(/<\/script>/g, '</scripts>');
-                        }
                         this.server.sendResults([result.data]);
                     });
                     return Promise.resolve();
@@ -72,16 +81,14 @@ export class JupyterDisplay extends vscode.Disposable {
                 const def = createDeferred<any>();
                 this.clientConnected = false;
                 results.subscribe(result => {
-                    if (typeof result.data['text/html'] === 'string') {
-                        result.data['text/html'] = result.data['text/html'].replace(/<\/script>/g, '</scripts>');
-                    }
+                    this.server.sendResults([result.data]);
 
                     if (this.clientConnected) {
-                        this.server.sendResults([result.data]);
+                        this.server.clearBuffer();
                         return;
                     }
 
-                    this.launchResultViewAndDisplayResults(result.data).
+                    this.launchResultViewAndDisplayResults().
                         then(def.resolve.bind(def)).catch(def.reject.bind(def));
                 });
                 results.subscribeOnCompleted(() => {
@@ -94,14 +101,11 @@ export class JupyterDisplay extends vscode.Disposable {
         });
     }
 
-    private launchResultViewAndDisplayResults(result: any): Promise<any> {
+    private launchResultViewAndDisplayResults(): Promise<any> {
         const def = createDeferred<any>();
-        this.previewWindow.setResult([result]);
-        this.previewWindow.AppendResults = this.appendResults;
 
         vscode.commands.executeCommand('vscode.previewHtml', previewUri, vscode.ViewColumn.Two, 'Results')
             .then(() => {
-                this.displayed = true;
                 def.resolve();
             }, reason => {
                 def.reject(reason);

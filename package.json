@@ -169,7 +169,8 @@
     "test": "node ./node_modules/vscode/bin/test",
     "testReact": "echo \"Error: no test specified\" && exit 1",
     "startReact": "webpack-dev-server -d --history-api-fallback --hot --inline --progress --colors --port 3000 --open",
-    "buildReact": "webpack -p --progress --colors"
+    "buildReact": "webpack -p --progress --colors",
+    "compileReact": "webpack -p --progress --colors --watch"
   },
   "devDependencies": {
     "@types/body-parser": "0.0.34",
@@ -229,6 +230,7 @@
     "body-parser": "^1.17.1",
     "cors": "^2.8.1",
     "express": "^4.15.2",
+    "immutable": "^3.8.1",
     "requirejs": "^2.3.3",
     "rx": "^4.1.0",
     "socket.io": "^1.7.3",
@@ -236,6 +238,8 @@
     "tmp": "0.0.31",
     "transformime": "^3.2.0",
     "transformime-marked": "0.0.1",
+    "transformime-react": "^1.1.0",
+    "uniqid": "^4.1.1",
     "vscode-extension-telemetry": "0.0.5",
     "ws": "^2.2.0",
     "xmlhttprequest": "^1.8.0"

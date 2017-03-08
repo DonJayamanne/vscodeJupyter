@@ -9,26 +9,14 @@ import * as helpers from '../common/helpers';
 export class TextDocumentContentProvider extends Disposable implements vscode.TextDocumentContentProvider {
     private _onDidChange = new vscode.EventEmitter<vscode.Uri>();
     private lastUri: vscode.Uri;
-    private results: any[];
     private serverPort: number;
-    private tmpFileCleanup: Function[] = [];
-    private appendResults: boolean;
     constructor() {
         super(() => { });
     }
     public dispose() {
-        this.tmpFileCleanup.forEach(fn => {
-            try {
-                fn();
-            }
-            catch (ex) { }
-        });
     }
     public set ServerPort(value: number) {
         this.serverPort = value;
-    }
-    public set AppendResults(value: boolean) {
-        this.appendResults = value;
     }
     public provideTextDocumentContent(uri: vscode.Uri, token: vscode.CancellationToken): Thenable<string> {
         this.lastUri = uri;
@@ -38,19 +26,6 @@ export class TextDocumentContentProvider extends Disposable implements vscode.Te
     get onDidChange(): vscode.Event<vscode.Uri> {
         return this._onDidChange.event;
     }
-
-    public setResult(results: any[]) {
-        this.results = results;
-    }
-    public update() {
-        this._onDidChange.fire(this.lastUri);
-    }
-
-    private getScriptFilePath(resourceName: string): string {
-        return vscode.Uri.file(path.join(__dirname, '..', 'browser', resourceName)).toString();
-    }
-
-    private tmpHtmlFile: string;
 
     private generateResultsView(): Promise<string> {
 
