@@ -9,16 +9,8 @@ import { Helpers } from '../common/helpers';
 
 
 export class MessageParser extends EventEmitter {
-    private isDebugging: boolean;
     constructor(private outputChannel: OutputChannel) {
         super();
-        this.isDebugging = process.env['DEBUG_DJAYAMANNE_IPYTHON'] === '1';
-    }
-    private writeToDebugLog(message: string) {
-        if (!this.isDebugging) {
-            return;
-        }
-        this.outputChannel.appendLine(message);
     }
     public processResponse(message: KernelMessage.IIOPubMessage, observer?: Rx.Observer<ParsedIOMessage>) {
         if (!message) {
@@ -30,7 +22,6 @@ export class MessageParser extends EventEmitter {
         try {
             const msg_type = message.header.msg_type;
             if (msg_type === 'status') {
-                this.writeToDebugLog(`Kernel Status = ${(message.content as any).execution_state}`);
                 this.emit('status', (message.content as any).execution_state);
             }
             const msg_id = (message.parent_header as any).msg_id;
@@ -64,14 +55,12 @@ export class MessageParser extends EventEmitter {
                     }
                 }
             }
-            this.writeToDebugLog(`Shell Result with msg_id = ${msg_id} with status = ${status}`);
             if (!parsedMesage) {
                 parsedMesage = Helpers.parseIOMessage(message);
             }
             if (!parsedMesage || !observer) {
                 return;
             }
-            this.writeToDebugLog(`Shell Result with msg_id = ${msg_id} has message of: '\n${JSON.stringify(message)}`);
             observer.onNext(parsedMesage);
         }
         catch (ex) {

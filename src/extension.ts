@@ -6,9 +6,11 @@ import { registerDefaults } from './languages/main';
 import { sendTelemetryEvent } from './telemetry/main';
 import { EVENT_LOAD } from './telemetry/contracts';
 
+// Required by @jupyter/services
 (global as any).XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 (global as any).requirejs = require('requirejs');
 (global as any).WebSocket = require('ws');
+
 export function activate(context: vscode.ExtensionContext) {
     sendTelemetryEvent(EVENT_LOAD);
     let outputChannel = vscode.window.createOutputChannel('Jupyter');

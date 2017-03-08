@@ -76,7 +76,7 @@ export function selectExistingNotebook() {
                         def.resolve(item.notebook);
                     }
                     else {
-                        def.resolve();
+                        def.reject();
                     }
                 });
         });
