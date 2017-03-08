@@ -2,5 +2,5 @@
 - Do we need to store the results so we can move the results view aroung (tricky issues)
 - Selecting a different kernel from the kernel list doesn't seem to activate it
 - Not getting the option to Shutdown the notebook
-- When starting a newnotebook, we need to display the notebook in the statusbar (user can then kill it)
+- When starting a newnotebook, we need to display the notebook in the statusbar (user can then kill it) (use this octicon '.octicon-book')
 - Look at existing issues
