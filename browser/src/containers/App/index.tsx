@@ -3,17 +3,18 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { RootState } from '../../reducers';
 import * as TodoActions from '../../actions/todos';
+import * as ResultActions from '../../actions/results';
 import Header from '../../components/Header';
 import MainSection from '../../components/MainSection';
 import * as style from './style.css';
 
 import * as io from 'socket.io-client';
 
-const port = document.getElementById('socketPort').innerText;
-const socket = io(`http://localhost:${port}`);
 interface AppProps {
   todos: TodoItemData[];
+  settings: NotebookResultSettings;
   actions: typeof TodoActions;
+  resultActions: typeof ResultActions
 };
 
 interface AppState {
@@ -21,12 +22,28 @@ interface AppState {
 }
 
 class App extends React.Component<AppProps, AppState>{
+  private socket: SocketIOClient.Socket;
+  constructor(props?: AppProps, context?: any) {
+    super(props, context)
+    // Use io (object) available in the script
+    this.socket = (window as any).io();
+    this.socket.on('connect', () => {
+      // Do nothing
+    });
+  }
   render() {
-    const { todos, actions, children } = this.props;
+    const { todos, actions, children, resultActions, settings } = this.props;
+    // console.log('render');
+    // // console.log(this.props);
+    // // <MainSection todos={todos} actions={actions} />
+
     return (
       <div className={style.normal}>
-        <Header addTodo={actions.addTodo} />
-        <MainSection todos={todos} actions={actions} />
+        <Header
+          appendResults={settings.appendResults}
+          clearResults={() => resultActions.clearResults()}
+          toggleAppendResults={() => resultActions.toggleAppendResults()}>
+        </Header>
         {children}
       </div>
     );
@@ -35,13 +52,15 @@ class App extends React.Component<AppProps, AppState>{
 
 function mapStateToProps(state: RootState) {
   return {
-    todos: state.todos
+    todos: state.todos,
+    settings: state.settings
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(TodoActions as any, dispatch)
+    actions: bindActionCreators(TodoActions as any, dispatch),
+    resultActions: bindActionCreators(ResultActions as any, dispatch)
   };
 }
 

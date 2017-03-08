@@ -54,7 +54,7 @@ export class NotebookManager extends EventEmitter {
     }
     setNotebook(nb: NotebookUrl) {
         this._notebookUrl = nb && nb.url || null;
-        this.emit('onNotebookUrlChanged', nb.url);
+        this.emit('onNotebookUrlChanged', nb ? nb.url : null);
     }
     canShutdown(): boolean {
         return this._notebookUrlStartedByUs === this._notebookUrl;

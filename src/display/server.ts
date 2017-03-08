@@ -1,30 +1,14 @@
-/// https://github.com/DefinitelyTyped/DefinitelyTyped/issues/10097
-/// The following line in 'socket.io/index.d.ts' causes a compiler error
-/// </reference types="node" />
-/// Solution is to use typescript 2.0
-/// <xreference path="../../../../node_modules/@types/socket.io/index.d.ts" />
-// import * as io from 'socket.io';
-// Temporary solution is to create our own definitions
-const io: (app: any) => SocketIO.Server = require('socket.io');
-namespace SocketIO {
-    export interface Server {
-        close();
-        on(event: string, callback: Function);
-    }
-    export interface Socket {
-        id: string;
-        connected: boolean;
-        emit(event: string, data: any);
-        on(event: string, callback: Function);
-    }
-}
+import * as io from 'socket.io';
 import * as http from 'http';
-import {createDeferred, Deferred} from '../common/helpers';
-import {EventEmitter} from 'events';
-
-
+import { createDeferred, Deferred } from '../common/helpers';
+import { EventEmitter } from 'events';
+import * as express from 'express';
+import { Express } from 'express';
+import * as path from 'path';
+import * as cors from 'cors';
 export class Server extends EventEmitter {
     private server: SocketIO.Server;
+    private app: Express;
     private httpServer: http.Server;
     private clients: SocketIO.Socket[] = [];
     constructor() {
@@ -33,6 +17,8 @@ export class Server extends EventEmitter {
     }
 
     public dispose() {
+        this.app = null;
+        this.port = null;
         if (this.httpServer) {
             this.httpServer.close();
             this.httpServer = null;
@@ -41,7 +27,6 @@ export class Server extends EventEmitter {
             this.server.close();
             this.server = null;
         }
-        this.port = null;
     }
 
     private port: number;
@@ -49,10 +34,18 @@ export class Server extends EventEmitter {
         if (this.port) {
             return Promise.resolve(this.port);
         }
-
         let def = createDeferred<number>();
-        this.httpServer = http.createServer(this.listener.bind(this));
+
+        this.app = express();
+        this.httpServer = http.createServer(this.app);
         this.server = io(this.httpServer);
+
+        let rootDirectory = path.join(__dirname, '..', '..', 'browser');
+        this.app.use(express.static(rootDirectory));
+        this.app.use(cors());
+        this.app.get('/', function (req, res, next) {
+            res.sendFile(path.join(rootDirectory, 'index.html'));
+        });
 
         this.httpServer.listen(0, () => {
             this.port = this.httpServer.address().port;
@@ -80,9 +73,6 @@ export class Server extends EventEmitter {
             catch (ex) {
             }
         });
-    }
-
-    private listener(request: http.IncomingMessage, response: http.ServerResponse) {
     }
 
     private onSocketConnection(socket: SocketIO.Socket) {

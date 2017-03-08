@@ -1,8 +1,9 @@
 import * as React from 'react';
-import TodoTextInput from '../TodoTextInput';
 
 interface HeaderProps {
-  addTodo: (todo: TodoItemData) => any;
+  clearResults: () => any;
+  toggleAppendResults: () => any;
+  appendResults: boolean;
 }
 
 interface HeaderState {
@@ -13,23 +14,18 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 
   constructor(props?: HeaderProps, context?: any) {
     super(props, context);
-    this.handleSave = this.handleSave.bind(this);
-  }
-
-  handleSave(text: string) {
-    if (text.length) {
-      this.props.addTodo({ text });
-    }
   }
 
   render() {
     return (
       <header>
-        <h1>Todos</h1>
-        <TodoTextInput
-          newTodo
-          onSave={this.handleSave}
-          placeholder="What needs to be done?" />
+        <label>
+          <input type="checkbox"
+            checked={this.props.appendResults}
+            onChange={() => this.props.toggleAppendResults()} />
+          Append Results
+          </label>
+        <button onClick={() => this.props.clearResults()}>Clear Results</button>
       </header>
     );
   }
