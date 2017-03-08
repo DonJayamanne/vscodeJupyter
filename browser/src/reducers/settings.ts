@@ -6,7 +6,7 @@ const initialState: NotebookResultSettings = {
 };
 
 export default handleActions<NotebookResultSettings, any>({
-  [Actions.TOGGLE_APPEND_RESULTS]: (state, action) => {
-    return { ...state, appendResults: !state.appendResults };
+  [Actions.SET_APPEND_RESULTS]: (state, action) => {
+    return { ...state, appendResults: action.payload };
   }
 }, initialState);

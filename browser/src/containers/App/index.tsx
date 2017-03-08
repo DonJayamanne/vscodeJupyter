@@ -33,16 +33,13 @@ class App extends React.Component<AppProps, AppState>{
   }
   render() {
     const { todos, actions, children, resultActions, settings } = this.props;
-    // console.log('render');
-    // // console.log(this.props);
-    // // <MainSection todos={todos} actions={actions} />
 
     return (
       <div className={style.normal}>
         <Header
           appendResults={settings.appendResults}
           clearResults={() => resultActions.clearResults()}
-          toggleAppendResults={() => resultActions.toggleAppendResults()}>
+          toggleAppendResults={() => resultActions.setAppendResults()}>
         </Header>
         {children}
       </div>

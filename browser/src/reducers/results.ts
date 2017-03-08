@@ -4,12 +4,12 @@ import * as Actions from '../constants/actions';
 const initialState: NotebookResultsState = [];
 
 export default handleActions<NotebookResultsState, NotebookOutput>({
-  [Actions.APPEND_RESULT]: (state, action) => {
+  [Actions.ADD_RESULT]: (state, action) => {
     return [action.payload, ...state];
   },
 
-  [Actions.APPEND_RESULTS]: (state, action) => {
-    return [...action.payload, ...state];
+  [Actions.ADD_RESULTS]: (state, action) => {
+    return [...state, ...action.payload];
   },
 
   [Actions.CLEAR_RESULTS]: (state, action) => {

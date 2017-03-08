@@ -1,7 +1,7 @@
 import { createAction } from 'redux-actions';
-import * as Actions from '../constants/actions';
+import * as Actions from '../constants/resultActions';
 
 export const clearResults = createAction<void>(Actions.CLEAR_RESULTS);
-export const appendResult = createAction<NotebookOutput>(Actions.APPEND_RESULT);
-export const appendResults = createAction<NotebookOutput[]>(Actions.APPEND_RESULTS);
-export const toggleAppendResults = createAction<void>(Actions.TOGGLE_APPEND_RESULTS);
+export const addResult = createAction<NotebookOutput>(Actions.ADD_RESULT);
+export const addResults = createAction<NotebookOutput[]>(Actions.ADD_RESULTS);
+export const setAppendResults = createAction<boolean>(Actions.SET_APPEND_RESULTS);
