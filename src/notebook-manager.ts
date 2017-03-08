@@ -50,7 +50,11 @@ export class NotebookManager extends EventEmitter {
     }
     setNotebookUrl(url: string) {
         this._notebookUrl = url;
-        this.emit('onNotebookUrlChanged', this.parseUrl(url));
+        this.emit('onNotebookUrlChanged', url);
+    }
+    setNotebook(nb: NotebookUrl) {
+        this._notebookUrl = nb && nb.url || null;
+        this.emit('onNotebookUrlChanged', nb.url);
     }
     canShutdown(): boolean {
         return this._notebookUrlStartedByUs === this._notebookUrl;
@@ -70,11 +74,12 @@ export class NotebookManager extends EventEmitter {
         this.emit('onShutdown');
     }
     startNewNotebook(): Promise<string> {
-        this._notebookUrl = null;
-        return this.startNotebook().then(url => {
-            this.setNotebookUrl(url);
-            return url;
-        });
+        // this._notebookUrl = null;
+        // return this.startNotebook().then(url => {
+        //     this.setNotebookUrl(url);
+        //     return url;
+        // });
+        return Promise.reject('failed');
     }
     private startNotebook(): Promise<string> {
         let sysVars = new SystemVariables();
@@ -153,9 +158,9 @@ export class NotebookManager extends EventEmitter {
                 this.getExistingNotebookUrl().catch(def.reject.bind(def)).then(def.resolve.bind(def));
             }
         });
-        def.promise.then(url => {
-            this.setNotebookUrl(url);
-            return url;
+        def.promise.then(nb => {
+            this.setNotebook(nb);
+            return nb;
         });
         return def.promise;
     }

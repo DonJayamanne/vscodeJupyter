@@ -26,15 +26,9 @@ function isPortAvailable(url: string): Promise<boolean> {
     let def = createDeferred<boolean>();
     waitOn({
         resources: [url],
-<<<<<<< HEAD
         delay: 0, // initial delay in ms, default 0 
         interval: 10, // poll interval in ms, default 250ms 
         timeout: 100 // timeout in ms, default Infinity 
-=======
-        delay: 0, // initial delay in ms, default 0
-        interval: 10, // poll interval in ms, default 250ms
-        timeout: 100 // timeout in ms, default Infinity
->>>>>>> 59ed4b312bad8a4f08c90f1f28bd6a68c20b8e3b
     }, (err) => {
         if (err) {
             def.reject(false);

@@ -120,12 +120,13 @@ export class KernelManagerImpl extends EventEmitter {
     public startKernel(kernelSpec: Kernel.ISpecModel, language: string): Promise<Kernel.IKernel> {
         let def = createDeferred<Kernel.IKernel>();
         this.getNotebookUrl().then(nb => {
-            if (!nb || nb.url.length === 0) {
+            let url = <string><any>nb;
+            if (!url || url.length === 0) {
                 return Promise.reject('Notebook not selected/started');
             }
             this.destroyRunningKernelFor(language);
-            let options: Kernel.IOptions = { baseUrl: nb.url, name: kernelSpec.name };
-            if (nb.token) { options.token = nb.token };
+            let options: Kernel.IOptions = { baseUrl: url, name: kernelSpec.name };
+            // if (nb.token) { options.token = nb.token };
             return Kernel.startNew(options)
                 .then(kernel => {
                     return this.executeStartupCode(language, kernel).then(() => {
@@ -227,11 +228,12 @@ export class KernelManagerImpl extends EventEmitter {
     }
     public getKernelSpecsFromJupyter(): Promise<Kernel.ISpecModels> {
         return this.getNotebookUrl().then(nb => {
-            if (!nb || nb.url.length === 0) {
+            let url = <string><any>nb;
+            if (!url || url.length === 0) {
                 return Promise.reject<Kernel.ISpecModels>('Notebook not selected/started');
             }
-            let options: Kernel.IOptions = { baseUrl: nb.url };
-            if (nb.token) { options.token = nb.token };
+            let options: Kernel.IOptions = { baseUrl: url };
+            //if (nb.token) { options.token = nb.token };
             return Kernel.getSpecs(options).then(specs => {
                 this._defaultKernel = specs.default;
                 return specs;

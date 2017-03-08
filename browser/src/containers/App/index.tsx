@@ -7,6 +7,10 @@ import Header from '../../components/Header';
 import MainSection from '../../components/MainSection';
 import * as style from './style.css';
 
+import * as io from 'socket.io-client';
+
+const port = document.getElementById('socketPort').innerText;
+const socket = io(`http://localhost:${port}`);
 interface AppProps {
   todos: TodoItemData[];
   actions: typeof TodoActions;

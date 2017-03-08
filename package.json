@@ -205,6 +205,7 @@
     "react-router-redux": "^4.0.7",
     "redux": "^3.6.0",
     "redux-actions": "^1.2.1",
+    "socket.io-client": "^1.7.3",
     "style-loader": "^0.13.1",
     "tslint": "^4.5.1",
     "typescript": "^2.1.5",
