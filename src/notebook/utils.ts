@@ -20,7 +20,7 @@ export function waitForNotebookToStart(baseUrl: string, retryInterval: number, t
     let def = createDeferred<Notebook>();
     let stop = setTimeout(() => {
         if (!def.completed) {
-            def.reject();
+            def.reject('Timeout waiting for Notebook to start');
         }
     }, timeout);
 
@@ -62,7 +62,7 @@ export function selectExistingNotebook() {
     let def = createDeferred<Notebook>();
     getAvailableNotebooks()
         .then(notebooks => {
-            window.showQuickPick(notebooks.map(item => {
+            let items = notebooks.map(item => {
                 let details = item.startupFolder && item.startupFolder.length > 0 ? `Starup Folder: ${item.startupFolder}` : '';
                 return {
                     label: item.baseUrl,
@@ -70,13 +70,14 @@ export function selectExistingNotebook() {
                     detail: details,
                     notebook: item
                 };
-            }))
+            });
+            window.showQuickPick(items)
                 .then(item => {
                     if (item) {
                         def.resolve(item.notebook);
                     }
                     else {
-                        def.reject();
+                        def.resolve();
                     }
                 });
         });
@@ -87,7 +88,7 @@ export function selectExistingNotebook() {
 export function inputNotebookDetails(): Promise<Notebook> {
     let def = createDeferred<Notebook>();
     window.showInputBox({
-        prompt: 'Provide the Url of an existing Jupyter Notebook (e.g. http://localhost:888/)',
+        prompt: 'Provide Url of existing Jupyter Notebook (e.g. http://localhost:888/)',
         value: 'http://localhost:8888/'
     }).then(url => {
         if (!url) {
@@ -95,17 +96,12 @@ export function inputNotebookDetails(): Promise<Notebook> {
         }
         let nb = parseNotebookListItem(url);
         if (!nb) {
-            return def.reject();
-        }
-        if (nb.token) {
-            def.resolve(nb);
-        }
-        else {
-            return nb;
-        }
-    }).then(nb => {
-        if (!nb) {
             return;
+        }
+        return nb;
+    }).then(nb => {
+        if (!nb || nb.token) {
+            return def.resolve(nb);
         }
         window.showInputBox({
             prompt: 'Provide the token to connect to the Jupyter Notebook'

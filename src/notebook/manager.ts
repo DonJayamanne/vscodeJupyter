@@ -58,10 +58,14 @@ export class NotebookManager extends EventEmitter {
                 return def.resolve();
             }
             if (option === startNew) {
-                this.factory.startNewNotebook().catch(def.reject.bind(def)).then(def.resolve.bind(def));
+                this.factory.startNewNotebook()
+                    .then(def.resolve.bind(def))
+                    .catch(def.reject.bind(def));
             }
             else {
-                selectExistingNotebook().catch(def.reject.bind(def)).then(def.resolve.bind(def));
+                selectExistingNotebook()
+                    .then(def.resolve.bind(def))
+                    .catch(def.reject.bind(def));
             }
         });
         def.promise.then(nb => {

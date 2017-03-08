@@ -6,7 +6,7 @@ export function getAvailablePort(protocol: string, host: string, startPort: numb
 
     function checkPortAvailability() {
         if (portsToTry.length === 0) {
-            def.reject();
+            def.reject('None available');
         }
 
         let port = portsToTry.shift();

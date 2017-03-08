@@ -198,14 +198,18 @@ export class Jupyter extends vscode.Disposable {
             this.notebookManager.startNewNotebook();
         }));
         this.disposables.push(vscode.commands.registerCommand(Commands.Jupyter.ProvideNotebookDetails, () => {
-            inputNotebookDetails().then(nb => {
-                this.notebookManager.setNotebook(nb);
-            });
+            inputNotebookDetails()
+                .then(nb => {
+                    if (!nb) { return; }
+                    this.notebookManager.setNotebook(nb);
+                });
         }));
         this.disposables.push(vscode.commands.registerCommand(Commands.Jupyter.SelectExistingNotebook, () => {
-            selectExistingNotebook().then(nb => {
-                this.notebookManager.setNotebook(nb);
-            });
+            selectExistingNotebook()
+                .then(nb => {
+                    if (!nb) { return; }
+                    this.notebookManager.setNotebook(nb);
+                });
         }));
         this.disposables.push(vscode.commands.registerCommand(Commands.Jupyter.Notebook.ShutDown, () => {
             this.notebookManager.shutdown();
