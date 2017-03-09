@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { richestMimetype, transforms } from 'transformime-react';
+import JSONTree from 'react-json-tree';
+
 const Immutable: any = require('immutable');
 interface ResultListProps {
   result: NotebookOutput;
@@ -13,30 +15,25 @@ class ResultList extends React.Component<ResultListProps, ResultListState> {
   render() {
     let data = this.props.result.value;
     if (data && data['application/json']) {
-      try {
-        data['text/html'] = JSON.stringify(data['application/json'], null, 4);
-      }
-      catch (ex) { }
+      return <JSONTree data={data['application/json']} />;
     }
+
     // Jupyter style MIME bundle
-    const bundle = new Immutable.Map(this.props.result.value);
+    const bundle = new Immutable.Map(data);
     // Find out which mimetype is the richest
     const mimetype: string = richestMimetype(bundle);
     // Get the matching React.Component for that mimetype
     let Transform = transforms.get(mimetype);
 
-    // If dealing with images, set the background color to white
-    let style = {};
     if (typeof mimetype !== 'string') {
       return <div>Unknown Mime Type</div>;
     }
+    // If dealing with images, set the background color to white
+    let style = {};
     if (mimetype.startsWith('image')) {
       style = { backgroundColor: 'white' };
     }
-
-    // Create a React element
     return <div style={style}><Transform data={bundle.get(mimetype)} /></div>;
-
   }
 }
 
