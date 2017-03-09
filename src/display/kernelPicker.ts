@@ -32,7 +32,7 @@ export class KernelPicker extends vscode.Disposable {
             });
         });
     }
-    private displayKernelPicker(kernelspecs: Kernel.ISpecModel[]): Promise<Kernel.ISpecModel> {
+    private async displayKernelPicker(kernelspecs: Kernel.ISpecModel[]): Promise<Kernel.ISpecModel> {
         const items = kernelspecs.map(spec => {
             return {
                 label: spec.display_name,
@@ -41,15 +41,7 @@ export class KernelPicker extends vscode.Disposable {
                 kernelspec: spec
             };
         });
-        return new Promise<Kernel.ISpecModel>(resolve => {
-            vscode.window.showQuickPick(items, { placeHolder: 'Select a Kernel' }).then(item => {
-                if (item) {
-                    resolve(item.kernelspec);
-                }
-                else {
-                    resolve();
-                }
-            });
-        });
+        let item = await vscode.window.showQuickPick(items, { placeHolder: 'Select a Kernel' });
+        return (item && item.kernelspec) ? item.kernelspec : undefined;
     }
 }

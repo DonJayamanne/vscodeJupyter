@@ -118,28 +118,23 @@ export class KernelManagerImpl extends EventEmitter {
     public startExistingKernel(language: string, connection, connectionFile): Promise<Kernel.IKernel> {
         throw new Error('Start Existing Kernel not implemented');
     }
-    public startKernel(kernelSpec: Kernel.ISpecModel, language: string): Promise<Kernel.IKernel> {
-        let def = createDeferred<Kernel.IKernel>();
-        this.getNotebook().then(nb => {
-            if (!nb || nb.baseUrl.length === 0) {
-                return Promise.reject('Notebook not selected/started');
-            }
-            this.destroyRunningKernelFor(language);
-            let options: Kernel.IOptions = { baseUrl: nb.baseUrl, name: kernelSpec.name };
-            if (nb.token) { options.token = nb.token };
-            let promise = Kernel.startNew(options)
-                .then(kernel => {
-                    return this.executeStartupCode(language, kernel).then(() => {
-                        return kernel;
-                    });
+    public async startKernel(kernelSpec: Kernel.ISpecModel, language: string): Promise<Kernel.IKernel> {
+        let nb = await this.getNotebook();
+        if (!nb || nb.baseUrl.length === 0) {
+            return Promise.reject('Notebook not selected/started');
+        }
+        await this.destroyRunningKernelFor(language);
+        let options: Kernel.IOptions = { baseUrl: nb.baseUrl, name: kernelSpec.name };
+        if (nb.token) { options.token = nb.token };
+        let promise = Kernel.startNew(options)
+            .then(kernel => {
+                return this.executeStartupCode(language, kernel).then(() => {
+                    this.setRunningKernelFor(language, kernel);
+                    return kernel;
                 });
-            ProgressBar.Instance.setProgressMessage('Starting Kernel', promise);
-            return promise;
-        })
-            .then(def.resolve.bind(def))
-            .catch(def.reject.bind(def));
-
-        return def.promise;
+            });
+        ProgressBar.Instance.setProgressMessage('Starting Kernel', promise);
+        return promise;
     }
     private executeStartupCode(language: string, kernel: Kernel.IKernel): Promise<any> {
         let startupCode = LanguageProviders.getStartupCode(language);
