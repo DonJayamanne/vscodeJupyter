@@ -70,6 +70,10 @@ export class LanguageProviders extends EventEmitter {
         }
     }
     public static cellIdentifier(language: string): RegExp {
+        let settings = LanguageProviders.getLanguageSetting(language);
+        if (settings && settings.cellIdentificationPattern && settings.cellIdentificationPattern.length > 0) {
+            return new RegExp(settings.cellIdentificationPattern, 'i');
+        }
         return LanguageProviders.providers.has(language) ?
             LanguageProviders.providers.get(language).cellIdentifier : null;
     }
