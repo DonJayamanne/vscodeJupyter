@@ -53,8 +53,8 @@ module.exports = {
       {
         test: /\.css$/,
         loader: ExtractTextPlugin.extract({
-          fallbackLoader: 'style-loader',
-          loader: [{
+          fallback: 'style-loader',
+          use: [{
               loader: 'css-loader',
               query: {
                 modules: true,
