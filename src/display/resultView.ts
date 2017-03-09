@@ -42,15 +42,20 @@ export class TextDocumentContentProvider extends Disposable implements vscode.Te
                             var color = '';
                             var fontFamily = '';
                             var fontSize = '';
+                            var theme = '';
+                            var fontWeight = '';
                             try {
                                 computedStyle = window.getComputedStyle(document.body);
                                 color = computedStyle.color + '';
+                                backgroundColor = computedStyle.backgroundColor + '';
                                 fontFamily = computedStyle.fontFamily;
                                 fontSize = computedStyle.fontSize;
+                                fontWeight = computedStyle.fontWeight;
+                                theme = document.body.className;
                             }
                             catch(ex){
                             }
-                            document.getElementById('myframe').src = 'http://localhost:${this.serverPort}/?color=' + encodeURIComponent(color) + "&fontFamily=" + encodeURIComponent(fontFamily) + "&fontSize=" + encodeURIComponent(fontSize);
+                            document.getElementById('myframe').src = 'http://localhost:${this.serverPort}/?theme=' + theme + '&color=' + encodeURIComponent(color) + "&backgroundColor=" + encodeURIComponent(backgroundColor) + "&fontFamily=" + encodeURIComponent(fontFamily) + "&fontWeight=" + encodeURIComponent(fontWeight) + "&fontSize=" + encodeURIComponent(fontSize);
                         }
                     </script>
                     </head>

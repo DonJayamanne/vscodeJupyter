@@ -1,5 +1,7 @@
 var webpack = require('webpack');
+var webpack = require('webpack');
 var path = require('path');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // variables
 var isProduction = process.argv.indexOf('-p') >= 0;
@@ -56,7 +58,7 @@ module.exports = {
               loader: 'css-loader',
               query: {
                 modules: true,
-                sourceMap: true,
+                sourceMap: !isProduction,
                 importLoaders: 1,
                 localIdentName: '[local]__[hash:base64:5]'
               }
@@ -83,6 +85,12 @@ module.exports = {
     ],
   },
   plugins: [
+     new CopyWebpackPlugin([
+            // {output}/file.txt
+            { from: 'color-theme-dark.css' },
+            { from: 'color-theme-light.css' },
+            { from: 'index.ejs' }
+     ]), 
     new webpack.LoaderOptionsPlugin({
       options: {
         context: sourcePath,
@@ -108,8 +116,8 @@ module.exports = {
     new ExtractTextPlugin({
       filename: 'styles.css',
       disable: !isProduction
-    }),
-    new HtmlWebpackPlugin({
+    })
+    , new HtmlWebpackPlugin({
       template: 'index.html'
     })
   ],

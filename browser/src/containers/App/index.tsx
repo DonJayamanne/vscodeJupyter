@@ -49,7 +49,8 @@ class App extends React.Component<AppProps, AppState>{
   }
   render() {
     const { children, resultActions, settings } = this.props;
-
+    console.clear();
+    console.log(this.props.results);
     return (
       <div>
         <Header

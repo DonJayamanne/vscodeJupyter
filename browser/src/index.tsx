@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import { Router, Route, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { Provider } from 'react-redux';
+import * as querystring from 'query-string';
 
 import App from './containers/App';
 import configureStore from './store';
@@ -10,32 +11,37 @@ import configureStore from './store';
 const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
 
-// Hack hack hack
-try {
-  let color = decodeURIComponent(window.location.search.substring(window.location.search.indexOf('?color=') + 7));
-  color = color.substring(0, color.indexOf('&fontFamily='));
-  if (color.length > 0) {
-    window.document.body.style.color = color;
-  }
-  let fontFamily = decodeURIComponent(window.location.search.substring(window.location.search.indexOf('&fontFamily=') + 12));
-  fontFamily = fontFamily.substring(0, fontFamily.indexOf('&fontSize='));
-  if (fontFamily.length > 0) {
-    window.document.body.style.fontFamily = fontFamily;
-  }
-  const fontSize = decodeURIComponent(window.location.search.substring(window.location.search.indexOf('&fontSize=') + 10));
-  if (fontSize.length > 0) {
-    window.document.body.style.fontSize = fontSize;
-  }
-}
-catch (ex) {
-}
+let query = querystring.parse(window.location.href);
+// if (query.color && query.color.length > 0) {
+//   window.document.body.style.color = (query.color as string);
+// }
+// if (query.backgroundcolor && query.backgroundcolor.length > 0) {
+//   window.document.body.style.backgroundColor = (query.backgroundcolor as string);
+// }
+// if (query.fontFamily && query.fontFamily.length > 0) {
+//   window.document.body.style.fontFamily = (query.fontFamily as string);
+// }
+// if (query.fontSize && query.fontSize.length > 0) {
+//   window.document.body.style.fontSize = (query.fontSize as string);
+// }
+// if (query.fontfamily && query.fontfamily.length > 0) {
+//   window.document.body.style.fontFamily = (query.fontfamily as string);
+// }
+// if (query.fontweight && query.fontweight.length > 0) {
+//   window.document.body.style.fontWeight = (query.fontweight as string);
+// }
+
+let stylePath = (query.theme && query.theme.indexOf('light')) >= 0 ? 'color-theme-light.css' : 'color-theme-dark.css';
 
 ReactDOM.render(
-  <Provider store={store}>
-    <Router history={history}>
-      <Route path="/" component={App}>
-      </Route>
-    </Router>
-  </Provider>,
+  <div>
+    <link rel="stylesheet" type="text/css" href={stylePath} />
+    <Provider store={store}>
+      <Router history={history}>
+        <Route path="/" component={App}>
+        </Route>
+      </Router>
+    </Provider>
+  </div>,
   document.getElementById('root')
 );

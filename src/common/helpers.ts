@@ -147,7 +147,7 @@ export class Helpers {
 
     private static getMimeType(data: KernelMessage.IIOPubMessage): string {
         const imageMimes = Object.getOwnPropertyNames(data).filter(mime => {
-            return mime.startsWith('image/');
+            return typeof mime === 'string' && mime.startsWith('image/');
         });
         let mime;
         if (data.hasOwnProperty('text/html')) {

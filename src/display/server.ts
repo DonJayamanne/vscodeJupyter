@@ -3,9 +3,11 @@ import * as http from 'http';
 import { createDeferred, Deferred } from '../common/helpers';
 import { EventEmitter } from 'events';
 import * as express from 'express';
-import { Express } from 'express';
+import { Express, Request, Response } from 'express';
 import * as path from 'path';
 import * as cors from 'cors';
+import * as vscode from 'vscode';
+
 const uniqid = require('uniqid');
 export class Server extends EventEmitter {
     private server: SocketIO.Server;
@@ -47,8 +49,11 @@ export class Server extends EventEmitter {
         // It will look in the path http://localhost:port/resources/MathJax/MathJax.js
         this.app.use(express.static(path.join(__dirname, '..', '..', '..', 'node_modules', 'mathjax-electron')));
         this.app.use(cors());
-        this.app.get('/', function (req, res, next) {
-            res.sendFile(path.join(rootDirectory, 'index.html'));
+        // this.app.get('/', function (req, res, next) {
+        //     res.sendFile(path.join(rootDirectory, 'index.html'));
+        // });
+        this.app.get('/', (req, res, next) => {
+            this.rootRequestHandler(req, res);
         });
 
         this.httpServer.listen(0, () => {
@@ -65,7 +70,25 @@ export class Server extends EventEmitter {
         this.server.on('connection', this.onSocketConnection.bind(this));
         return def.promise;
     }
-
+    public rootRequestHandler(req: Request, res: Response) {
+        let theme: string = req.query.theme;
+        let backgroundColor: string = req.query.backgroundcolor;
+        let color: string = req.query.color;
+        let editorConfig = vscode.workspace.getConfiguration('editor');
+        let fontFamily = editorConfig.get<string>('fontFamily').split('\'').join('').split('"').join('');
+        let fontSize = editorConfig.get<number>('fontSize') + 'px';
+        let fontWeight = editorConfig.get<string>('fontWeight');
+        res.render(path.join(__dirname, '..', '..', 'browser', "index.ejs"),
+            {
+                theme: theme,
+                backgroundColor: backgroundColor,
+                color: color,
+                fontFamily: fontFamily,
+                fontSize: fontSize,
+                fontWeight: fontWeight
+            }
+        );
+    }
     private buffer: any[] = [];
     public clearBuffer() {
         this.buffer = [];

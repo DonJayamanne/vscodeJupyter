@@ -11,6 +11,13 @@ interface ResultListState {
 
 class ResultList extends React.Component<ResultListProps, ResultListState> {
   render() {
+    let data = this.props.result.value;
+    if (data && data['application/json']) {
+      try {
+        data['text/html'] = JSON.stringify(data['application/json'], null, 4);
+      }
+      catch (ex) { }
+    }
     // Jupyter style MIME bundle
     const bundle = new Immutable.Map(this.props.result.value);
     // Find out which mimetype is the richest
@@ -20,6 +27,9 @@ class ResultList extends React.Component<ResultListProps, ResultListState> {
 
     // If dealing with images, set the background color to white
     let style = {};
+    if (typeof mimetype !== 'string') {
+      return <div>Unknown Mime Type</div>;
+    }
     if (mimetype.startsWith('image')) {
       style = { backgroundColor: 'white' };
     }
