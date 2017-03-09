@@ -64,25 +64,25 @@
 				"command": "jupyter.execCurrentCell",
 				"title": "Run Cell",
 				"category": "Jupyter",
-				"when": "editorFocus && jupyter.document.hasCodeCells"
+				"when": "jupyter.document.hasCodeCells"
 			},
 			{
 				"command": "jupyter.execCurrentCellAndAdvance",
 				"title": "Run Cell and Advance",
 				"category": "Jupyter",
-				"when": "editorFocus && jupyter.document.hasCodeCells"
+				"when": "jupyter.document.hasCodeCells"
 			},
 			{
 				"command": "jupyter.gotToPreviousCell",
 				"title": "Go to Previous Cell",
 				"category": "Jupyter",
-				"when": "editorFocus && jupyter.document.hasCodeCells"
+				"when": " jupyter.document.hasCodeCells"
 			},
 			{
 				"command": "jupyter.gotToNextCell",
 				"title": "Go to Next Cell",
 				"category": "Jupyter",
-				"when": "editorFocus && jupyter.document.hasCodeCells"
+				"when": "jupyter.document.hasCodeCells"
 			},
 			{
 				"command": "jupyter.startNotebook",
@@ -103,19 +103,19 @@
 		"menus": {
 			"commandPalette": [{
 					"command": "jupyter.execCurrentCell",
-					"when": "editorFocus && jupyter.document.hasCodeCells"
+					"when": "jupyter.document.hasCodeCells"
 				},
 				{
 					"command": "jupyter.execCurrentCellAndAdvance",
-					"when": "editorFocus && jupyter.document.hasCodeCells"
+					"when": "jupyter.document.hasCodeCells"
 				},
 				{
 					"command": "jupyter.gotToPreviousCell",
-					"when": "editorFocus && jupyter.document.hasCodeCells"
+					"when": "jupyter.document.hasCodeCells"
 				},
 				{
 					"command": "jupyter.gotToNextCell",
-					"when": "editorFocus && jupyter.document.hasCodeCells"
+					"when": "jupyter.document.hasCodeCells"
 				}
 			],
 			"editor/context": [{
@@ -133,6 +133,18 @@
 					"command": "jupyter.execCurrentCellAndAdvance",
 					"title": "Run Cell and Advance",
 					"group": "Jupyter",
+					"when": "jupyter.document.hasCodeCells"
+				},
+				{
+					"command": "jupyter.gotToPreviousCell",
+					"title": "Go to Previous Cell",
+					"category": "Jupyter",
+					"when": " jupyter.document.hasCodeCells"
+				},
+				{
+					"command": "jupyter.gotToNextCell",
+					"title": "Go to Next Cell",
+					"category": "Jupyter",
 					"when": "jupyter.document.hasCodeCells"
 				}
 			]
