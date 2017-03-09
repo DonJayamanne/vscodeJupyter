@@ -117,9 +117,9 @@ module.exports = {
       filename: 'styles.css',
       disable: !isProduction
     })
-    , new HtmlWebpackPlugin({
-      template: 'index.html'
-    })
+    // , new HtmlWebpackPlugin({
+    //   template: 'index.html'
+    // })
   ],
   devServer: {
     contentBase: sourcePath,
