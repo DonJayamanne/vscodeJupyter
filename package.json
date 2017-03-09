@@ -33,7 +33,6 @@
 		"Other"
 	],
 	"activationEvents": [
-		"*",
 		"onLanguage:python",
 		"onLanguage:julia",
 		"onLanguage:lua",
