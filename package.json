@@ -32,6 +32,9 @@
 	"categories": [
 		"Other"
 	],
+	"recommendations":[
+		"donjayamanne.python"
+	],
 	"activationEvents": [
 		"onLanguage:python",
 		"onLanguage:julia",
