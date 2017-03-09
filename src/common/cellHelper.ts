@@ -3,6 +3,7 @@ import { TextDocument, Range } from 'vscode';
 import { JupyterCodeLensProvider } from '../editorIntegration/codeLensProvider';
 import { LanguageProviders } from './languageProvider';
 import * as vscode from 'vscode';
+import { EditorContextKey } from './EditorContext';
 
 export class CellHelper {
     constructor(private cellCodeLenses: JupyterCodeLensProvider) {
@@ -93,8 +94,10 @@ export class CellHelper {
 
     public static getCells(document: TextDocument): Cell[] {
         let language = document.languageId;
+        let editorCtx = new EditorContextKey('jupyter.document.hasCodeCells');
         let cellIdentifier = LanguageProviders.cellIdentifier(language);
         if (!cellIdentifier || !(cellIdentifier instanceof RegExp)) {
+            editorCtx.set(false);
             return [];
         }
         const cells: Cell[] = [];
@@ -121,6 +124,8 @@ export class CellHelper {
             const previousCell = cells[cells.length - 1];
             previousCell.range = new Range(previousCell.range.start, line.range.end);
         }
+
+        editorCtx.set(cells.length > 0);
         return cells;
     }
 }

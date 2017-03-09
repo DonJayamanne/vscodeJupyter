@@ -7,5 +7,6 @@ export interface JupyterSettings {
 export interface JupyterLanguageSetting {
     languageId: string;
     defaultKernel?: string;
+    cellIdentificationPattern?: string;
     startupCode?: string[];
 }
