@@ -35,6 +35,9 @@ class App extends React.Component<AppProps, AppState>{
       this.socket.emit('clientExists', { id: data.id });
     });
     this.socket.on('results', (value: NotebookOutput[]) => {
+      if (!this.props.settings.appendResults) {
+        this.props.resultActions.clearResults();
+      }
       this.socket.emit('results.ack');
       this.props.resultActions.addResults(value);
     });
@@ -49,8 +52,6 @@ class App extends React.Component<AppProps, AppState>{
   }
   render() {
     const { children, resultActions, settings } = this.props;
-    console.clear();
-    console.log(this.props.results);
     return (
       <div>
         <Header

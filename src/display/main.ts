@@ -48,6 +48,7 @@ export class JupyterDisplay extends vscode.Disposable {
         });
         this.server.on('connected', () => {
             this.clientConnected = true;
+            this.server.sendSetting('settings.appendResults', this.appendResults);
         });
     }
 
