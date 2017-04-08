@@ -253,3 +253,7 @@ export function createTemporaryFile(extension: string, temporaryDirectory?: stri
         });
     });
 }
+
+export function isNotInstalledError(error: Error): boolean {
+    return typeof (error) === 'object' && error !== null && ((<any>error).code === 'ENOENT' || (<any>error).code === 127);
+}
