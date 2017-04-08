@@ -79,18 +79,54 @@ export function getPythonInterpreterDirectory(): Promise<string> {
         return pythonInterpretterDirectory = '';
     });
 }
-export function getPathFromPythonCommand(args: string[]): Promise<string> {
-    return execPythonFile(settings.PythonSettings.getInstance().pythonPath, args, __dirname).then(stdout => {
-        if (stdout.length === 0) {
-            return "";
+
+function setEnvironmentVariables(pyPath: string) {
+    if (customEnvVariables === null) {
+        customEnvVariables = getCustomEnvVars();
+        customEnvVariables = customEnvVariables ? customEnvVariables : {};
+        // Ensure to include the path of the current python 
+        let newPath = '';
+        let currentPath = typeof customEnvVariables[PATH_VARIABLE_NAME] === 'string' ? customEnvVariables[PATH_VARIABLE_NAME] : process.env[PATH_VARIABLE_NAME];
+        if (IS_WINDOWS) {
+            newPath = pyPath + '\\' + path.delimiter + path.join(pyPath, 'Scripts\\') + path.delimiter + currentPath;
+            // This needs to be done for windows
+            process.env[PATH_VARIABLE_NAME] = newPath;
         }
-        let lines = stdout.split(/\r?\n/g).filter(line => line.length > 0);
-        return validatePath(lines[0]);
-    }).catch(() => {
-        return "";
-    });
+        else {
+            newPath = pyPath + path.delimiter + currentPath;
+        }
+        customEnvVariables = mergeEnvVariables(customEnvVariables, process.env);
+        customEnvVariables[PATH_VARIABLE_NAME] = newPath;
+    }
 }
 
+export function execPythonFileSync(file: string, args: string[], cwd: string): Promise<string> {
+    return getPythonInterpreterDirectory().then(pyPath => {
+        // We don't have a path
+        if (pyPath.length === 0) {
+            return spawnFileInternal(file, args, { cwd }, false, () => { });
+        }
+
+        setEnvironmentVariables(pyPath);
+
+        return spawnFileInternal(file, args, { cwd, env: customEnvVariables }, false, () => { });
+    }).catch(err => {
+        debugger;
+        throw err;
+    });
+}
+export function spanwPythonFile(file: string, args: string[], cwd: string): Promise<child_process.ChildProcess> {
+    return getPythonInterpreterDirectory().then(pyPath => {
+        // We don't have a path
+        if (pyPath.length === 0) {
+            return child_process.spawn(file, args, { cwd });
+        }
+
+        setEnvironmentVariables(pyPath);
+
+        return child_process.spawn(file, args, { cwd, env: customEnvVariables });
+    });
+}
 export function execPythonFile(file: string, args: string[], cwd: string, includeErrorAsResponse: boolean = false, stdOut: (line: string) => void = null, token?: CancellationToken): Promise<string> {
     // If running the python file, then always revert to execFileInternal
     // Cuz python interpreter is always a file and we can and will always run it using child_process.execFile()
@@ -187,6 +223,7 @@ function spawnFileInternal(file: string, args: string[], options: child_process.
         let proc = child_process.spawn(file, args, options);
         let error = '';
         let exited = false;
+        let stdOutData = '';
         if (token && token.onCancellationRequested) {
             token.onCancellationRequested(() => {
                 if (!exited && proc) {
@@ -204,7 +241,10 @@ function spawnFileInternal(file: string, args: string[], options: child_process.
             if (token && token.isCancellationRequested) {
                 return;
             }
-            stdOut(data);
+            if (stdOut) {
+                stdOut(data);
+            }
+            stdOutData += data;
         });
 
         proc.stderr.on('data', function (data: string) {
@@ -212,7 +252,10 @@ function spawnFileInternal(file: string, args: string[], options: child_process.
                 return;
             }
             if (includeErrorAsResponse) {
-                stdOut(data);
+                if (stdOut) {
+                    stdOut(data);
+                }
+                stdOutData += data;
             }
             else {
                 error += data;
@@ -229,7 +272,7 @@ function spawnFileInternal(file: string, args: string[], options: child_process.
                 return reject(error);
             }
 
-            resolve();
+            resolve(stdOutData);
         });
 
     });

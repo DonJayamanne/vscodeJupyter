@@ -1,18 +1,19 @@
 import { Notebook } from './contracts';
 import { execSync } from 'child_process';
 import { createDeferred } from '../../common/helpers';
+import { execPythonFileSync } from '../../common/procUtils';
 import { window } from 'vscode';
 
 export function getAvailableNotebooks(): Promise<Notebook[]> {
-    return new Promise<Notebook[]>((resolve, reject) => {
-        var resp = execSync('jupyter notebook list');
-        var items = resp.toString('utf8').split(/\r|\n/)
-            .filter(line => line.trim().length > 0)
-            .map(parseNotebookListItem)
-            .filter(nb => nb != undefined);
+    return execPythonFileSync('jupyter', ['notebook', 'list'], __dirname)
+        .then(resp => {
+            var items = resp.split(/\r|\n/)
+                .filter(line => line.trim().length > 0)
+                .map(parseNotebookListItem)
+                .filter(nb => nb != undefined);
 
-        resolve(items);
-    });
+            return items;
+        });
 }
 
 export function waitForNotebookToStart(baseUrl: string, retryInterval: number, timeout: number): Promise<Notebook> {

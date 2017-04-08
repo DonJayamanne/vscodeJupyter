@@ -7,6 +7,7 @@ import { getAvailablePort } from './portUtils';
 import { getAvailableNotebooks, waitForNotebookToStart } from './utils';
 import { spawn, ChildProcess } from 'child_process';
 import { ProgressBar } from '../../display/progressBar';
+import { spanwPythonFile } from '../../common/procUtils';
 
 const tcpPortUsed = require('tcp-port-used');
 export class NotebookFactory extends EventEmitter {
@@ -53,10 +54,13 @@ export class NotebookFactory extends EventEmitter {
         this.notebookOutputChannel.appendLine('Starting Jupyter Notebook');
         this.notebookOutputChannel.appendLine('jupyter ' + ['notebook'].concat(args).join(' '));
 
-        this.proc = spawn('jupyter', ['notebook'].concat(args), { cwd: startupFolder });
-        this.proc.stderr.on('data', data => {
-            this.notebookOutputChannel.append(data.toString());
-        });
+        return spanwPythonFile('jupyter', ['notebook'].concat(args), startupFolder)
+            .then(proc => {
+                this.proc = proc;
+                this.proc.stderr.on('data', data => {
+                    this.notebookOutputChannel.append(data.toString());
+                });
+            });
     }
     startNewNotebook(): Promise<Notebook> {
         this._notebookUrlInfo = null;
@@ -96,10 +100,7 @@ export class NotebookFactory extends EventEmitter {
 
         getAvailablePort(protocol, ip, port)
             .catch(() => Promise.resolve(port))
-            .then(nextAvailablePort => {
-                this.startJupyterNotebookInTerminal(startupFolder, args);
-                return nextAvailablePort;
-            })
+            .then(nextAvailablePort => this.startJupyterNotebookInTerminal(startupFolder, args).then(() => nextAvailablePort))
             .then(nextAvailablePort => {
                 url = `${protocol}://${ip}:${nextAvailablePort}`;
                 return tcpPortUsed.waitUntilUsed(nextAvailablePort, retryIntervalMs, timeoutMs);
