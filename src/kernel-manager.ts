@@ -4,10 +4,10 @@ import { formatErrorForLogging } from './common/utils';
 import { createDeferred } from './common/helpers';
 import { Kernel } from '@jupyterlab/services';
 import { LanguageProviders } from './common/languageProvider';
-import { MessageParser } from './jupyter_client/resultParser';
+import { MessageParser } from './jupyterServices/jupyter_client/resultParser';
 import { ParsedIOMessage } from './contracts';
 import * as Rx from 'rx';
-import { NotebookManager } from './notebook/manager';
+import { NotebookManager } from './jupyterServices/notebook/manager';
 import { ProgressBar } from './display/progressBar';
 
 export class KernelManagerImpl extends EventEmitter {

@@ -4,8 +4,8 @@ import { EventEmitter } from "events";
 import * as Rx from 'rx';
 import { OutputChannel } from 'vscode';
 import { KernelMessage } from '@jupyterlab/services';
-import { ParsedIOMessage } from '../contracts';
-import { Helpers } from '../common/helpers';
+import { ParsedIOMessage } from '../../contracts';
+import { Helpers } from '../../common/helpers';
 
 
 export class MessageParser extends EventEmitter {

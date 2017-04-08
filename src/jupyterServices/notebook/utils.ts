@@ -1,6 +1,6 @@
 import { Notebook } from './contracts';
 import { execSync } from 'child_process';
-import { createDeferred } from '../common/helpers';
+import { createDeferred } from '../../common/helpers';
 import { window } from 'vscode';
 
 export function getAvailableNotebooks(): Promise<Notebook[]> {

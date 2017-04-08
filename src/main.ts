@@ -8,11 +8,11 @@ import { formatErrorForLogging } from './common/utils';
 import { CodeHelper } from './common/codeHelper';
 import { KernelManagerImpl } from './kernel-manager';
 import { ParsedIOMessage } from './contracts';
-import { MessageParser } from './jupyter_client/resultParser';
+import { MessageParser } from './jupyterServices/jupyter_client/resultParser';
 import { LanguageProviders } from './common/languageProvider';
 import * as Rx from 'rx';
 import { Kernel } from '@jupyterlab/services';
-import { NotebookManager, Notebook, inputNotebookDetails, selectExistingNotebook } from './notebook/manager';
+import { NotebookManager, Notebook, inputNotebookDetails, selectExistingNotebook } from './jupyterServices/notebook/manager';
 
 // Todo: Refactor the error handling and displaying of messages
 export class Jupyter extends vscode.Disposable {

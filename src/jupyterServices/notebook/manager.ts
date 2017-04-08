@@ -1,7 +1,7 @@
 import { getAvailableNotebooks, selectExistingNotebook } from './utils';
 import { workspace, window, OutputChannel, Terminal, Disposable, QuickPickItem } from 'vscode';
-import { createDeferred } from '../common/helpers';
-import { SystemVariables } from '../common/systemVariables';
+import { createDeferred } from '../../common/helpers';
+import { SystemVariables } from '../../common/systemVariables';
 import { EventEmitter } from 'events';
 import { NotebookFactory } from './factory';
 import { Notebook } from './contracts';

@@ -1,12 +1,12 @@
 import { workspace, window, OutputChannel, Terminal, Disposable } from 'vscode';
-import { createDeferred } from '../common/helpers';
-import { SystemVariables } from '../common/systemVariables';
+import { createDeferred } from '../../common/helpers';
+import { SystemVariables } from '../../common/systemVariables';
 import { EventEmitter } from 'events';
 import { Notebook } from './contracts';
 import { getAvailablePort } from './portUtils';
 import { getAvailableNotebooks, waitForNotebookToStart } from './utils';
 import { spawn, ChildProcess } from 'child_process';
-import { ProgressBar } from '../display/progressBar';
+import { ProgressBar } from '../../display/progressBar';
 
 const tcpPortUsed = require('tcp-port-used');
 export class NotebookFactory extends EventEmitter {

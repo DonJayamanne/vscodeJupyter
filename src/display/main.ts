@@ -8,7 +8,7 @@ import { Server } from './server';
 import { ParsedIOMessage } from '../contracts';
 import { createDeferred } from '../common/helpers';
 import { Kernel } from '@jupyterlab/services';
-import { Notebook } from '../notebook/contracts';
+import { Notebook } from '../jupyterServices/notebook/contracts';
 import { formatErrorForLogging } from '../common/utils';
 
 export { ProgressBar } from './progressBar'

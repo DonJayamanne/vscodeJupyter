@@ -1,4 +1,4 @@
-import { createDeferred } from '../common/helpers';
+import { createDeferred } from '../../common/helpers';
 const tcpPortUsed = require('tcp-port-used');
 export function getAvailablePort(protocol: string, host: string, startPort: number, numberOfPortsToTry: number = 10): Promise<number> {
     let portsToTry = Array(numberOfPortsToTry).fill(0).map((v, index) => startPort + index);
