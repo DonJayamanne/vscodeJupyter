@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { EventEmitter } from 'events';
 import { formatErrorForLogging } from './common/utils';
+import { execPythonFileSync } from './common/procUtils';
 import { createDeferred } from './common/helpers';
 import { Kernel } from '@jupyterlab/services';
 import { LanguageProviders } from './common/languageProvider';
@@ -9,6 +10,7 @@ import { ParsedIOMessage } from './contracts';
 import * as Rx from 'rx';
 import { NotebookManager } from './jupyterServices/notebook/manager';
 import { ProgressBar } from './display/progressBar';
+const semver = require('semver');
 
 export class KernelManagerImpl extends EventEmitter {
     private _runningKernels: Map<string, Kernel.IKernel>;
@@ -110,9 +112,18 @@ export class KernelManagerImpl extends EventEmitter {
     }
 
     public startKernelFor(language: string): Promise<Kernel.IKernel> {
-        return this.getKernelSpecFor(language).then(kernelSpec => {
-            return this.startKernel(kernelSpec, language);
-        });
+        return this.jupyterVersionWorksWithJSServices()
+            .then(supported => {
+                if (!supported) {
+                    this.outputChannel.append('This extension currently (temporarily) supports Jupyter notebook version 4.2 or later');
+                    vscode.window.showWarningMessage('This extension currently (temporarily) supports Jupyter notebook version 4.2 or later');
+                }
+
+                return this.getKernelSpecFor(language);
+            })
+            .then(kernelSpec => {
+                return this.startKernel(kernelSpec, language);
+            });
     }
 
     public startExistingKernel(language: string, connection, connectionFile): Promise<Kernel.IKernel> {
@@ -237,5 +248,32 @@ export class KernelManagerImpl extends EventEmitter {
             ProgressBar.Instance.setProgressMessage('Getting Kernel Specs', promise);
             return promise;
         });
+    }
+
+    private jupyterVersionRequiresAuthToken(): Promise<boolean> {
+        return execPythonFileSync('jupyter', ['--version'], __dirname)
+            .then(version => {
+                version = version.trim();
+                if (semver.valid(version) !== version) {
+                    throw 'Unable to determine version of Jupyter';
+                }
+                return semver.gte(version, '4.3.0');
+            });
+    }
+    private jupyterVersionWorksWithJSServices(): Promise<boolean> {
+        return execPythonFileSync('jupyter', ['notebook', '--version'], __dirname)
+            .then(version => {
+                version = version.trim();
+                if (semver.valid(version) !== version) {
+                    this.outputChannel.appendLine('Unable to determine version of Jupyter, ' + version);
+                    return true;
+                }
+                return semver.gte(version, '4.2.0');
+            })
+            .catch(error => {
+                this.outputChannel.appendLine('Unable to determine version of Jupyter, ' + error);
+                console.error(error);
+                return true;
+            });
     }
 }

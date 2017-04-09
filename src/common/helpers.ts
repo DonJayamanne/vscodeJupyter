@@ -27,7 +27,7 @@ class DeferredImpl<T> implements Deferred<T> {
         this._resolve.apply(this.scope ? this.scope : this, arguments);
         this._resolved = true;
     }
-    reject(reason?: any){
+    reject(reason?: any) {
         this._reject.apply(this.scope ? this.scope : this, arguments);
         this._rejected = true;
     }
