@@ -12,6 +12,7 @@ An extension with rich support for [Jupyter](http://jupyter.org/)
 
 ## Sample Python usage  
 * Create a Python file with the following text  
+
 ```python
 #%%
 import matplotlib.pyplot as plt
@@ -21,7 +22,8 @@ import numpy as np
 x = np.linspace(0, 20, 100)
 plt.plot(x, np.sin(x))
 plt.show() 
-```
+```  
+  
 * Click on the code lens ```Run Cell```
 
 ## [Documentation](https://github.com/DonJayamanne/vscodejupyter/wiki)
@@ -31,8 +33,10 @@ For further information and details continue through to the [documentation](http
 * Contributions are always welcome. Fork it, modify it and create a pull request.  
 * Any and all feedback is appreciated and welcome.  
 
-
 ## [Roadmap](https://github.com/DonJayamanne/vscodeJupyter/wiki/Roadmap)
+
+### Version 1.1.0 (12 April 2017)
+* Preliminary support for older versions of Jupyter Notebook (< 4.2.0)
 
 ![Scientific Tools](https://raw.githubusercontent.com/DonJayamanne/pythonVSCodeDocs/master/images/jupyter/examples.gif)
 
