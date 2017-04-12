@@ -14,6 +14,9 @@ interface ResultListState {
 class ResultList extends React.Component<ResultListProps, ResultListState> {
   render() {
     let data = this.props.result.value;
+    if (data === 'ok') {
+      return <div />;
+    }
     if (data && data['application/json']) {
       return <JSONTree data={data['application/json']} />;
     }
@@ -36,7 +39,14 @@ class ResultList extends React.Component<ResultListProps, ResultListState> {
     if (mimetype === 'text/plain') {
       style['white-space'] = 'pre';
     }
-    return <div style={style}><Transform data={bundle.get(mimetype)} /></div>;
+    try {
+      return <div style={style}><Transform data={bundle.get(mimetype)} /></div>;
+    }
+    catch (ex) {
+      console.log('Error in rendering');
+      console.log(ex);
+      return <div></div>;
+    }
   }
 }
 

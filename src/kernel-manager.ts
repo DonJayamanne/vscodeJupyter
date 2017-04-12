@@ -10,14 +10,15 @@ import { ParsedIOMessage } from './contracts';
 import * as Rx from 'rx';
 import { NotebookManager } from './jupyterServices/notebook/manager';
 import { ProgressBar } from './display/progressBar';
+import { JupyterClientAdapter } from "./pythonClient/jupyter_client/main";
 const semver = require('semver');
 
-export class KernelManagerImpl extends EventEmitter {
+export abstract class KernelManagerImpl extends EventEmitter {
     private _runningKernels: Map<string, Kernel.IKernel>;
     private _kernelSpecs: { [key: string]: Kernel.ISpecModel };
-    private _defaultKernel: string;
+    protected _defaultKernel: string;
     private disposables: vscode.Disposable[];
-    constructor(private outputChannel: vscode.OutputChannel, private notebookManager: NotebookManager) {
+    constructor(protected outputChannel: vscode.OutputChannel, protected notebookManager: NotebookManager, protected jupyterClient: JupyterClientAdapter) {
         super();
         this.disposables = [];
         this._runningKernels = new Map<string, Kernel.IKernel>();
@@ -30,10 +31,6 @@ export class KernelManagerImpl extends EventEmitter {
             kernel.dispose();
         });
         this._runningKernels.clear();
-    }
-
-    private getNotebook() {
-        return this.notebookManager.getNotebook();
     }
     public setRunningKernelFor(language: string, kernel: Kernel.IKernel) {
         language = language.toLowerCase();
@@ -112,66 +109,54 @@ export class KernelManagerImpl extends EventEmitter {
     }
 
     public startKernelFor(language: string): Promise<Kernel.IKernel> {
-        return this.jupyterVersionWorksWithJSServices()
-            .then(supported => {
-                if (!supported) {
-                    this.outputChannel.append('This extension currently (temporarily) supports Jupyter notebook version 4.2 or later');
-                    vscode.window.showWarningMessage('This extension currently (temporarily) supports Jupyter notebook version 4.2 or later');
-                }
-
-                return this.getKernelSpecFor(language);
-            })
+        return this.getKernelSpecFor(language)
             .then(kernelSpec => {
                 return this.startKernel(kernelSpec, language);
             });
     }
 
+    public abstract startKernel(kernelSpec: Kernel.ISpecModel, language: string): Promise<Kernel.IKernel>;
+
     public startExistingKernel(language: string, connection, connectionFile): Promise<Kernel.IKernel> {
         throw new Error('Start Existing Kernel not implemented');
     }
-    public async startKernel(kernelSpec: Kernel.ISpecModel, language: string): Promise<Kernel.IKernel> {
-        let nb = await this.getNotebook();
-        if (!nb || nb.baseUrl.length === 0) {
-            return Promise.reject('Notebook not selected/started');
-        }
-        await this.destroyRunningKernelFor(language);
-        let options: Kernel.IOptions = { baseUrl: nb.baseUrl, name: kernelSpec.name };
-        if (nb.token) { options.token = nb.token };
-        let promise = Kernel.startNew(options)
-            .then(kernel => {
-                return this.executeStartupCode(language, kernel).then(() => {
-                    this.setRunningKernelFor(language, kernel);
-                    return kernel;
-                });
-            });
-        ProgressBar.Instance.setProgressMessage('Starting Kernel', promise);
-        return promise;
+
+    public abstract runCode(code: string, kernel: Kernel.IKernel, messageParser: MessageParser): Promise<any>;
+    public runCodeAsObservable(code: string, kernel: Kernel.IKernel): Rx.Observable<ParsedIOMessage> {
+        return null;
     }
-    private executeStartupCode(language: string, kernel: Kernel.IKernel): Promise<any> {
+    protected executeStartupCode(language: string, kernel: Kernel.IKernel): Promise<any> {
         let startupCode = LanguageProviders.getStartupCode(language);
         if (typeof startupCode !== 'string' || startupCode.length === 0) {
             return Promise.resolve();
         }
 
-        let def = createDeferred<any>();
-        let messageParser = new MessageParser(this.outputChannel);
-        let future = kernel.requestExecute({ code: startupCode, stop_on_error: false });
-        let observable = new Rx.Subject<ParsedIOMessage>();
-        future.onDone = () => {
-            def.resolve();
-        };
-        future.onIOPub = (msg) => {
-            messageParser.processResponse(msg, observable);
-        };
-        observable.subscribe(msg => {
-            if (msg.type === 'text' && msg.data && msg.data['text/plain']) {
-                if (msg.message) {
-                    this.outputChannel.appendLine(msg.message);
-                }
-                this.outputChannel.appendLine(msg.data['text/plain']);
-            }
-        });
-        return def.promise;
+        return this.runCode(startupCode, kernel, new MessageParser(this.outputChannel));
+        // let def = createDeferred<any>();
+        // let messageParser = new MessageParser(this.outputChannel);
+        // let future: Kernel.IFuture;
+        // let observable = new Rx.Subject<ParsedIOMessage>();
+        // try {
+        //     future = kernel.requestExecute({ code: startupCode, stop_on_error: false });
+        //     future.onDone = () => {
+        //         def.resolve();
+        //     };
+        //     future.onIOPub = (msg) => {
+        //         messageParser.processResponse(msg, observable);
+        //     };
+        // }
+        // catch (_ex) {
+        //     this.executeStartupCode
+        // }
+        // observable.subscribe(msg => {
+        //     if (msg.type === 'text' && msg.data && msg.data['text/plain']) {
+        //         if (msg.message) {
+        //             this.outputChannel.appendLine(msg.message);
+        //         }
+        //         this.outputChannel.appendLine(msg.data['text/plain']);
+        //     }
+        // });
+        // return def.promise;
     }
 
     public getAllRunningKernels() {
@@ -234,21 +219,8 @@ export class KernelManagerImpl extends EventEmitter {
             return kernelSpecsFromJupyter;
         });
     }
-    public getKernelSpecsFromJupyter(): Promise<Kernel.ISpecModels> {
-        return this.getNotebook().then(nb => {
-            if (!nb || nb.baseUrl.length === 0) {
-                return Promise.reject<Kernel.ISpecModels>('Notebook not selected/started');
-            }
-            let options: Kernel.IOptions = { baseUrl: nb.baseUrl };
-            if (nb.token) { options.token = nb.token };
-            let promise = Kernel.getSpecs(options).then(specs => {
-                this._defaultKernel = specs.default;
-                return specs;
-            });
-            ProgressBar.Instance.setProgressMessage('Getting Kernel Specs', promise);
-            return promise;
-        });
-    }
+
+    public abstract getKernelSpecsFromJupyter(): Promise<Kernel.ISpecModels>;
 
     private jupyterVersionRequiresAuthToken(): Promise<boolean> {
         return execPythonFileSync('jupyter', ['--version'], __dirname)
@@ -260,18 +232,18 @@ export class KernelManagerImpl extends EventEmitter {
                 return semver.gte(version, '4.3.0');
             });
     }
-    private jupyterVersionWorksWithJSServices(): Promise<boolean> {
+    public static jupyterVersionWorksWithJSServices(outputChannel: vscode.OutputChannel): Promise<boolean> {
         return execPythonFileSync('jupyter', ['notebook', '--version'], __dirname)
             .then(version => {
                 version = version.trim();
                 if (semver.valid(version) !== version) {
-                    this.outputChannel.appendLine('Unable to determine version of Jupyter, ' + version);
+                    outputChannel.appendLine('Unable to determine version of Jupyter, ' + version);
                     return true;
                 }
                 return semver.gte(version, '4.2.0');
             })
             .catch(error => {
-                this.outputChannel.appendLine('Unable to determine version of Jupyter, ' + error);
+                outputChannel.appendLine('Unable to determine version of Jupyter, ' + error);
                 console.error(error);
                 return true;
             });

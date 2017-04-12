@@ -1,0 +1,676 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+ASCII_PREFIX	../python/PythonTools/visualstudio_py_util.py	/^ASCII_PREFIX = to_bytes('A')$/;"	kind:variable	line:130
+BACKEND	../python/PythonTools/visualstudio_py_repl.py	/^BACKEND = None$/;"	kind:variable	line:1321
+BaseException	../python/PythonTools/ipythonServer.py	/^    BaseException = Exception$/;"	kind:variable	line:50
+BaseException	../python/PythonTools/visualstudio_py_repl.py	/^    BaseException = Exception$/;"	kind:variable	line:76
+BaseException	../python/ipythonServer.py	/^    BaseException = Exception$/;"	kind:variable	line:50
+BasicReplBackend	../python/PythonTools/visualstudio_ipython_repl.py	/^from visualstudio_py_repl import BasicReplBackend, ReplBackend, UnsupportedReplException, _command_line_to_args_list$/;"	kind:namespace	line:24
+BasicReplBackend	../python/PythonTools/visualstudio_py_repl.py	/^class BasicReplBackend(ReplBackend):$/;"	kind:class	line:550
+BytesIO	../python/PythonTools/jupyterTest.py	/^    from StringIO import StringIO as BytesIO  # Python 2$/;"	kind:namespace	line:19
+BytesIO	../python/PythonTools/jupyterTest.py	/^    from io import BytesIO  # Python 3$/;"	kind:namespace	line:21
+DBNull	../python/PythonTools/visualstudio_py_repl.py	/^    from System import DBNull, ParamArrayAttribute$/;"	kind:namespace	line:538
+DEBUG	../python/PythonTools/ipythonServer.py	/^DEBUG = os.environ.get('DEBUG_DJAYAMANNE_IPYTHON', '0') == '1'$/;"	kind:variable	line:57
+DEBUG	../python/PythonTools/visualstudio_py_repl.py	/^DEBUG = os.environ.get('DEBUG_REPL') is not None$/;"	kind:variable	line:78
+DEBUG	../python/ipythonServer.py	/^DEBUG = os.environ.get('DEBUG_DJAYAMANNE_IPYTHON', '0') == '1'$/;"	kind:variable	line:57
+DebugReplBackend	../python/PythonTools/visualstudio_py_repl.py	/^class DebugReplBackend(BasicReplBackend):$/;"	kind:class	line:1049
+DefaultHandler	../python/PythonTools/visualstudio_ipython_repl.py	/^class DefaultHandler(object):$/;"	kind:class	line:86
+DotNetOutput	../python/PythonTools/visualstudio_py_repl.py	/^    class DotNetOutput(System.IO.TextWriter):        $/;"	kind:class	line:1277
+Empty	../python/PythonTools/ipythonServer.py	/^    from Queue import Empty, Queue  # Python 2$/;"	kind:namespace	line:53
+Empty	../python/PythonTools/ipythonServer.py	/^    from queue import Empty, Queue  # Python 3$/;"	kind:namespace	line:55
+Empty	../python/PythonTools/jupyterTest.py	/^    from Queue import Empty  # Python 2$/;"	kind:namespace	line:15
+Empty	../python/PythonTools/jupyterTest.py	/^    from queue import Empty  # Python 3$/;"	kind:namespace	line:17
+Empty	../python/ipythonServer.py	/^    from Queue import Empty, Queue  # Python 2$/;"	kind:namespace	line:53
+Empty	../python/ipythonServer.py	/^    from queue import Empty, Queue  # Python 3$/;"	kind:namespace	line:55
+Encoding	../python/PythonTools/visualstudio_py_repl.py	/^        def Encoding(self):$/;"	kind:member	line:1317
+HBChannel	../python/PythonTools/visualstudio_ipython_repl.py	/^        from IPython.kernel.channels import HBChannel$/;"	kind:namespace	line:56
+HBChannel	../python/PythonTools/visualstudio_ipython_repl.py	/^        from IPython.kernel.channels import ShellChannel, HBChannel, StdInChannel, IOPubChannel$/;"	kind:namespace	line:61
+IOPubChannel	../python/PythonTools/visualstudio_ipython_repl.py	/^        from IPython.kernel.channels import ShellChannel, HBChannel, StdInChannel, IOPubChannel$/;"	kind:namespace	line:61
+IPython	../python/PythonTools/visualstudio_ipython_repl.py	/^        import IPython.zmq$/;"	kind:namespace	line:63
+IPython	../python/PythonTools/visualstudio_ipython_repl.py	/^    import IPython$/;"	kind:namespace	line:34
+IPythonBackend	../python/PythonTools/visualstudio_ipython_repl.py	/^class IPythonBackend(ReplBackend):$/;"	kind:class	line:268
+IPythonBackendWithoutPyLab	../python/PythonTools/visualstudio_ipython_repl.py	/^class IPythonBackendWithoutPyLab(IPythonBackend):$/;"	kind:class	line:428
+IPythonExitException	../python/PythonTools/ipythonServer.py	/^class IPythonExitException(Exception):$/;"	kind:class	line:98
+IPythonExitException	../python/ipythonServer.py	/^class IPythonExitException(Exception):$/;"	kind:class	line:98
+KernelClient	../python/PythonTools/visualstudio_ipython_repl.py	/^        KernelClient = object # was split out from KernelManager in 1.0$/;"	kind:variable	line:64
+KernelClient	../python/PythonTools/visualstudio_ipython_repl.py	/^        from IPython.kernel import KernelManager, KernelClient$/;"	kind:namespace	line:60
+KernelClient	../python/PythonTools/visualstudio_ipython_repl.py	/^        from IPython.kernel.threaded import (ThreadedZMQSocketChannel, ThreadedKernelClient as KernelClient)$/;"	kind:namespace	line:57
+KernelManager	../python/PythonTools/ipythonServer.py	/^        from IPython.kernel import KernelManager$/;"	kind:namespace	line:77
+KernelManager	../python/PythonTools/ipythonServer.py	/^        from jupyter_client import KernelManager$/;"	kind:namespace	line:71
+KernelManager	../python/PythonTools/jupyterTest.py	/^    from IPython.kernel import KernelManager$/;"	kind:namespace	line:36
+KernelManager	../python/PythonTools/jupyterTest.py	/^    from jupyter_client import KernelManager$/;"	kind:namespace	line:33
+KernelManager	../python/PythonTools/visualstudio_ipython_repl.py	/^        from IPython.kernel import KernelManager$/;"	kind:namespace	line:55
+KernelManager	../python/PythonTools/visualstudio_ipython_repl.py	/^        from IPython.kernel import KernelManager, KernelClient$/;"	kind:namespace	line:60
+KernelManager	../python/PythonTools/visualstudio_ipython_repl.py	/^        from IPython.zmq.kernelmanager import (KernelManager, $/;"	kind:namespace	line:65
+KernelManager	../python/ipythonServer.py	/^        from IPython.kernel import KernelManager$/;"	kind:namespace	line:77
+KernelManager	../python/ipythonServer.py	/^        from jupyter_client import KernelManager$/;"	kind:namespace	line:71
+KernelSpecManager	../python/PythonTools/ipythonServer.py	/^        from IPython.kernel.kernelspec import KernelSpecManager$/;"	kind:namespace	line:78
+KernelSpecManager	../python/PythonTools/ipythonServer.py	/^        from jupyter_client.kernelspec import KernelSpecManager$/;"	kind:namespace	line:72
+KernelSpecManager	../python/ipythonServer.py	/^        from IPython.kernel.kernelspec import KernelSpecManager$/;"	kind:namespace	line:78
+KernelSpecManager	../python/ipythonServer.py	/^        from jupyter_client.kernelspec import KernelSpecManager$/;"	kind:namespace	line:72
+KeyboardInterruptException	../python/PythonTools/visualstudio_py_repl.py	/^    from Microsoft.Scripting import KeyboardInterruptException$/;"	kind:namespace	line:529
+MultiKernelManager	../python/PythonTools/ipythonServer.py	/^        from IPython.kernel.multikernelmanager import MultiKernelManager$/;"	kind:namespace	line:79
+MultiKernelManager	../python/PythonTools/ipythonServer.py	/^        from jupyter_client import MultiKernelManager$/;"	kind:namespace	line:73
+MultiKernelManager	../python/ipythonServer.py	/^        from IPython.kernel.multikernelmanager import MultiKernelManager$/;"	kind:namespace	line:79
+MultiKernelManager	../python/ipythonServer.py	/^        from jupyter_client import MultiKernelManager$/;"	kind:namespace	line:73
+NONE_PREFIX	../python/PythonTools/visualstudio_py_util.py	/^NONE_PREFIX = to_bytes('N')$/;"	kind:variable	line:131
+OptionParser	../python/PythonTools/visualstudio_py_repl.py	/^    from optparse import OptionParser$/;"	kind:namespace	line:1324
+OrderedDict	../python/PythonTools/visualstudio_py_util.py	/^        from collections import OrderedDict$/;"	kind:namespace	line:230
+PIPE	../python/PythonTools/visualstudio_py_repl.py	/^            from subprocess import Popen, PIPE, STDOUT$/;"	kind:namespace	line:782
+POINTER	../python/PythonTools/visualstudio_py_repl.py	/^        from ctypes import byref, POINTER, WinDLL$/;"	kind:namespace	line:118
+ParamArrayAttribute	../python/PythonTools/visualstudio_py_repl.py	/^    from System import DBNull, ParamArrayAttribute$/;"	kind:namespace	line:538
+ParamDictionaryAttribute	../python/PythonTools/visualstudio_py_repl.py	/^    from Microsoft.Scripting import ParamDictionaryAttribute$/;"	kind:namespace	line:530
+Popen	../python/PythonTools/visualstudio_py_repl.py	/^            from subprocess import Popen, PIPE, STDOUT$/;"	kind:namespace	line:782
+Py3k	../python/PythonTools/visualstudio_ipython_repl.py	/^    import _thread as thread    # Renamed as Py3k$/;"	kind:namespace	line:29
+Python	../python/PythonTools/ipythonServer.py	/^    from Queue import Empty, Queue  # Python 2$/;"	kind:namespace	line:53
+Python	../python/PythonTools/ipythonServer.py	/^    from queue import Empty, Queue  # Python 3$/;"	kind:namespace	line:55
+Python	../python/PythonTools/jupyterTest.py	/^    from Queue import Empty  # Python 2$/;"	kind:namespace	line:15
+Python	../python/PythonTools/jupyterTest.py	/^    from StringIO import StringIO as BytesIO  # Python 2$/;"	kind:namespace	line:19
+Python	../python/PythonTools/jupyterTest.py	/^    from io import BytesIO  # Python 3$/;"	kind:namespace	line:21
+Python	../python/PythonTools/jupyterTest.py	/^    from queue import Empty  # Python 3$/;"	kind:namespace	line:17
+Python	../python/ipythonServer.py	/^    from Queue import Empty, Queue  # Python 2$/;"	kind:namespace	line:53
+Python	../python/ipythonServer.py	/^    from queue import Empty, Queue  # Python 3$/;"	kind:namespace	line:55
+PythonContext	../python/PythonTools/visualstudio_py_repl.py	/^    from IronPython.Runtime import PythonContext$/;"	kind:namespace	line:532
+PythonOps	../python/PythonTools/visualstudio_py_repl.py	/^    from IronPython.Runtime.Operations import PythonOps$/;"	kind:namespace	line:531
+Queue	../python/PythonTools/ipythonServer.py	/^    from Queue import Empty, Queue  # Python 2$/;"	kind:namespace	line:53
+Queue	../python/PythonTools/ipythonServer.py	/^    from queue import Empty, Queue  # Python 3$/;"	kind:namespace	line:55
+Queue	../python/ipythonServer.py	/^    from Queue import Empty, Queue  # Python 2$/;"	kind:namespace	line:53
+Queue	../python/ipythonServer.py	/^    from queue import Empty, Queue  # Python 3$/;"	kind:namespace	line:55
+ReplAbortException	../python/PythonTools/visualstudio_py_repl.py	/^    class ReplAbortException(Exception): pass$/;"	kind:class	line:523
+ReplBackend	../python/PythonTools/visualstudio_ipython_repl.py	/^from visualstudio_py_repl import BasicReplBackend, ReplBackend, UnsupportedReplException, _command_line_to_args_list$/;"	kind:namespace	line:24
+ReplBackend	../python/PythonTools/visualstudio_py_repl.py	/^class ReplBackend(object):$/;"	kind:class	line:150
+SSLError	../python/PythonTools/visualstudio_py_repl.py	/^    SSLError = None$/;"	kind:variable	line:35
+SSLError	../python/PythonTools/visualstudio_py_repl.py	/^    from ssl import SSLError$/;"	kind:namespace	line:33
+STDOUT	../python/PythonTools/visualstudio_py_repl.py	/^            from subprocess import Popen, PIPE, STDOUT$/;"	kind:namespace	line:782
+SafeRepr	../python/PythonTools/visualstudio_py_util.py	/^class SafeRepr(object):$/;"	kind:class	line:193
+SafeSendLock	../python/PythonTools/ipythonServer.py	/^class SafeSendLock(object):$/;"	kind:class	line:102
+SafeSendLock	../python/PythonTools/visualstudio_py_repl.py	/^class SafeSendLock(object):$/;"	kind:class	line:88
+SafeSendLock	../python/ipythonServer.py	/^class SafeSendLock(object):$/;"	kind:class	line:102
+Scope	../python/PythonTools/visualstudio_py_repl.py	/^    from Microsoft.Scripting.Runtime import Scope$/;"	kind:namespace	line:534
+ShellChannel	../python/PythonTools/visualstudio_ipython_repl.py	/^        from IPython.kernel.channels import ShellChannel, HBChannel, StdInChannel, IOPubChannel$/;"	kind:namespace	line:61
+SourceCodeKind	../python/PythonTools/visualstudio_py_repl.py	/^    from Microsoft.Scripting import SourceUnit, SourceCodeKind$/;"	kind:namespace	line:533
+SourceUnit	../python/PythonTools/visualstudio_py_repl.py	/^    from Microsoft.Scripting import SourceUnit, SourceCodeKind$/;"	kind:namespace	line:533
+StdInChannel	../python/PythonTools/visualstudio_ipython_repl.py	/^        from IPython.kernel.channels import ShellChannel, HBChannel, StdInChannel, IOPubChannel$/;"	kind:namespace	line:61
+StrictVersion	../python/PythonTools/jupyterTest.py	/^from distutils.version import StrictVersion$/;"	kind:namespace	line:7
+System	../python/PythonTools/visualstudio_py_repl.py	/^                import System$/;"	kind:namespace	line:239
+System	../python/PythonTools/visualstudio_py_repl.py	/^            import System$/;"	kind:namespace	line:1062
+System	../python/PythonTools/visualstudio_py_repl.py	/^            import System$/;"	kind:namespace	line:576
+System	../python/PythonTools/visualstudio_py_repl.py	/^            import System$/;"	kind:namespace	line:742
+System	../python/PythonTools/visualstudio_py_repl.py	/^    import System$/;"	kind:namespace	line:1276
+System	../python/PythonTools/visualstudio_py_repl.py	/^    import System$/;"	kind:namespace	line:541
+TEST	../python/PythonTools/ipythonServer.py	/^TEST = os.environ.get('PYTHON_DONJAYAMANNE_TEST', '0') == '1'$/;"	kind:variable	line:58
+TEST	../python/ipythonServer.py	/^TEST = os.environ.get('PYTHON_DONJAYAMANNE_TEST', '0') == '1'$/;"	kind:variable	line:58
+TestClass	../python/PythonTools/visualstudio_py_util.py	/^        class TestClass(dict): pass$/;"	kind:class	line:563
+TestClass	../python/PythonTools/visualstudio_py_util.py	/^        class TestClass(dict):$/;"	kind:class	line:569
+TestClass	../python/PythonTools/visualstudio_py_util.py	/^        class TestClass(list): pass$/;"	kind:class	line:565
+TestClass	../python/PythonTools/visualstudio_py_util.py	/^        class TestClass(list):$/;"	kind:class	line:572
+TestClass	../python/PythonTools/visualstudio_py_util.py	/^        class TestClass(object):$/;"	kind:class	line:545
+TestClass	../python/PythonTools/visualstudio_py_util.py	/^        class TestClass(object):$/;"	kind:class	line:556
+ThreadedZMQSocketChannel	../python/PythonTools/visualstudio_ipython_repl.py	/^        from IPython.kernel.threaded import (ThreadedZMQSocketChannel, ThreadedKernelClient as KernelClient)$/;"	kind:namespace	line:57
+Type	../python/PythonTools/visualstudio_ipython_repl.py	/^    from IPython.utils.traitlets import Type$/;"	kind:namespace	line:71
+UNICODE_PREFIX	../python/PythonTools/visualstudio_py_util.py	/^UNICODE_PREFIX = to_bytes('U')$/;"	kind:variable	line:129
+UnsupportedReplException	../python/PythonTools/visualstudio_ipython_repl.py	/^from visualstudio_py_repl import BasicReplBackend, ReplBackend, UnsupportedReplException, _command_line_to_args_list$/;"	kind:namespace	line:24
+UnsupportedReplException	../python/PythonTools/visualstudio_py_repl.py	/^class UnsupportedReplException(Exception):$/;"	kind:class	line:144
+VsHBChannel	../python/PythonTools/visualstudio_ipython_repl.py	/^class VsHBChannel(DefaultHandler, HBChannel):$/;"	kind:class	line:254
+VsIOPubChannel	../python/PythonTools/visualstudio_ipython_repl.py	/^class VsIOPubChannel(DefaultHandler, IOPubChannel):$/;"	kind:class	line:138
+VsKernelManager	../python/PythonTools/visualstudio_ipython_repl.py	/^class VsKernelManager(KernelManager, KernelClient):$/;"	kind:class	line:258
+VsShellChannel	../python/PythonTools/visualstudio_ipython_repl.py	/^class VsShellChannel(DefaultHandler, ShellChannel):$/;"	kind:class	line:99
+VsStdInChannel	../python/PythonTools/visualstudio_ipython_repl.py	/^class VsStdInChannel(DefaultHandler, StdInChannel):$/;"	kind:class	line:243
+WinDLL	../python/PythonTools/visualstudio_py_repl.py	/^        from ctypes import byref, POINTER, WinDLL$/;"	kind:namespace	line:118
+Write	../python/PythonTools/visualstudio_py_repl.py	/^        def Write(self, value, *args):$/;"	kind:member	line:1286
+WriteLine	../python/PythonTools/visualstudio_py_repl.py	/^        def WriteLine(self, value, *args):$/;"	kind:member	line:1301
+_CHWD	../python/PythonTools/visualstudio_py_repl.py	/^    _CHWD = to_bytes('CHWD')$/;"	kind:variable	line:166
+_COMMANDS	../python/PythonTools/ipythonServer.py	/^    _COMMANDS = {$/;"	kind:variable	line:605
+_COMMANDS	../python/PythonTools/visualstudio_py_repl.py	/^    _COMMANDS = {$/;"	kind:variable	line:360
+_COMMANDS	../python/ipythonServer.py	/^    _COMMANDS = {$/;"	kind:variable	line:605
+_COMMANDS_WITH_IDS	../python/PythonTools/ipythonServer.py	/^    _COMMANDS_WITH_IDS = {$/;"	kind:variable	line:619
+_COMMANDS_WITH_IDS	../python/ipythonServer.py	/^    _COMMANDS_WITH_IDS = {$/;"	kind:variable	line:619
+_DBGA	../python/PythonTools/visualstudio_py_repl.py	/^    _DBGA = to_bytes('DBGA')$/;"	kind:variable	line:162
+_DETC	../python/PythonTools/visualstudio_py_repl.py	/^    _DETC = to_bytes('DETC')$/;"	kind:variable	line:163
+_DONE	../python/PythonTools/visualstudio_py_repl.py	/^    _DONE = to_bytes('DONE')$/;"	kind:variable	line:172
+_DPNG	../python/PythonTools/visualstudio_py_repl.py	/^    _DPNG = to_bytes('DPNG')$/;"	kind:variable	line:164
+_DXAM	../python/PythonTools/visualstudio_py_repl.py	/^    _DXAM = to_bytes('DXAM')$/;"	kind:variable	line:165
+_EROR	../python/PythonTools/ipythonServer.py	/^    _EROR = to_bytes('EROR')$/;"	kind:variable	line:217
+_EROR	../python/ipythonServer.py	/^    _EROR = to_bytes('EROR')$/;"	kind:variable	line:217
+_ERRE	../python/PythonTools/visualstudio_py_repl.py	/^    _ERRE = to_bytes('ERRE')$/;"	kind:variable	line:170
+_EXIT	../python/PythonTools/ipythonServer.py	/^    _EXIT = to_bytes('EXIT')$/;"	kind:variable	line:215
+_EXIT	../python/PythonTools/visualstudio_py_repl.py	/^    _EXIT = to_bytes('EXIT')$/;"	kind:variable	line:171
+_EXIT	../python/ipythonServer.py	/^    _EXIT = to_bytes('EXIT')$/;"	kind:variable	line:215
+_IMGD	../python/PythonTools/visualstudio_py_repl.py	/^    _IMGD = to_bytes('IMGD')$/;"	kind:variable	line:157
+_IOPB	../python/PythonTools/ipythonServer.py	/^    _IOPB = to_bytes('IOPB')$/;"	kind:variable	line:225
+_IOPB	../python/ipythonServer.py	/^    _IOPB = to_bytes('IOPB')$/;"	kind:variable	line:225
+_ITPK	../python/PythonTools/ipythonServer.py	/^    _ITPK = to_bytes('ITPK')$/;"	kind:variable	line:222
+_ITPK	../python/ipythonServer.py	/^    _ITPK = to_bytes('ITPK')$/;"	kind:variable	line:222
+_LSKS	../python/PythonTools/ipythonServer.py	/^    _LSKS = to_bytes('LSKS')$/;"	kind:variable	line:216
+_LSKS	../python/ipythonServer.py	/^    _LSKS = to_bytes('LSKS')$/;"	kind:variable	line:216
+_MERR	../python/PythonTools/visualstudio_py_repl.py	/^    _MERR = to_bytes('MERR')$/;"	kind:variable	line:168
+_MODC	../python/PythonTools/visualstudio_py_repl.py	/^    _MODC = to_bytes('MODC')$/;"	kind:variable	line:173
+_MODS	../python/PythonTools/visualstudio_py_repl.py	/^    _MODS = to_bytes('MODS')$/;"	kind:variable	line:156
+_MRES	../python/PythonTools/visualstudio_py_repl.py	/^    _MRES = to_bytes('MRES')$/;"	kind:variable	line:154
+_OldClass	../python/PythonTools/visualstudio_py_repl.py	/^class _OldClass:$/;"	kind:class	line:544
+_OldClassType	../python/PythonTools/visualstudio_py_repl.py	/^_OldClassType = type(_OldClass)$/;"	kind:variable	line:547
+_OldInstanceType	../python/PythonTools/visualstudio_py_repl.py	/^_OldInstanceType = type(_OldClass())$/;"	kind:variable	line:548
+_PONG	../python/PythonTools/ipythonServer.py	/^    _PONG = to_bytes('PONG')$/;"	kind:variable	line:214
+_PONG	../python/ipythonServer.py	/^    _PONG = to_bytes('PONG')$/;"	kind:variable	line:214
+_PRPC	../python/PythonTools/visualstudio_py_repl.py	/^    _PRPC = to_bytes('PRPC')$/;"	kind:variable	line:158
+_RDLN	../python/PythonTools/visualstudio_py_repl.py	/^    _RDLN = to_bytes('RDLN')$/;"	kind:variable	line:159
+_RSTK	../python/PythonTools/ipythonServer.py	/^    _RSTK = to_bytes('RSTK')$/;"	kind:variable	line:221
+_RSTK	../python/ipythonServer.py	/^    _RSTK = to_bytes('RSTK')$/;"	kind:variable	line:221
+_RUN	../python/PythonTools/ipythonServer.py	/^    _RUN = to_bytes('RUN ')$/;"	kind:variable	line:223
+_RUN	../python/ipythonServer.py	/^    _RUN = to_bytes('RUN ')$/;"	kind:variable	line:223
+_ReplInput	../python/PythonTools/visualstudio_py_repl.py	/^class _ReplInput(object):$/;"	kind:class	line:1238
+_ReplOutput	../python/PythonTools/visualstudio_py_repl.py	/^class _ReplOutput(object):$/;"	kind:class	line:1181
+_SERR	../python/PythonTools/visualstudio_py_repl.py	/^    _SERR = to_bytes('SERR')$/;"	kind:variable	line:169
+_SHEL	../python/PythonTools/ipythonServer.py	/^    _SHEL = to_bytes('SHEL')$/;"	kind:variable	line:224
+_SHEL	../python/ipythonServer.py	/^    _SHEL = to_bytes('SHEL')$/;"	kind:variable	line:224
+_SRES	../python/PythonTools/visualstudio_py_repl.py	/^    _SRES = to_bytes('SRES')$/;"	kind:variable	line:155
+_STDE	../python/PythonTools/visualstudio_py_repl.py	/^    _STDE = to_bytes('STDE')$/;"	kind:variable	line:161
+_STDO	../python/PythonTools/visualstudio_py_repl.py	/^    _STDO = to_bytes('STDO')$/;"	kind:variable	line:160
+_STPK	../python/PythonTools/ipythonServer.py	/^    _STPK = to_bytes('STPK')$/;"	kind:variable	line:220
+_STPK	../python/ipythonServer.py	/^    _STPK = to_bytes('STPK')$/;"	kind:variable	line:220
+_STRK	../python/PythonTools/ipythonServer.py	/^    _STRK = to_bytes('STRK')$/;"	kind:variable	line:219
+_STRK	../python/ipythonServer.py	/^    _STRK = to_bytes('STRK')$/;"	kind:variable	line:219
+_TEST	../python/PythonTools/ipythonServer.py	/^    _TEST = to_bytes('TEST')$/;"	kind:variable	line:218
+_TEST	../python/ipythonServer.py	/^    _TEST = to_bytes('TEST')$/;"	kind:variable	line:218
+__all__	../python/PythonTools/visualstudio_py_repl.py	/^__all__ = ['ReplBackend', 'BasicReplBackend', 'BACKEND']$/;"	kind:variable	line:80
+__author__	../python/PythonTools/visualstudio_ipython_repl.py	/^__author__ = "Microsoft Corporation <ptvshelp@microsoft.com>"$/;"	kind:variable	line:19
+__author__	../python/PythonTools/visualstudio_py_repl.py	/^__author__ = "Microsoft Corporation <ptvshelp@microsoft.com>"$/;"	kind:variable	line:19
+__author__	../python/PythonTools/visualstudio_py_util.py	/^__author__ = "Microsoft Corporation <ptvshelp@microsoft.com>"$/;"	kind:variable	line:17
+__call__	../python/PythonTools/visualstudio_py_util.py	/^    def __call__(self, obj):$/;"	kind:member	line:240
+__enter__	../python/PythonTools/ipythonServer.py	/^    def __enter__(self):$/;"	kind:member	line:108
+__enter__	../python/PythonTools/visualstudio_py_repl.py	/^    def __enter__(self):$/;"	kind:member	line:93
+__enter__	../python/ipythonServer.py	/^    def __enter__(self):$/;"	kind:member	line:108
+__exit__	../python/PythonTools/ipythonServer.py	/^    def __exit__(self, exc_type, exc_value, tb):$/;"	kind:member	line:111
+__exit__	../python/PythonTools/visualstudio_py_repl.py	/^    def __exit__(self, exc_type, exc_value, tb):$/;"	kind:member	line:96
+__exit__	../python/ipythonServer.py	/^    def __exit__(self, exc_type, exc_value, tb):$/;"	kind:member	line:111
+__init__	../python/PythonTools/ipythonServer.py	/^    def __init__(self):$/;"	kind:member	line:105
+__init__	../python/PythonTools/ipythonServer.py	/^    def __init__(self):$/;"	kind:member	line:227
+__init__	../python/PythonTools/ipythonServer.py	/^    def __init__(self):$/;"	kind:member	line:636
+__init__	../python/PythonTools/ipythonServer.py	/^    def __init__(self, kernelUUID, socketConnection, send_lock, shell_channel, iopub_channel):$/;"	kind:member	line:129
+__init__	../python/PythonTools/visualstudio_ipython_repl.py	/^    def __init__(self, mod_name = '__main__', launch_file = None):$/;"	kind:member	line:269
+__init__	../python/PythonTools/visualstudio_py_repl.py	/^        def __init__(self, backend, is_stdout, old_out=None):$/;"	kind:member	line:1281
+__init__	../python/PythonTools/visualstudio_py_repl.py	/^    def __init__(self):$/;"	kind:member	line:90
+__init__	../python/PythonTools/visualstudio_py_repl.py	/^    def __init__(self, *args, **kwargs):$/;"	kind:member	line:175
+__init__	../python/PythonTools/visualstudio_py_repl.py	/^    def __init__(self, backend):$/;"	kind:member	line:1240
+__init__	../python/PythonTools/visualstudio_py_repl.py	/^    def __init__(self, backend, is_stdout, old_out = None):$/;"	kind:member	line:1187
+__init__	../python/PythonTools/visualstudio_py_repl.py	/^    def __init__(self, debugger):$/;"	kind:member	line:1050
+__init__	../python/PythonTools/visualstudio_py_repl.py	/^    def __init__(self, mod_name='__main__'):$/;"	kind:member	line:554
+__init__	../python/PythonTools/visualstudio_py_repl.py	/^    def __init__(self, reason):$/;"	kind:member	line:145
+__init__	../python/PythonTools/visualstudio_py_util.py	/^            def __init__(self, iter = ()): list.__init__(self, iter)$/;"	kind:member	line:573
+__init__	../python/ipythonServer.py	/^    def __init__(self):$/;"	kind:member	line:105
+__init__	../python/ipythonServer.py	/^    def __init__(self):$/;"	kind:member	line:227
+__init__	../python/ipythonServer.py	/^    def __init__(self):$/;"	kind:member	line:636
+__init__	../python/ipythonServer.py	/^    def __init__(self, kernelUUID, socketConnection, send_lock, shell_channel, iopub_channel):$/;"	kind:member	line:129
+__iter__	../python/PythonTools/visualstudio_py_repl.py	/^    def __iter__(self):$/;"	kind:member	line:1268
+__new__	../python/PythonTools/visualstudio_py_repl.py	/^        def __new__(cls, backend, is_stdout, old_out=None):$/;"	kind:member	line:1278
+__repr__	../python/PythonTools/visualstudio_py_util.py	/^            def __repr__(self): return 'MyRepr'$/;"	kind:member	line:570
+__repr__	../python/PythonTools/visualstudio_py_util.py	/^            def __repr__(self): return 'MyRepr'$/;"	kind:member	line:574
+__repr__	../python/PythonTools/visualstudio_py_util.py	/^            def __repr__(self):$/;"	kind:member	line:546
+__repr__	../python/PythonTools/visualstudio_py_util.py	/^            def __repr__(self):$/;"	kind:member	line:558
+__version__	../python/PythonTools/visualstudio_ipython_repl.py	/^__version__ = "3.0.0.0"$/;"	kind:variable	line:20
+__version__	../python/PythonTools/visualstudio_py_repl.py	/^__version__ = "3.0.0.0"$/;"	kind:variable	line:20
+__version__	../python/PythonTools/visualstudio_py_util.py	/^__version__ = "3.0.0.0"$/;"	kind:variable	line:18
+_check_ipynb	../python/PythonTools/jupyterTest.py	/^def _check_ipynb():$/;"	kind:function	line:40
+_cmd_abrt	../python/PythonTools/ipythonServer.py	/^    def _cmd_abrt(self):$/;"	kind:member	line:527
+_cmd_abrt	../python/PythonTools/visualstudio_py_repl.py	/^    def _cmd_abrt(self):$/;"	kind:member	line:251
+_cmd_abrt	../python/ipythonServer.py	/^    def _cmd_abrt(self):$/;"	kind:member	line:527
+_cmd_debug_attach	../python/PythonTools/visualstudio_py_repl.py	/^    def _cmd_debug_attach(self):$/;"	kind:member	line:353
+_cmd_excf	../python/PythonTools/visualstudio_py_repl.py	/^    def _cmd_excf(self):$/;"	kind:member	line:340
+_cmd_excx	../python/PythonTools/visualstudio_py_repl.py	/^    def _cmd_excx(self):$/;"	kind:member	line:346
+_cmd_exit	../python/PythonTools/ipythonServer.py	/^    def _cmd_exit(self):$/;"	kind:member	line:331
+_cmd_exit	../python/PythonTools/visualstudio_py_repl.py	/^    def _cmd_exit(self):$/;"	kind:member	line:256
+_cmd_exit	../python/ipythonServer.py	/^    def _cmd_exit(self):$/;"	kind:member	line:331
+_cmd_inpl	../python/PythonTools/ipythonServer.py	/^    def _cmd_inpl(self):$/;"	kind:member	line:532
+_cmd_inpl	../python/PythonTools/visualstudio_py_repl.py	/^    def _cmd_inpl(self):$/;"	kind:member	line:335
+_cmd_inpl	../python/ipythonServer.py	/^    def _cmd_inpl(self):$/;"	kind:member	line:532
+_cmd_itpk	../python/PythonTools/ipythonServer.py	/^    def _cmd_itpk(self, id):$/;"	kind:member	line:498
+_cmd_itpk	../python/ipythonServer.py	/^    def _cmd_itpk(self, id):$/;"	kind:member	line:498
+_cmd_kill	../python/PythonTools/ipythonServer.py	/^    def _cmd_kill(self, id):$/;"	kind:member	line:454
+_cmd_kill	../python/ipythonServer.py	/^    def _cmd_kill(self, id):$/;"	kind:member	line:454
+_cmd_lstk	../python/PythonTools/ipythonServer.py	/^    def _cmd_lstk(self, id):$/;"	kind:member	line:351
+_cmd_lstk	../python/ipythonServer.py	/^    def _cmd_lstk(self, id):$/;"	kind:member	line:351
+_cmd_mems	../python/PythonTools/visualstudio_py_repl.py	/^    def _cmd_mems(self):$/;"	kind:member	line:261
+_cmd_mods	../python/PythonTools/visualstudio_py_repl.py	/^    def _cmd_mods(self):$/;"	kind:member	line:320
+_cmd_ping	../python/PythonTools/ipythonServer.py	/^    def _cmd_ping(self, id):$/;"	kind:member	line:336
+_cmd_ping	../python/ipythonServer.py	/^    def _cmd_ping(self, id):$/;"	kind:member	line:336
+_cmd_rstk	../python/PythonTools/ipythonServer.py	/^    def _cmd_rstk(self, id):$/;"	kind:member	line:482
+_cmd_rstk	../python/ipythonServer.py	/^    def _cmd_rstk(self, id):$/;"	kind:member	line:482
+_cmd_run	../python/PythonTools/ipythonServer.py	/^    def _cmd_run(self, id):$/;"	kind:member	line:512
+_cmd_run	../python/PythonTools/visualstudio_py_repl.py	/^    def _cmd_run(self):$/;"	kind:member	line:247
+_cmd_run	../python/ipythonServer.py	/^    def _cmd_run(self, id):$/;"	kind:member	line:512
+_cmd_setm	../python/PythonTools/visualstudio_py_repl.py	/^    def _cmd_setm(self):$/;"	kind:member	line:307
+_cmd_sett	../python/PythonTools/visualstudio_py_repl.py	/^    def _cmd_sett(self):$/;"	kind:member	line:313
+_cmd_sigs	../python/PythonTools/visualstudio_py_repl.py	/^    def _cmd_sigs(self):$/;"	kind:member	line:278
+_cmd_stpk	../python/PythonTools/ipythonServer.py	/^    def _cmd_stpk(self, id):$/;"	kind:member	line:439
+_cmd_stpk	../python/ipythonServer.py	/^    def _cmd_stpk(self, id):$/;"	kind:member	line:439
+_cmd_strk	../python/PythonTools/ipythonServer.py	/^    def _cmd_strk(self, id):$/;"	kind:member	line:361
+_cmd_strk	../python/ipythonServer.py	/^    def _cmd_strk(self, id):$/;"	kind:member	line:361
+_command_line_to_args_list	../python/PythonTools/visualstudio_ipython_repl.py	/^from visualstudio_py_repl import BasicReplBackend, ReplBackend, UnsupportedReplException, _command_line_to_args_list$/;"	kind:namespace	line:24
+_command_line_to_args_list	../python/PythonTools/visualstudio_py_repl.py	/^def _command_line_to_args_list(cmdline):$/;"	kind:function	line:112
+_debug_write	../python/PythonTools/ipythonServer.py	/^def _debug_write(out):$/;"	kind:function	line:86
+_debug_write	../python/PythonTools/visualstudio_py_repl.py	/^def _debug_write(out):$/;"	kind:function	line:82
+_debug_write	../python/ipythonServer.py	/^def _debug_write(out):$/;"	kind:function	line:86
+_deserialize	../python/PythonTools/ipythonServer.py	/^    def _deserialize(self, request):$/;"	kind:member	line:639
+_deserialize	../python/ipythonServer.py	/^    def _deserialize(self, request):$/;"	kind:member	line:639
+_execute_code	../python/PythonTools/jupyterTest.py	/^def _execute_code(code, shell, iopub, timeout=300):$/;"	kind:function	line:73
+_get_cur_module_set	../python/PythonTools/visualstudio_py_repl.py	/^    def _get_cur_module_set():$/;"	kind:function	line:799
+_get_member_type	../python/PythonTools/visualstudio_py_repl.py	/^    def _get_member_type(inst, name, from_dict, getattr_func = None):$/;"	kind:function	line:1031
+_is_long_iter	../python/PythonTools/visualstudio_py_util.py	/^    def _is_long_iter(self, obj, level = 0):$/;"	kind:member	line:282
+_populateErrorContents	../python/PythonTools/ipythonServer.py	/^    def _populateErrorContents(self, sourceContents, targetContents):$/;"	kind:member	line:146
+_populateErrorContents	../python/ipythonServer.py	/^    def _populateErrorContents(self, sourceContents, targetContents):$/;"	kind:member	line:146
+_postStartKernel	../python/PythonTools/ipythonServer.py	/^    def _postStartKernel(self, kernelUUID):$/;"	kind:member	line:391
+_postStartKernel	../python/ipythonServer.py	/^    def _postStartKernel(self, kernelUUID):$/;"	kind:member	line:391
+_process_request	../python/PythonTools/ipythonServer.py	/^    def _process_request(self, request):$/;"	kind:member	line:655
+_process_request	../python/ipythonServer.py	/^    def _process_request(self, request):$/;"	kind:member	line:655
+_repl_loop	../python/PythonTools/visualstudio_py_repl.py	/^    def _repl_loop(self):$/;"	kind:member	line:195
+_repr	../python/PythonTools/visualstudio_py_util.py	/^    def _repr(self, obj, level):$/;"	kind:member	line:249
+_repr_dict	../python/PythonTools/visualstudio_py_util.py	/^    def _repr_dict(self, obj, level, prefix, suffix, item_prefix, item_sep, item_suffix):$/;"	kind:member	line:365
+_repr_iter	../python/PythonTools/visualstudio_py_util.py	/^    def _repr_iter(self, obj, level, prefix, suffix, comma_after_single_element = False):$/;"	kind:member	line:330
+_repr_long_iter	../python/PythonTools/visualstudio_py_util.py	/^    def _repr_long_iter(self, obj):$/;"	kind:member	line:355
+_repr_obj	../python/PythonTools/visualstudio_py_util.py	/^    def _repr_obj(self, obj, level, limit_inner, limit_outer):$/;"	kind:member	line:416
+_repr_other	../python/PythonTools/visualstudio_py_util.py	/^    def _repr_other(self, obj, level):$/;"	kind:member	line:413
+_repr_str	../python/PythonTools/visualstudio_py_util.py	/^    def _repr_str(self, obj, level):$/;"	kind:member	line:410
+_run_repl	../python/PythonTools/visualstudio_py_repl.py	/^def _run_repl():$/;"	kind:function	line:1323
+_selftest	../python/PythonTools/visualstudio_py_util.py	/^    def _selftest(self):$/;"	kind:member	line:444
+_set_request_config	../python/PythonTools/ipythonServer.py	/^    def _set_request_config(self, config):$/;"	kind:member	line:650
+_set_request_config	../python/ipythonServer.py	/^    def _set_request_config(self, config):$/;"	kind:member	line:650
+_vspu	../python/PythonTools/ipythonServer.py	/^import visualstudio_py_util as _vspu$/;"	kind:namespace	line:31
+_vspu	../python/PythonTools/visualstudio_py_repl.py	/^        import ptvsd.visualstudio_py_util as _vspu$/;"	kind:namespace	line:58
+_vspu	../python/PythonTools/visualstudio_py_repl.py	/^        import visualstudio_py_util as _vspu$/;"	kind:namespace	line:56
+_vspu	../python/PythonTools/visualstudio_py_repl.py	/^    _vspu = visualstudio_py_util$/;"	kind:variable	line:53
+_vspu	../python/ipythonServer.py	/^import visualstudio_py_util as _vspu$/;"	kind:namespace	line:31
+_write_member_dict	../python/PythonTools/visualstudio_py_repl.py	/^    def _write_member_dict(self, mem_dict):$/;"	kind:member	line:375
+_write_response	../python/PythonTools/ipythonServer.py	/^    def _write_response(self, response):$/;"	kind:member	line:673
+_write_response	../python/ipythonServer.py	/^    def _write_response(self, response):$/;"	kind:member	line:673
+acquire	../python/PythonTools/ipythonServer.py	/^    def acquire(self):$/;"	kind:member	line:114
+acquire	../python/PythonTools/visualstudio_py_repl.py	/^    def acquire(self):$/;"	kind:member	line:99
+acquire	../python/ipythonServer.py	/^    def acquire(self):$/;"	kind:member	line:114
+all	../python/PythonTools/visualstudio_py_util.py	/^            print('WARNING! could not import numpy - skipping all numpy tests.')$/;"	kind:namespace	line:623
+ascii	../python/PythonTools/ipythonServer.py	/^from encodings import utf_8, ascii$/;"	kind:namespace	line:19
+ascii	../python/PythonTools/visualstudio_py_util.py	/^from encodings import utf_8, ascii$/;"	kind:namespace	line:31
+ascii	../python/ipythonServer.py	/^from encodings import utf_8, ascii$/;"	kind:namespace	line:19
+attach_process	../python/PythonTools/visualstudio_ipython_repl.py	/^    def attach_process(self, port, debugger_id):$/;"	kind:function	line:413
+attach_process	../python/PythonTools/visualstudio_py_repl.py	/^    def attach_process(self, port, debugger_id, debug_options):$/;"	kind:function	line:1012
+attach_process	../python/PythonTools/visualstudio_py_repl.py	/^    def attach_process(self, port, debugger_id, debug_options):$/;"	kind:member	line:513
+base64	../python/PythonTools/jupyterTest.py	/^import base64$/;"	kind:namespace	line:4
+byref	../python/PythonTools/visualstudio_py_repl.py	/^        from ctypes import byref, POINTER, WinDLL$/;"	kind:namespace	line:118
+c_int	../python/PythonTools/visualstudio_py_repl.py	/^        from ctypes import c_int, c_voidp, c_wchar_p$/;"	kind:namespace	line:117
+c_voidp	../python/PythonTools/visualstudio_py_repl.py	/^        from ctypes import c_int, c_voidp, c_wchar_p$/;"	kind:namespace	line:117
+c_wchar_p	../python/PythonTools/visualstudio_py_repl.py	/^        from ctypes import c_int, c_voidp, c_wchar_p$/;"	kind:namespace	line:117
+call_handlers	../python/PythonTools/visualstudio_ipython_repl.py	/^    def call_handlers(self, msg):$/;"	kind:member	line:139
+call_handlers	../python/PythonTools/visualstudio_ipython_repl.py	/^    def call_handlers(self, msg):$/;"	kind:member	line:92
+check_for_exit_execution_loop	../python/PythonTools/visualstudio_py_repl.py	/^    def check_for_exit_execution_loop(self):$/;"	kind:function	line:762
+check_for_exit_execution_loop	../python/PythonTools/visualstudio_py_repl.py	/^    def check_for_exit_execution_loop(self):$/;"	kind:member	line:1178
+check_for_exit_repl_loop	../python/PythonTools/visualstudio_py_repl.py	/^    def check_for_exit_repl_loop(self):$/;"	kind:member	line:1175
+check_for_exit_repl_loop	../python/PythonTools/visualstudio_py_repl.py	/^    def check_for_exit_repl_loop(self):$/;"	kind:member	line:244
+check_for_exit_socket_loop	../python/PythonTools/ipythonServer.py	/^    def check_for_exit_socket_loop(self):$/;"	kind:member	line:143
+check_for_exit_socket_loop	../python/PythonTools/ipythonServer.py	/^    def check_for_exit_socket_loop(self):$/;"	kind:member	line:318
+check_for_exit_socket_loop	../python/ipythonServer.py	/^    def check_for_exit_socket_loop(self):$/;"	kind:member	line:143
+check_for_exit_socket_loop	../python/ipythonServer.py	/^    def check_for_exit_socket_loop(self):$/;"	kind:member	line:318
+closed	../python/PythonTools/visualstudio_py_repl.py	/^    closed = False$/;"	kind:variable	line:1184
+clr	../python/PythonTools/visualstudio_py_repl.py	/^    import clr$/;"	kind:namespace	line:525
+codecs	../python/PythonTools/visualstudio_py_repl.py	/^            import codecs$/;"	kind:namespace	line:783
+coll	../python/PythonTools/visualstudio_py_util.py	/^            coll = [coll] * (limit * 2)$/;"	kind:variable	line:606
+collect_members	../python/PythonTools/visualstudio_py_repl.py	/^    def collect_members(self, val, members, getattr_func):$/;"	kind:function	line:873
+collect_signatures	../python/PythonTools/visualstudio_py_repl.py	/^    def collect_signatures(self, val):$/;"	kind:function	line:926
+collection_types	../python/PythonTools/visualstudio_py_util.py	/^    collection_types = [$/;"	kind:variable	line:215
+connect	../python/PythonTools/ipythonServer.py	/^    def connect(self, port):$/;"	kind:member	line:239
+connect	../python/PythonTools/visualstudio_py_repl.py	/^    def connect(self, port):$/;"	kind:member	line:184
+connect	../python/PythonTools/visualstudio_py_repl.py	/^    def connect(self, port):$/;"	kind:member	line:580
+connect	../python/ipythonServer.py	/^    def connect(self, port):$/;"	kind:member	line:239
+connect_from_debugger	../python/PythonTools/visualstudio_py_repl.py	/^    def connect_from_debugger(self, port):$/;"	kind:member	line:1068
+connect_from_debugger_using_socket	../python/PythonTools/visualstudio_py_repl.py	/^    def connect_from_debugger_using_socket(self, socket):$/;"	kind:member	line:1072
+connect_using_socket	../python/PythonTools/visualstudio_py_repl.py	/^    def connect_using_socket(self, socket):$/;"	kind:member	line:191
+connect_using_socket	../python/PythonTools/visualstudio_py_repl.py	/^    def connect_using_socket(self, socket):$/;"	kind:member	line:584
+contextlib	../python/PythonTools/jupyterTest.py	/^import contextlib$/;"	kind:namespace	line:5
+datetime	../python/PythonTools/jupyterTest.py	/^from datetime import datetime$/;"	kind:namespace	line:6
+decodestring	../python/PythonTools/visualstudio_ipython_repl.py	/^from base64 import decodestring$/;"	kind:namespace	line:31
+deque	../python/PythonTools/ipythonServer.py	/^from collections import deque$/;"	kind:namespace	line:16
+deque	../python/PythonTools/visualstudio_py_repl.py	/^from collections import deque$/;"	kind:namespace	line:48
+deque	../python/PythonTools/visualstudio_py_util.py	/^        from collections import deque$/;"	kind:namespace	line:222
+deque	../python/ipythonServer.py	/^from collections import deque$/;"	kind:namespace	line:16
+dict_types	../python/PythonTools/visualstudio_py_util.py	/^    dict_types = [(dict, '{', '}', '', ': ', '')]$/;"	kind:variable	line:228
+disconnect_from_debugger	../python/PythonTools/visualstudio_py_repl.py	/^    def disconnect_from_debugger(self):$/;"	kind:member	line:1076
+division	../python/PythonTools/jupyterTest.py	/^from __future__ import division, print_function$/;"	kind:namespace	line:3
+do_detach	../python/PythonTools/visualstudio_py_repl.py	/^    def do_detach(self):$/;"	kind:function	line:1007
+encoding	../python/PythonTools/visualstudio_py_repl.py	/^    encoding = 'utf8'$/;"	kind:variable	line:1185
+errors	../python/PythonTools/visualstudio_py_repl.py	/^    errors = None$/;"	kind:variable	line:1183
+exc_value	../python/PythonTools/visualstudio_ipython_repl.py	/^    exc_value = sys.exc_info()[1]$/;"	kind:variable	line:36
+exc_value	../python/PythonTools/visualstudio_ipython_repl.py	/^    exc_value = sys.exc_info()[1]$/;"	kind:variable	line:73
+exec_code	../python/PythonTools/visualstudio_py_util.py	/^def exec_code(code, file, global_variables):$/;"	kind:function	line:54
+exec_file	../python/PythonTools/visualstudio_py_util.py	/^def exec_file(file, global_variables):$/;"	kind:function	line:97
+exec_module	../python/PythonTools/visualstudio_py_util.py	/^def exec_module(module, global_variables):$/;"	kind:function	line:121
+execute_attach_process_work_item	../python/PythonTools/visualstudio_py_repl.py	/^        def execute_attach_process_work_item():$/;"	kind:function	line:1013
+execute_code_work_item	../python/PythonTools/visualstudio_py_repl.py	/^    def execute_code_work_item(self):$/;"	kind:function	line:619
+execute_code_work_item	../python/PythonTools/visualstudio_py_repl.py	/^    def execute_code_work_item(self):$/;"	kind:member	line:1096
+execute_file	../python/PythonTools/visualstudio_py_repl.py	/^    def execute_file(self, filename, args):$/;"	kind:member	line:473
+execute_file_as_main	../python/PythonTools/visualstudio_ipython_repl.py	/^    def execute_file_as_main(self, filename, arg_string):$/;"	kind:member	line:302
+execute_file_ex	../python/PythonTools/visualstudio_ipython_repl.py	/^    def execute_file_ex(self, filetype, filename, args):$/;"	kind:member	line:331
+execute_file_ex	../python/PythonTools/visualstudio_py_repl.py	/^    def execute_file_ex(self, filetype, filename, args):$/;"	kind:function	line:820
+execute_file_ex	../python/PythonTools/visualstudio_py_repl.py	/^    def execute_file_ex(self, filetype, filename, args):$/;"	kind:member	line:477
+execute_module_work_item	../python/PythonTools/visualstudio_py_repl.py	/^    def execute_module_work_item(self):$/;"	kind:function	line:768
+execute_process_work_item	../python/PythonTools/visualstudio_py_repl.py	/^    def execute_process_work_item(self):$/;"	kind:function	line:780
+execute_script_work_item	../python/PythonTools/visualstudio_py_repl.py	/^    def execute_script_work_item(self):$/;"	kind:function	line:765
+execution_loop	../python/PythonTools/ipythonServer.py	/^    def execution_loop(self):$/;"	kind:member	line:582
+execution_loop	../python/PythonTools/visualstudio_ipython_repl.py	/^    def execution_loop(self):$/;"	kind:member	line:319
+execution_loop	../python/PythonTools/visualstudio_py_repl.py	/^    def execution_loop(self):$/;"	kind:function	line:737
+execution_loop	../python/PythonTools/visualstudio_py_repl.py	/^    def execution_loop(self):$/;"	kind:member	line:465
+execution_loop	../python/ipythonServer.py	/^    def execution_loop(self):$/;"	kind:member	line:582
+exit_process	../python/PythonTools/ipythonServer.py	/^    def exit_process(self):$/;"	kind:member	line:597
+exit_process	../python/PythonTools/visualstudio_ipython_repl.py	/^    def exit_process(self):$/;"	kind:member	line:337
+exit_process	../python/PythonTools/visualstudio_py_repl.py	/^    def exit_process(self):$/;"	kind:function	line:835
+exit_process	../python/PythonTools/visualstudio_py_repl.py	/^    def exit_process(self):$/;"	kind:member	line:485
+exit_process	../python/ipythonServer.py	/^    def exit_process(self):$/;"	kind:member	line:597
+exit_work_item	../python/PythonTools/ipythonServer.py	/^def exit_work_item():$/;"	kind:function	line:630
+exit_work_item	../python/PythonTools/visualstudio_py_repl.py	/^def exit_work_item():$/;"	kind:function	line:517
+exit_work_item	../python/ipythonServer.py	/^def exit_work_item():$/;"	kind:function	line:630
+fileno	../python/PythonTools/visualstudio_py_repl.py	/^    def fileno(self):$/;"	kind:member	line:1198
+flush	../python/PythonTools/ipythonServer.py	/^    def flush(self):$/;"	kind:member	line:601
+flush	../python/PythonTools/visualstudio_ipython_repl.py	/^    def flush(self):$/;"	kind:member	line:395
+flush	../python/PythonTools/visualstudio_py_repl.py	/^    def flush(self): pass$/;"	kind:member	line:1263
+flush	../python/PythonTools/visualstudio_py_repl.py	/^    def flush(self):$/;"	kind:function	line:1004
+flush	../python/PythonTools/visualstudio_py_repl.py	/^    def flush(self):$/;"	kind:member	line:1194
+flush	../python/PythonTools/visualstudio_py_repl.py	/^    def flush(self):$/;"	kind:member	line:509
+flush	../python/ipythonServer.py	/^    def flush(self):$/;"	kind:member	line:601
+frozenset_info	../python/PythonTools/visualstudio_py_util.py	/^        frozenset_info = (frozenset, 'frozenset([', '])', False)$/;"	kind:variable	line:206
+frozenset_info	../python/PythonTools/visualstudio_py_util.py	/^        frozenset_info = (frozenset, 'frozenset({', '})', False)$/;"	kind:variable	line:202
+func	../python/PythonTools/visualstudio_py_repl.py	/^        def func():$/;"	kind:function	line:615
+future_bits	../python/PythonTools/visualstudio_py_repl.py	/^    future_bits = 0x3e010   # code flags used to mark future bits$/;"	kind:variable	line:551
+get_extra_arguments	../python/PythonTools/visualstudio_ipython_repl.py	/^    def get_extra_arguments(self):$/;"	kind:member	line:297
+get_extra_arguments	../python/PythonTools/visualstudio_ipython_repl.py	/^    def get_extra_arguments(self):$/;"	kind:member	line:429
+get_ipy_sig	../python/PythonTools/visualstudio_py_repl.py	/^    def get_ipy_sig(self, obj, ctor):$/;"	kind:function	line:899
+get_members	../python/PythonTools/visualstudio_ipython_repl.py	/^    def get_members(self, expression):$/;"	kind:member	line:340
+get_members	../python/PythonTools/visualstudio_py_repl.py	/^    def get_members(self, expression):$/;"	kind:function	line:843
+get_members	../python/PythonTools/visualstudio_py_repl.py	/^    def get_members(self, expression):$/;"	kind:member	line:1106
+get_members	../python/PythonTools/visualstudio_py_repl.py	/^    def get_members(self, expression):$/;"	kind:member	line:489
+get_members_for_frame	../python/PythonTools/visualstudio_py_repl.py	/^    def get_members_for_frame(self, expression, thread, cur_frame, frame_kind):$/;"	kind:member	line:1122
+get_module_names	../python/PythonTools/visualstudio_ipython_repl.py	/^    def get_module_names(self):$/;"	kind:member	line:391
+get_module_names	../python/PythonTools/visualstudio_py_repl.py	/^    def get_module_names(self):$/;"	kind:function	line:974
+get_module_names	../python/PythonTools/visualstudio_py_repl.py	/^    def get_module_names(self):$/;"	kind:member	line:505
+get_namespaces	../python/PythonTools/visualstudio_py_repl.py	/^    def get_namespaces(self, basename, namespace, names):$/;"	kind:function	line:992
+get_signatures	../python/PythonTools/visualstudio_ipython_repl.py	/^    def get_signatures(self, expression):$/;"	kind:member	line:359
+get_signatures	../python/PythonTools/visualstudio_py_repl.py	/^    def get_signatures(self, expression):$/;"	kind:function	line:917
+get_signatures	../python/PythonTools/visualstudio_py_repl.py	/^    def get_signatures(self, expression):$/;"	kind:member	line:1114
+get_signatures	../python/PythonTools/visualstudio_py_repl.py	/^    def get_signatures(self, expression):$/;"	kind:member	line:493
+get_signatures_for_frame	../python/PythonTools/visualstudio_py_repl.py	/^    def get_signatures_for_frame(self, expression, thread, cur_frame, frame_kind):$/;"	kind:member	line:1160
+get_type_name	../python/PythonTools/visualstudio_py_repl.py	/^    def get_type_name(val):$/;"	kind:function	line:1022
+handle_complete_reply	../python/PythonTools/visualstudio_ipython_repl.py	/^    def handle_complete_reply(self, content):$/;"	kind:member	line:130
+handle_display_data	../python/PythonTools/visualstudio_ipython_repl.py	/^    def handle_display_data(self, content):$/;"	kind:member	line:147
+handle_error	../python/PythonTools/visualstudio_ipython_repl.py	/^    def handle_error(self, content):$/;"	kind:member	line:216
+handle_execute_input	../python/PythonTools/visualstudio_ipython_repl.py	/^    def handle_execute_input(self, content):$/;"	kind:member	line:224
+handle_execute_output	../python/PythonTools/visualstudio_ipython_repl.py	/^    def handle_execute_output(self, content):$/;"	kind:member	line:169
+handle_execute_reply	../python/PythonTools/visualstudio_ipython_repl.py	/^    def handle_execute_reply(self, content):$/;"	kind:member	line:101
+handle_execute_result	../python/PythonTools/visualstudio_ipython_repl.py	/^    def handle_execute_result(self, content):$/;"	kind:member	line:166
+handle_input_request	../python/PythonTools/visualstudio_ipython_repl.py	/^    def handle_input_request(self, content):$/;"	kind:member	line:244
+handle_inspect_reply	../python/PythonTools/visualstudio_ipython_repl.py	/^    def handle_inspect_reply(self, content):$/;"	kind:member	line:123
+handle_kernel_info_reply	../python/PythonTools/visualstudio_ipython_repl.py	/^    def handle_kernel_info_reply(self, content):$/;"	kind:member	line:134
+handle_object_info_reply	../python/PythonTools/visualstudio_ipython_repl.py	/^    def handle_object_info_reply(self, content):$/;"	kind:member	line:126
+handle_pyerr	../python/PythonTools/visualstudio_ipython_repl.py	/^    handle_pyerr = handle_error$/;"	kind:variable	line:240
+handle_pyin	../python/PythonTools/visualstudio_ipython_repl.py	/^    handle_pyin = handle_execute_input$/;"	kind:variable	line:238
+handle_pyout	../python/PythonTools/visualstudio_ipython_repl.py	/^    handle_pyout = handle_execute_output$/;"	kind:variable	line:239
+handle_status	../python/PythonTools/visualstudio_ipython_repl.py	/^    def handle_status(self, content):$/;"	kind:member	line:234
+handle_stream	../python/PythonTools/visualstudio_ipython_repl.py	/^    def handle_stream(self, content):$/;"	kind:member	line:154
+has_obj_repr	../python/PythonTools/visualstudio_py_util.py	/^        def has_obj_repr(t):$/;"	kind:function	line:257
+hb_channel_class	../python/PythonTools/visualstudio_ipython_repl.py	/^    hb_channel_class = Type(VsHBChannel)$/;"	kind:variable	line:265
+iPythonKernelResponseMonitor	../python/PythonTools/ipythonServer.py	/^class iPythonKernelResponseMonitor(object):$/;"	kind:class	line:127
+iPythonKernelResponseMonitor	../python/ipythonServer.py	/^class iPythonKernelResponseMonitor(object):$/;"	kind:class	line:127
+iPythonReadLine	../python/PythonTools/ipythonServer.py	/^class iPythonReadLine(object):$/;"	kind:class	line:634
+iPythonReadLine	../python/ipythonServer.py	/^class iPythonReadLine(object):$/;"	kind:class	line:634
+iPythonSocketServer	../python/PythonTools/ipythonServer.py	/^class iPythonSocketServer(object):$/;"	kind:class	line:210
+iPythonSocketServer	../python/ipythonServer.py	/^class iPythonSocketServer(object):$/;"	kind:class	line:210
+imp	../python/PythonTools/ipythonServer.py	/^import imp$/;"	kind:namespace	line:9
+imp	../python/PythonTools/visualstudio_py_repl.py	/^import imp$/;"	kind:namespace	line:42
+imp	../python/PythonTools/visualstudio_py_util.py	/^import imp$/;"	kind:namespace	line:25
+imp	../python/ipythonServer.py	/^import imp$/;"	kind:namespace	line:9
+init_connection	../python/PythonTools/visualstudio_py_repl.py	/^    def init_connection(self):$/;"	kind:member	line:1058
+init_connection	../python/PythonTools/visualstudio_py_repl.py	/^    def init_connection(self):$/;"	kind:member	line:571
+init_debugger	../python/PythonTools/visualstudio_ipython_repl.py	/^    def init_debugger(self):$/;"	kind:member	line:398
+init_debugger	../python/PythonTools/visualstudio_py_repl.py	/^    def init_debugger(self):$/;"	kind:member	line:385
+inspect	../python/PythonTools/ipythonServer.py	/^import inspect$/;"	kind:namespace	line:14
+inspect	../python/PythonTools/visualstudio_py_repl.py	/^import inspect$/;"	kind:namespace	line:46
+inspect	../python/ipythonServer.py	/^import inspect$/;"	kind:namespace	line:14
+interrupt_main	../python/PythonTools/ipythonServer.py	/^    def interrupt_main(self):$/;"	kind:member	line:593
+interrupt_main	../python/PythonTools/visualstudio_ipython_repl.py	/^    def interrupt_main(self):$/;"	kind:member	line:384
+interrupt_main	../python/PythonTools/visualstudio_py_repl.py	/^    def interrupt_main(self):$/;"	kind:function	line:826
+interrupt_main	../python/PythonTools/visualstudio_py_repl.py	/^    def interrupt_main(self):$/;"	kind:member	line:481
+interrupt_main	../python/ipythonServer.py	/^    def interrupt_main(self):$/;"	kind:member	line:593
+io	../python/PythonTools/ipythonServer.py	/^import io$/;"	kind:namespace	line:13
+io	../python/ipythonServer.py	/^import io$/;"	kind:namespace	line:13
+iopub_channel_class	../python/PythonTools/visualstudio_ipython_repl.py	/^        iopub_channel_class = Type(VsIOPubChannel)$/;"	kind:variable	line:261
+ipythonServer.py	../python/PythonTools/ipythonServer.py	1;"	kind:file	line:1
+ipythonServer.py	../python/ipythonServer.py	1;"	kind:file	line:1
+is_internal_frame	../python/PythonTools/visualstudio_py_repl.py	/^    def is_internal_frame(self, tb):$/;"	kind:function	line:730
+is_ipython_versionorgreater	../python/PythonTools/visualstudio_ipython_repl.py	/^def is_ipython_versionorgreater(major, minor):$/;"	kind:function	line:39
+isatty	../python/PythonTools/visualstudio_py_repl.py	/^    def isatty(self):$/;"	kind:member	line:1231
+isatty	../python/PythonTools/visualstudio_py_repl.py	/^    def isatty(self):$/;"	kind:member	line:1265
+json	../python/PythonTools/ipythonServer.py	/^import json$/;"	kind:namespace	line:7
+json	../python/ipythonServer.py	/^import json$/;"	kind:namespace	line:7
+jupyter	../python/PythonTools/ipythonServer.py	/^        import jupyter$/;"	kind:namespace	line:63
+jupyter	../python/PythonTools/jupyterTest.py	/^    import jupyter$/;"	kind:namespace	line:25
+jupyter	../python/ipythonServer.py	/^        import jupyter$/;"	kind:namespace	line:63
+jupyterTest.py	../python/PythonTools/jupyterTest.py	1;"	kind:file	line:1
+jupyter_era	../python/PythonTools/ipythonServer.py	/^        jupyter_era = False$/;"	kind:variable	line:65
+jupyter_era	../python/PythonTools/ipythonServer.py	/^        jupyter_era = True$/;"	kind:variable	line:67
+jupyter_era	../python/PythonTools/jupyterTest.py	/^    jupyter_era = False$/;"	kind:variable	line:27
+jupyter_era	../python/PythonTools/jupyterTest.py	/^    jupyter_era = True$/;"	kind:variable	line:29
+jupyter_era	../python/ipythonServer.py	/^        jupyter_era = False$/;"	kind:variable	line:65
+jupyter_era	../python/ipythonServer.py	/^        jupyter_era = True$/;"	kind:variable	line:67
+kernelSpecManager	../python/PythonTools/ipythonServer.py	/^        kernelSpecManager = KernelSpecManager()$/;"	kind:variable	line:74
+kernelSpecManager	../python/PythonTools/ipythonServer.py	/^        kernelSpecManager = KernelSpecManager()$/;"	kind:variable	line:80
+kernelSpecManager	../python/ipythonServer.py	/^        kernelSpecManager = KernelSpecManager()$/;"	kind:variable	line:74
+kernelSpecManager	../python/ipythonServer.py	/^        kernelSpecManager = KernelSpecManager()$/;"	kind:variable	line:80
+listKernelSpecs	../python/PythonTools/ipythonServer.py	/^def listKernelSpecs():$/;"	kind:function	line:93
+listKernelSpecs	../python/ipythonServer.py	/^def listKernelSpecs():$/;"	kind:function	line:93
+maxcollection	../python/PythonTools/visualstudio_py_util.py	/^    maxcollection = (15, 10)$/;"	kind:variable	line:210
+maxother_inner	../python/PythonTools/visualstudio_py_util.py	/^    maxother_inner = 30$/;"	kind:variable	line:238
+maxother_outer	../python/PythonTools/visualstudio_py_util.py	/^    maxother_outer = 2 ** 16$/;"	kind:variable	line:237
+maxstring_inner	../python/PythonTools/visualstudio_py_util.py	/^    maxstring_inner = 30$/;"	kind:variable	line:198
+maxstring_outer	../python/PythonTools/visualstudio_py_util.py	/^    maxstring_outer = 2 ** 16$/;"	kind:variable	line:197
+multiKernelManager	../python/PythonTools/ipythonServer.py	/^        multiKernelManager = MultiKernelManager()$/;"	kind:variable	line:75
+multiKernelManager	../python/PythonTools/ipythonServer.py	/^        multiKernelManager = MultiKernelManager()$/;"	kind:variable	line:81
+multiKernelManager	../python/ipythonServer.py	/^        multiKernelManager = MultiKernelManager()$/;"	kind:variable	line:75
+multiKernelManager	../python/ipythonServer.py	/^        multiKernelManager = MultiKernelManager()$/;"	kind:variable	line:81
+next	../python/PythonTools/visualstudio_py_repl.py	/^    def next(self):$/;"	kind:member	line:1234
+next	../python/PythonTools/visualstudio_py_repl.py	/^    def next(self):$/;"	kind:member	line:1271
+np	../python/PythonTools/visualstudio_py_util.py	/^            import numpy as np$/;"	kind:namespace	line:621
+numpy	../python/PythonTools/visualstudio_py_util.py	/^            print('WARNING! could not import numpy - skipping all numpy tests.')$/;"	kind:namespace	line:623
+on_debugger_detach	../python/PythonTools/visualstudio_py_repl.py	/^    def on_debugger_detach(self):$/;"	kind:member	line:381
+os	../python/PythonTools/ipythonServer.py	/^import os$/;"	kind:namespace	line:12
+os	../python/PythonTools/ipythonServer.py	/^import os$/;"	kind:namespace	line:17
+os	../python/PythonTools/jupyterTest.py	/^import os$/;"	kind:namespace	line:8
+os	../python/PythonTools/visualstudio_py_repl.py	/^import os$/;"	kind:namespace	line:45
+os	../python/PythonTools/visualstudio_py_util.py	/^import os$/;"	kind:namespace	line:26
+os	../python/ipythonServer.py	/^import os$/;"	kind:namespace	line:12
+os	../python/ipythonServer.py	/^import os$/;"	kind:namespace	line:17
+path	../python/PythonTools/visualstudio_ipython_repl.py	/^        from os import path$/;"	kind:namespace	line:399
+path	../python/PythonTools/visualstudio_py_repl.py	/^        from os import path$/;"	kind:namespace	line:386
+pipe_thread	../python/PythonTools/visualstudio_py_repl.py	/^    def pipe_thread(self):$/;"	kind:member	line:1205
+pprint	../python/PythonTools/visualstudio_ipython_repl.py	/^        import pprint$/;"	kind:namespace	line:88
+print_function	../python/PythonTools/jupyterTest.py	/^from __future__ import division, print_function$/;"	kind:namespace	line:3
+ptvsd	../python/PythonTools/visualstudio_py_repl.py	/^        import ptvsd.visualstudio_py_util as _vspu$/;"	kind:namespace	line:58
+python_executor	../python/PythonTools/visualstudio_py_repl.py	/^    def python_executor(self, code):$/;"	kind:member	line:612
+random	../python/PythonTools/ipythonServer.py	/^import random$/;"	kind:namespace	line:11
+random	../python/PythonTools/visualstudio_py_repl.py	/^import random$/;"	kind:namespace	line:44
+random	../python/ipythonServer.py	/^import random$/;"	kind:namespace	line:11
+range_name	../python/PythonTools/visualstudio_py_util.py	/^            range_name = 'range'$/;"	kind:variable	line:591
+range_name	../python/PythonTools/visualstudio_py_util.py	/^            range_name = 'xrange'$/;"	kind:variable	line:589
+re	../python/PythonTools/ipythonServer.py	/^import re$/;"	kind:namespace	line:6
+re	../python/PythonTools/visualstudio_ipython_repl.py	/^import re$/;"	kind:namespace	line:22
+re	../python/PythonTools/visualstudio_py_util.py	/^            import re$/;"	kind:namespace	line:468
+re	../python/ipythonServer.py	/^import re$/;"	kind:namespace	line:6
+re_test	../python/PythonTools/visualstudio_py_util.py	/^        def re_test(source, pattern):$/;"	kind:function	line:467
+read_and_respond	../python/PythonTools/visualstudio_ipython_repl.py	/^        def read_and_respond():$/;"	kind:function	line:246
+read_bytes	../python/PythonTools/ipythonServer.py	/^read_bytes = _vspu.read_bytes$/;"	kind:variable	line:34
+read_bytes	../python/PythonTools/visualstudio_py_repl.py	/^read_bytes = _vspu.read_bytes$/;"	kind:variable	line:60
+read_bytes	../python/PythonTools/visualstudio_py_util.py	/^def read_bytes(conn, count):$/;"	kind:function	line:134
+read_bytes	../python/ipythonServer.py	/^read_bytes = _vspu.read_bytes$/;"	kind:variable	line:34
+read_int	../python/PythonTools/ipythonServer.py	/^read_int = _vspu.read_int$/;"	kind:variable	line:35
+read_int	../python/PythonTools/visualstudio_py_repl.py	/^read_int = _vspu.read_int$/;"	kind:variable	line:61
+read_int	../python/PythonTools/visualstudio_py_util.py	/^def read_int(conn):$/;"	kind:function	line:148
+read_int	../python/ipythonServer.py	/^read_int = _vspu.read_int$/;"	kind:variable	line:35
+read_line	../python/PythonTools/ipythonServer.py	/^    def read_line(self):$/;"	kind:member	line:560
+read_line	../python/PythonTools/visualstudio_py_repl.py	/^    def read_line(self):    $/;"	kind:member	line:443
+read_line	../python/ipythonServer.py	/^    def read_line(self):$/;"	kind:member	line:560
+read_string	../python/PythonTools/ipythonServer.py	/^read_string = _vspu.read_string$/;"	kind:variable	line:36
+read_string	../python/PythonTools/visualstudio_py_repl.py	/^read_string = _vspu.read_string$/;"	kind:variable	line:62
+read_string	../python/PythonTools/visualstudio_py_util.py	/^def read_string(conn):$/;"	kind:function	line:156
+read_string	../python/ipythonServer.py	/^read_string = _vspu.read_string$/;"	kind:variable	line:36
+readline	../python/PythonTools/visualstudio_py_repl.py	/^    def readline(self):$/;"	kind:member	line:1243
+readlines	../python/PythonTools/visualstudio_py_repl.py	/^    def readlines(self, size = None):$/;"	kind:member	line:1246
+release	../python/PythonTools/ipythonServer.py	/^    def release(self):$/;"	kind:member	line:124
+release	../python/PythonTools/visualstudio_py_repl.py	/^    def release(self):$/;"	kind:member	line:109
+release	../python/ipythonServer.py	/^    def release(self):$/;"	kind:member	line:124
+remove_escapes	../python/PythonTools/visualstudio_ipython_repl.py	/^remove_escapes = re.compile(r'\\x1b[^m]*m')$/;"	kind:variable	line:51
+replyWithError	../python/PythonTools/ipythonServer.py	/^    def replyWithError(self, commandName, id):$/;"	kind:member	line:321
+replyWithError	../python/ipythonServer.py	/^    def replyWithError(self, commandName, id):$/;"	kind:member	line:321
+repr_str	../python/PythonTools/visualstudio_py_util.py	/^            repr_str = '<' + 'A' * self.maxother_outer * 2 + '>'$/;"	kind:variable	line:557
+run_command	../python/PythonTools/ipythonServer.py	/^    def run_command(self, command):$/;"	kind:member	line:589
+run_command	../python/PythonTools/visualstudio_ipython_repl.py	/^    def run_command(self, command, silent = False):$/;"	kind:member	line:325
+run_command	../python/PythonTools/visualstudio_py_repl.py	/^    def run_command(self, command):$/;"	kind:function	line:815
+run_command	../python/PythonTools/visualstudio_py_repl.py	/^    def run_command(self, command):$/;"	kind:member	line:469
+run_command	../python/ipythonServer.py	/^    def run_command(self, command):$/;"	kind:member	line:589
+run_file_as_main	../python/PythonTools/visualstudio_py_repl.py	/^    def run_file_as_main(self, filename, args):$/;"	kind:member	line:588
+run_one_command	../python/PythonTools/visualstudio_py_repl.py	/^    def run_one_command(self, cur_modules, cur_ps1, cur_ps2):$/;"	kind:function	line:643
+runpy	../python/PythonTools/visualstudio_py_repl.py	/^        import runpy$/;"	kind:namespace	line:771
+runpy	../python/PythonTools/visualstudio_py_util.py	/^    import runpy$/;"	kind:namespace	line:126
+select	../python/PythonTools/ipythonServer.py	/^import select$/;"	kind:namespace	line:4
+select	../python/PythonTools/visualstudio_py_repl.py	/^import select$/;"	kind:namespace	line:39
+select	../python/ipythonServer.py	/^import select$/;"	kind:namespace	line:4
+send_command_executed	../python/PythonTools/ipythonServer.py	/^    def send_command_executed(self):$/;"	kind:member	line:556
+send_command_executed	../python/PythonTools/visualstudio_py_repl.py	/^    def send_command_executed(self):$/;"	kind:member	line:435
+send_command_executed	../python/ipythonServer.py	/^    def send_command_executed(self):$/;"	kind:member	line:556
+send_cwd	../python/PythonTools/visualstudio_py_repl.py	/^    def send_cwd(self):$/;"	kind:member	line:419
+send_error	../python/PythonTools/ipythonServer.py	/^    def send_error(self):$/;"	kind:member	line:546
+send_error	../python/PythonTools/visualstudio_py_repl.py	/^    def send_error(self):$/;"	kind:member	line:425
+send_error	../python/ipythonServer.py	/^    def send_error(self):$/;"	kind:member	line:546
+send_exit	../python/PythonTools/ipythonServer.py	/^    def send_exit(self):$/;"	kind:member	line:551
+send_exit	../python/PythonTools/visualstudio_py_repl.py	/^    def send_exit(self):$/;"	kind:member	line:430
+send_exit	../python/ipythonServer.py	/^    def send_exit(self):$/;"	kind:member	line:551
+send_image	../python/PythonTools/visualstudio_py_repl.py	/^    def send_image(self, filename):$/;"	kind:member	line:394
+send_modules_changed	../python/PythonTools/visualstudio_py_repl.py	/^    def send_modules_changed(self):$/;"	kind:member	line:439
+send_prompt	../python/PythonTools/ipythonServer.py	/^    def send_prompt(self, ps1, ps2, update_all=True):$/;"	kind:member	line:537
+send_prompt	../python/PythonTools/visualstudio_py_repl.py	/^    def send_prompt(self, ps1, ps2, allow_multiple_statements):$/;"	kind:member	line:411
+send_prompt	../python/ipythonServer.py	/^    def send_prompt(self, ps1, ps2, update_all=True):$/;"	kind:member	line:537
+set_current_module	../python/PythonTools/visualstudio_ipython_repl.py	/^    def set_current_module(self, module):$/;"	kind:member	line:388
+set_current_module	../python/PythonTools/visualstudio_py_repl.py	/^    def set_current_module(self, module):$/;"	kind:function	line:963
+set_current_module	../python/PythonTools/visualstudio_py_repl.py	/^    def set_current_module(self, module):$/;"	kind:member	line:1169
+set_current_module	../python/PythonTools/visualstudio_py_repl.py	/^    def set_current_module(self, module):$/;"	kind:member	line:497
+set_current_thread_and_frame	../python/PythonTools/visualstudio_py_repl.py	/^    def set_current_thread_and_frame(self, thread_id, frame_id, frame_kind):$/;"	kind:member	line:1090
+set_current_thread_and_frame	../python/PythonTools/visualstudio_py_repl.py	/^    def set_current_thread_and_frame(self, thread_id, frame_id, frame_kind):$/;"	kind:member	line:501
+set_info	../python/PythonTools/visualstudio_py_util.py	/^        set_info = (set, 'set([', '])', False)$/;"	kind:variable	line:205
+set_info	../python/PythonTools/visualstudio_py_util.py	/^        set_info = (set, '{', '}', False)$/;"	kind:variable	line:201
+shell_channel_class	../python/PythonTools/visualstudio_ipython_repl.py	/^    shell_channel_class = Type(VsShellChannel)$/;"	kind:variable	line:259
+shutil	../python/PythonTools/jupyterTest.py	/^import shutil$/;"	kind:namespace	line:9
+skip_internal_frames	../python/PythonTools/visualstudio_py_repl.py	/^    def skip_internal_frames(self, tb):$/;"	kind:function	line:724
+skipping	../python/PythonTools/visualstudio_py_util.py	/^            print('WARNING! could not import numpy - skipping all numpy tests.')$/;"	kind:namespace	line:623
+socket	../python/PythonTools/ipythonServer.py	/^import socket$/;"	kind:namespace	line:3
+socket	../python/PythonTools/visualstudio_py_repl.py	/^import socket$/;"	kind:namespace	line:38
+socket	../python/ipythonServer.py	/^import socket$/;"	kind:namespace	line:3
+start_new_thread	../python/PythonTools/visualstudio_py_repl.py	/^start_new_thread = thread.start_new_thread$/;"	kind:variable	line:149
+start_processing	../python/PythonTools/ipythonServer.py	/^    def start_processing(self):$/;"	kind:member	line:255
+start_processing	../python/PythonTools/ipythonServer.py	/^    def start_processing(self, channel, *args):$/;"	kind:member	line:154
+start_processing	../python/ipythonServer.py	/^    def start_processing(self):$/;"	kind:member	line:255
+start_processing	../python/ipythonServer.py	/^    def start_processing(self, channel, *args):$/;"	kind:member	line:154
+stdin_channel_class	../python/PythonTools/visualstudio_ipython_repl.py	/^    stdin_channel_class = Type(VsStdInChannel)$/;"	kind:variable	line:264
+stop	../python/PythonTools/ipythonServer.py	/^    def stop(self):$/;"	kind:member	line:140
+stop	../python/ipythonServer.py	/^    def stop(self):$/;"	kind:member	line:140
+stopKernel	../python/PythonTools/ipythonServer.py	/^    def stopKernel(self, kernelUUID):$/;"	kind:member	line:415
+stopKernel	../python/ipythonServer.py	/^    def stopKernel(self, kernelUUID):$/;"	kind:member	line:415
+string_types	../python/PythonTools/visualstudio_py_util.py	/^        string_types = (str, bytes)$/;"	kind:variable	line:200
+string_types	../python/PythonTools/visualstudio_py_util.py	/^        string_types = (str, unicode)$/;"	kind:variable	line:204
+struct	../python/PythonTools/ipythonServer.py	/^import struct$/;"	kind:namespace	line:8
+struct	../python/PythonTools/visualstudio_py_repl.py	/^import struct$/;"	kind:namespace	line:41
+struct	../python/PythonTools/visualstudio_py_util.py	/^import struct$/;"	kind:namespace	line:28
+struct	../python/ipythonServer.py	/^import struct$/;"	kind:namespace	line:8
+sub_channel_class	../python/PythonTools/visualstudio_ipython_repl.py	/^        sub_channel_class = Type(VsIOPubChannel)$/;"	kind:variable	line:263
+subprocess	../python/PythonTools/jupyterTest.py	/^import subprocess$/;"	kind:namespace	line:10
+sys	../python/PythonTools/ipythonServer.py	/^import sys$/;"	kind:namespace	line:2
+sys	../python/PythonTools/visualstudio_ipython_repl.py	/^import sys$/;"	kind:namespace	line:23
+sys	../python/PythonTools/visualstudio_py_repl.py	/^import sys$/;"	kind:namespace	line:37
+sys	../python/PythonTools/visualstudio_py_util.py	/^import sys$/;"	kind:namespace	line:27
+sys	../python/ipythonServer.py	/^import sys$/;"	kind:namespace	line:2
+test	../python/PythonTools/visualstudio_py_util.py	/^        def test(source, expected):$/;"	kind:function	line:458
+tests	../python/PythonTools/visualstudio_py_util.py	/^            print('WARNING! could not import numpy - skipping all numpy tests.')$/;"	kind:namespace	line:623
+thread	../python/PythonTools/ipythonServer.py	/^    import _thread as thread$/;"	kind:namespace	line:24
+thread	../python/PythonTools/ipythonServer.py	/^    import thread$/;"	kind:namespace	line:21
+thread	../python/PythonTools/visualstudio_ipython_repl.py	/^    import _thread as thread    # Renamed as Py3k$/;"	kind:namespace	line:29
+thread	../python/PythonTools/visualstudio_ipython_repl.py	/^    import thread$/;"	kind:namespace	line:27
+thread	../python/PythonTools/visualstudio_py_repl.py	/^    import _thread as thread$/;"	kind:namespace	line:31
+thread	../python/PythonTools/visualstudio_py_repl.py	/^    import thread$/;"	kind:namespace	line:28
+thread	../python/ipythonServer.py	/^    import _thread as thread$/;"	kind:namespace	line:24
+thread	../python/ipythonServer.py	/^    import thread$/;"	kind:namespace	line:21
+threading	../python/PythonTools/ipythonServer.py	/^        import threading$/;"	kind:namespace	line:130
+threading	../python/PythonTools/ipythonServer.py	/^        import threading$/;"	kind:namespace	line:228
+threading	../python/PythonTools/visualstudio_py_repl.py	/^        import threading$/;"	kind:namespace	line:176
+threading	../python/PythonTools/visualstudio_py_repl.py	/^        import threading$/;"	kind:namespace	line:555
+threading	../python/ipythonServer.py	/^        import threading$/;"	kind:namespace	line:130
+threading	../python/ipythonServer.py	/^        import threading$/;"	kind:namespace	line:228
+time	../python/PythonTools/ipythonServer.py	/^import time$/;"	kind:namespace	line:5
+time	../python/PythonTools/visualstudio_py_repl.py	/^import time$/;"	kind:namespace	line:40
+time	../python/ipythonServer.py	/^import time$/;"	kind:namespace	line:5
+to_bytes	../python/PythonTools/ipythonServer.py	/^to_bytes = _vspu.to_bytes$/;"	kind:variable	line:33
+to_bytes	../python/PythonTools/visualstudio_ipython_repl.py	/^from visualstudio_py_util import to_bytes$/;"	kind:namespace	line:25
+to_bytes	../python/PythonTools/visualstudio_py_repl.py	/^to_bytes = _vspu.to_bytes$/;"	kind:variable	line:59
+to_bytes	../python/PythonTools/visualstudio_py_util.py	/^    def to_bytes(cmd_str):$/;"	kind:function	line:48
+to_bytes	../python/PythonTools/visualstudio_py_util.py	/^    def to_bytes(cmd_str):$/;"	kind:function	line:51
+to_bytes	../python/ipythonServer.py	/^to_bytes = _vspu.to_bytes$/;"	kind:variable	line:33
+traceback	../python/PythonTools/ipythonServer.py	/^import traceback$/;"	kind:namespace	line:10
+traceback	../python/PythonTools/visualstudio_py_repl.py	/^import traceback$/;"	kind:namespace	line:43
+traceback	../python/ipythonServer.py	/^import traceback$/;"	kind:namespace	line:10
+types	../python/PythonTools/ipythonServer.py	/^import types$/;"	kind:namespace	line:15
+types	../python/PythonTools/jupyterTest.py	/^import types$/;"	kind:namespace	line:12
+types	../python/PythonTools/visualstudio_py_repl.py	/^import types$/;"	kind:namespace	line:47
+types	../python/ipythonServer.py	/^import types$/;"	kind:namespace	line:15
+unicode	../python/PythonTools/ipythonServer.py	/^    unicode = str$/;"	kind:variable	line:44
+unicode	../python/PythonTools/visualstudio_py_repl.py	/^    unicode = str$/;"	kind:variable	line:70
+unicode	../python/PythonTools/visualstudio_py_util.py	/^    unicode = str$/;"	kind:variable	line:40
+unicode	../python/ipythonServer.py	/^    unicode = str$/;"	kind:variable	line:44
+unittest	../python/PythonTools/jupyterTest.py	/^import unittest$/;"	kind:namespace	line:11
+unknown_command	../python/PythonTools/visualstudio_ipython_repl.py	/^    def unknown_command(self, content): $/;"	kind:member	line:87
+utf_8	../python/PythonTools/ipythonServer.py	/^from encodings import utf_8, ascii$/;"	kind:namespace	line:19
+utf_8	../python/PythonTools/visualstudio_py_util.py	/^from encodings import utf_8, ascii$/;"	kind:namespace	line:31
+utf_8	../python/ipythonServer.py	/^from encodings import utf_8, ascii$/;"	kind:namespace	line:19
+visualstudio_ipython_repl.py	../python/PythonTools/visualstudio_ipython_repl.py	1;"	kind:file	line:1
+visualstudio_py_debugger	../python/PythonTools/visualstudio_py_repl.py	/^            import visualstudio_py_debugger$/;"	kind:namespace	line:1014
+visualstudio_py_debugger	../python/PythonTools/visualstudio_py_repl.py	/^        import visualstudio_py_debugger$/;"	kind:namespace	line:1008
+visualstudio_py_debugger	../python/PythonTools/visualstudio_py_repl.py	/^        import visualstudio_py_debugger$/;"	kind:namespace	line:354
+visualstudio_py_debugger	../python/PythonTools/visualstudio_py_repl.py	/^        import visualstudio_py_debugger$/;"	kind:namespace	line:388
+visualstudio_py_repl.py	../python/PythonTools/visualstudio_py_repl.py	1;"	kind:file	line:1
+visualstudio_py_util.py	../python/PythonTools/visualstudio_py_util.py	1;"	kind:file	line:1
+warnings	../python/PythonTools/ipythonServer.py	/^import warnings$/;"	kind:namespace	line:18
+warnings	../python/PythonTools/jupyterTest.py	/^import warnings$/;"	kind:namespace	line:13
+warnings	../python/ipythonServer.py	/^import warnings$/;"	kind:namespace	line:18
+watch	../python/PythonTools/ipythonServer.py	/^    def watch(self):$/;"	kind:member	line:677
+watch	../python/ipythonServer.py	/^    def watch(self):$/;"	kind:member	line:677
+with_statement	../python/PythonTools/visualstudio_py_repl.py	/^from __future__ import with_statement$/;"	kind:namespace	line:17
+write	../python/PythonTools/visualstudio_py_repl.py	/^    def write(self, *args):$/;"	kind:member	line:1260
+write	../python/PythonTools/visualstudio_py_repl.py	/^    def write(self, value):$/;"	kind:member	line:1222
+write_bytes	../python/PythonTools/ipythonServer.py	/^write_bytes = _vspu.write_bytes$/;"	kind:variable	line:37
+write_bytes	../python/PythonTools/visualstudio_py_repl.py	/^write_bytes = _vspu.write_bytes$/;"	kind:variable	line:63
+write_bytes	../python/PythonTools/visualstudio_py_util.py	/^def write_bytes(conn, b):$/;"	kind:function	line:144
+write_bytes	../python/ipythonServer.py	/^write_bytes = _vspu.write_bytes$/;"	kind:variable	line:37
+write_data	../python/PythonTools/visualstudio_ipython_repl.py	/^    def write_data(self, data, execution_count = None):$/;"	kind:member	line:182
+write_int	../python/PythonTools/ipythonServer.py	/^write_int = _vspu.write_int$/;"	kind:variable	line:38
+write_int	../python/PythonTools/visualstudio_py_repl.py	/^write_int = _vspu.write_int$/;"	kind:variable	line:64
+write_int	../python/PythonTools/visualstudio_py_util.py	/^def write_int(conn, i):$/;"	kind:function	line:152
+write_int	../python/ipythonServer.py	/^write_int = _vspu.write_int$/;"	kind:variable	line:38
+write_png	../python/PythonTools/visualstudio_py_repl.py	/^    def write_png(self, image_bytes):$/;"	kind:member	line:399
+write_stderr	../python/PythonTools/ipythonServer.py	/^    def write_stderr(self, value):$/;"	kind:member	line:573
+write_stderr	../python/PythonTools/visualstudio_py_repl.py	/^    def write_stderr(self, value):$/;"	kind:member	line:456
+write_stderr	../python/ipythonServer.py	/^    def write_stderr(self, value):$/;"	kind:member	line:573
+write_stdout	../python/PythonTools/ipythonServer.py	/^    def write_stdout(self, value):$/;"	kind:member	line:567
+write_stdout	../python/PythonTools/visualstudio_py_repl.py	/^    def write_stdout(self, value):$/;"	kind:member	line:450
+write_stdout	../python/ipythonServer.py	/^    def write_stdout(self, value):$/;"	kind:member	line:567
+write_string	../python/PythonTools/ipythonServer.py	/^write_string = _vspu.write_string$/;"	kind:variable	line:39
+write_string	../python/PythonTools/visualstudio_py_repl.py	/^write_string = _vspu.write_string$/;"	kind:variable	line:65
+write_string	../python/PythonTools/visualstudio_py_util.py	/^def write_string(conn, s):$/;"	kind:function	line:176
+write_string	../python/ipythonServer.py	/^write_string = _vspu.write_string$/;"	kind:variable	line:39
+write_xaml	../python/PythonTools/visualstudio_py_repl.py	/^    def write_xaml(self, xaml_bytes):$/;"	kind:member	line:405
+writelines	../python/PythonTools/visualstudio_py_repl.py	/^    def writelines(self, lines):$/;"	kind:member	line:1217
+xrange	../python/PythonTools/visualstudio_py_util.py	/^    xrange = range$/;"	kind:variable	line:44
+xreadlines	../python/PythonTools/visualstudio_py_repl.py	/^    def xreadlines(self):$/;"	kind:member	line:1257
+zmq	../python/PythonTools/visualstudio_ipython_repl.py	/^        import IPython.zmq$/;"	kind:namespace	line:63

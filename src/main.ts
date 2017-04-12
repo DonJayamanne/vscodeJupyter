@@ -13,6 +13,10 @@ import { LanguageProviders } from './common/languageProvider';
 import * as Rx from 'rx';
 import { Kernel } from '@jupyterlab/services';
 import { NotebookManager, Notebook, inputNotebookDetails, selectExistingNotebook } from './jupyterServices/notebook/manager';
+import { Manager } from './jupyterServices/manager';
+import * as PyManager from './pythonClient/manager';
+import { Deferred, createDeferred } from './common/helpers';
+import { JupyterClientAdapter } from "./pythonClient/jupyter_client/main";
 
 // Todo: Refactor the error handling and displaying of messages
 export class Jupyter extends vscode.Disposable {
@@ -37,14 +41,42 @@ export class Jupyter extends vscode.Disposable {
         this.kernelManager.dispose();
         this.disposables.forEach(d => d.dispose());
     }
-    private createKernelManager() {
-        this.kernelManager = new KernelManagerImpl(this.outputChannel, this.notebookManager);
-
-        // This happend when user changes it from status bar
-        this.kernelManager.on('kernelChanged', (kernel: Kernel.IKernel, language: string) => {
-            this.onKernelChanged(kernel);
-        });
+    private kernelCreationPromise: Deferred<KernelManagerImpl>;
+    private getKernelManager(): Promise<KernelManagerImpl> {
+        return this.createKernelManager();
     }
+    private jupyterVersionWorksWithJSServices: boolean;
+    private createKernelManager(): Promise<KernelManagerImpl> {
+        if (this.kernelCreationPromise) {
+            return this.kernelCreationPromise.promise;
+        }
+
+        this.kernelCreationPromise = createDeferred<any>();
+
+        KernelManagerImpl.jupyterVersionWorksWithJSServices(this.outputChannel)
+            .then(yes => {
+                this.jupyterVersionWorksWithJSServices = yes;
+                if (yes) {
+                    this.kernelManager = new Manager(this.outputChannel, this.notebookManager);
+                }
+                else {
+                    const jupyterClient = new JupyterClientAdapter(this.outputChannel, vscode.workspace.rootPath);
+                    this.kernelManager = new PyManager.Manager(this.outputChannel, this.notebookManager, jupyterClient);
+                }
+
+                this.kernelCreationPromise.resolve(this.kernelManager);
+
+                // This happend when user changes it from status bar
+                this.kernelManager.on('kernelChanged', (kernel: Kernel.IKernel, language: string) => {
+                    this.onKernelChanged(kernel);
+                });
+            })
+            .catch(error => {
+                this.kernelCreationPromise.reject(error);
+                throw error;
+            });
+    }
+
     private activate() {
         this.notebookManager = new NotebookManager(this.outputChannel);
         this.disposables.push(this.notebookManager);
@@ -71,7 +103,7 @@ export class Jupyter extends vscode.Disposable {
             this.display.setNotebook(nb, this.notebookManager.canShutdown(nb));
         });
         this.notebookManager.on('onShutdown', () => {
-            this.kernelManager.clearAllKernels();
+            this.getKernelManager().then(k => k.clearAllKernels());
             this.onKernelChanged(null);
         });
     }
@@ -90,10 +122,13 @@ export class Jupyter extends vscode.Disposable {
         if (!editor || !editor.document) {
             return;
         }
-        const kernel = this.kernelManager.getRunningKernelFor(editor.document.languageId);
-        if (this.kernel !== kernel && (this.kernel && kernel && this.kernel.id !== kernel.id)) {
-            return this.onKernelChanged(kernel);
-        }
+        this.getKernelManager()
+            .then(kernelManager => {
+                const kernel = kernelManager.getRunningKernelFor(editor.document.languageId);
+                if (this.kernel !== kernel && (this.kernel && kernel && this.kernel.id !== kernel.id)) {
+                    return this.onKernelChanged(kernel);
+                }
+            });
     }
     onKernelChanged(kernel?: Kernel.IKernel) {
         if (kernel) {
@@ -108,59 +143,64 @@ export class Jupyter extends vscode.Disposable {
         this.status.setActiveKernel(this.kernel);
     }
     executeCode(code: string, language: string): Promise<any> {
-        let kernelForExecution: Promise<Kernel.IKernel>;
-
-        const kernelToUse = this.kernelManager.getRunningKernelFor(language);
-        if (kernelToUse) {
-            if (!this.kernel || kernelToUse.id !== this.kernel.id) {
-                this.onKernelChanged(kernelToUse);
-            }
-            kernelForExecution = Promise.resolve(this.kernel);
-        }
-        else {
-            kernelForExecution = this.kernelManager.startKernelFor(language).then(kernel => {
-                this.kernelManager.setRunningKernelFor(language, kernel);
-                return kernel;
-            });
-        }
-        return kernelForExecution.then(() => {
-            return this.executeAndDisplay(this.kernel, code).catch(reason => {
-                const message = typeof reason === 'string' ? reason : reason.message;
-                vscode.window.showErrorMessage(message);
-                this.outputChannel.appendLine(formatErrorForLogging(reason));
-            });
-        }).catch(reason => {
-            let message = typeof reason === 'string' ? reason : reason.message;
-            if (reason.xhr && reason.xhr.responseText) {
-                message = reason.xhr && reason.xhr.responseText;
-            }
-            if (!message) {
-                message = 'Unknown error';
-            }
-            this.outputChannel.appendLine(formatErrorForLogging(reason));
-            vscode.window.showErrorMessage(message, 'View Errors').then(item => {
-                if (item === 'View Errors') {
-                    this.outputChannel.show();
+        return this.getKernelManager()
+            .then(kernelManager => {
+                const kernelToUse = kernelManager.getRunningKernelFor(language);
+                if (kernelToUse) {
+                    if (!this.kernel || kernelToUse.id !== this.kernel.id) {
+                        this.onKernelChanged(kernelToUse);
+                    }
+                    return Promise.resolve(this.kernel);
                 }
+                else {
+                    return kernelManager.startKernelFor(language).then(kernel => {
+                        kernelManager.setRunningKernelFor(language, kernel);
+                        return kernel;
+                    });
+                }
+            })
+            .then(() => {
+                return this.executeAndDisplay(this.kernel, code).catch(reason => {
+                    const message = typeof reason === 'string' ? reason : reason.message;
+                    vscode.window.showErrorMessage(message);
+                    this.outputChannel.appendLine(formatErrorForLogging(reason));
+                });
+            }).catch(reason => {
+                let message = typeof reason === 'string' ? reason : reason.message;
+                if (reason.xhr && reason.xhr.responseText) {
+                    message = reason.xhr && reason.xhr.responseText;
+                }
+                if (!message) {
+                    message = 'Unknown error';
+                }
+                this.outputChannel.appendLine(formatErrorForLogging(reason));
+                vscode.window.showErrorMessage(message, 'View Errors').then(item => {
+                    if (item === 'View Errors') {
+                        this.outputChannel.show();
+                    }
+                });
             });
-        });
     }
     private executeAndDisplay(kernel: Kernel.IKernel, code: string): Promise<any> {
         let observable = this.executeCodeInKernel(kernel, code);
         return this.display.showResults(observable);
     }
     private executeCodeInKernel(kernel: Kernel.IKernel, code: string): Rx.Observable<ParsedIOMessage> {
-        let source = Rx.Observable.create<ParsedIOMessage>(observer => {
-            let future = kernel.requestExecute({ code: code });
-            future.onDone = () => {
-                observer.onCompleted();
-            };
-            future.onIOPub = (msg) => {
-                this.messageParser.processResponse(msg, observer);
-            };
-        });
-
-        return source;
+        if (this.jupyterVersionWorksWithJSServices) {
+            let source = Rx.Observable.create<ParsedIOMessage>(observer => {
+                let future = kernel.requestExecute({ code: code });
+                future.onDone = () => {
+                    observer.onCompleted();
+                };
+                future.onIOPub = (msg) => {
+                    this.messageParser.processResponse(msg, observer);
+                };
+            });
+            return source;
+        }
+        else {
+            return this.kernelManager.runCodeAsObservable(code, kernel);
+        }
     }
     async executeSelection(): Promise<any> {
         const activeEditor = vscode.window.activeTextEditor;
@@ -220,12 +260,14 @@ export class Jupyter extends vscode.Disposable {
             this.kernel.interrupt();
         }));
         this.disposables.push(vscode.commands.registerCommand(Commands.Jupyter.Kernel.Restart, () => {
-            this.kernelManager.restartKernel(this.kernel).then(kernel => {
-                kernel.getSpec().then(spec => {
-                    this.kernelManager.setRunningKernelFor(spec.language, kernel);
+            if (this.kernelManager) {
+                this.kernelManager.restartKernel(this.kernel).then(kernel => {
+                    kernel.getSpec().then(spec => {
+                        this.kernelManager.setRunningKernelFor(spec.language, kernel);
+                    });
+                    this.onKernelChanged(kernel);
                 });
-                this.onKernelChanged(kernel);
-            });
+            }
         }));
         this.disposables.push(vscode.commands.registerCommand(Commands.Jupyter.Kernel.Shutdown, (kernel: Kernel.IKernel) => {
             kernel.getSpec().then(spec => {
