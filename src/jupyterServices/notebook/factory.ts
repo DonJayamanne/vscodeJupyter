@@ -95,7 +95,7 @@ export class NotebookFactory extends EventEmitter {
 
         let def = createDeferred<Notebook>();
         const retryIntervalMs = 250;
-        const timeoutMs = 10000;
+        const timeoutMs = 20000;
         let url = `${protocol}://${ip}:${port}`;
 
         getAvailablePort(protocol, ip, port)
