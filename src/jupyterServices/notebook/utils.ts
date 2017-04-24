@@ -25,19 +25,30 @@ export function waitForNotebookToStart(baseUrl: string, retryInterval: number, t
         }
     }, timeout);
 
-    let interval = setInterval(() => {
+    let startTime = Date.now();
+
+    function check() {
         getAvailableNotebooks()
-            .catch(() => Promise.resolve([]))
+            .catch(ex => {
+                console.error('Error in checking if notebook has started');
+                console.error(ex);
+                return [] as Notebook[];
+            })
             .then(items => {
                 let index = items.findIndex(item => item.baseUrl.toLowerCase().indexOf(baseUrl) === 0);
-
-                if (index >= 0) {
-                    clearInterval(interval);
+                if (index == 0) {
+                    if (Date.now() - startTime > timeout) {
+                        return def.reject('Timeout waiting for Notebook to start');
+                    }
+                    setTimeout(() => check(), retryInterval);
+                }
+                else {
                     def.resolve(items[index]);
                 }
             });
-    }, retryInterval);
+    }
 
+    setTimeout(() => check(), 0);
     return def.promise;
 }
 function parseNotebookListItem(item: string) {
