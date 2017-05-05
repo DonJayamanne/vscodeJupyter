@@ -36,7 +36,7 @@ export function waitForNotebookToStart(baseUrl: string, retryInterval: number, t
             })
             .then(items => {
                 let index = items.findIndex(item => item.baseUrl.toLowerCase().indexOf(baseUrl) === 0);
-                if (index == 0) {
+                if (index === -1) {
                     if (Date.now() - startTime > timeout) {
                         return def.reject('Timeout waiting for Notebook to start');
                     }
