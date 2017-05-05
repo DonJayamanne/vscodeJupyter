@@ -1,3 +1,6 @@
+### Version 1.1.3 (5 May 2017)
+* Notebook not detected [#46](https://github.com/DonJayamanne/vscodeJupyter/issues/46)
+
 ### Version 1.1.2 (24 April 2017)
 * Fix high CPU usage [#40](https://github.com/DonJayamanne/vscodeJupyter/issues/40)
 
