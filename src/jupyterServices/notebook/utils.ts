@@ -55,7 +55,7 @@ function parseNotebookListItem(item: string) {
     if (!item.trim().startsWith('http')) {
         return;
     }
-    let parts = item.split('::').filter(part => part !== '::');
+    let parts = item.split('::').filter(part => part !== '::').map(part => part.trim());
     let url = parts.shift();
     let startupFolder = item.indexOf('::') > 0 ? parts[0].trim() : null;
     let token = '';
