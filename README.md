@@ -26,6 +26,15 @@ plt.show()
   
 * Click on the code lens ```Run Cell```
 
+## Run Cell Hot key as in Chrome
+* If you want to run cell with Ctrl+Enter, add those code in keybindings.json.
+
+```json
+{ "key": "ctrl+enter",      "command": "jupyter.execCurrentCell",
+                                  "when": "editorTextFocus"
+}
+```
+
 ## [Documentation](https://github.com/DonJayamanne/vscodejupyter/wiki)
 For further information and details continue through to the [documentation](https://github.com/DonJayamanne/vscodejupyter/wiki).
 
