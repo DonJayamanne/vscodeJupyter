@@ -35,6 +35,17 @@ plt.show()
 }
 ```
 
+## Remote Jupyter kernel on Server / Docker
+Try this to connect to a remote Jupyter kernel running on a server, or inside Docker container:
+
+1. Start a remote Jupyter Notebook or headless KernelGateway
+1. Find the token in the output of the Jupyter server logs: http://jupyter-notebook.readthedocs.io/en/latest/security.html
+
+Then in VS Code:
+1. ctrl+shift+p
+1. Jupyter: Enter the url of local/remote Jupyter Notebook
+
+
 ## [Documentation](https://github.com/DonJayamanne/vscodejupyter/wiki)
 For further information and details continue through to the [documentation](https://github.com/DonJayamanne/vscodejupyter/wiki).
 
