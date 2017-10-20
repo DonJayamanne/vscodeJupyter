@@ -35,9 +35,22 @@ plt.show()
 }
 ```
 
-## Remote Jupyter kernel on Server / Docker
+## Connect to Remote Jupyter kernel on Server / Docker
 Try this to connect to a remote Jupyter kernel running on a server, or inside Docker container:
 
+1. Make sure Jupyter, Notebook, and jupyter_kernel_gateway packages are installed.  They are all included by default in Anaconda installation, but if you are using PIP you may need to install them manually.
+1. Run following commands on Linux: (Windows users will need to adapt these commands for their env)
+```
+# Generate config file for KernelGateway
+jupyter kernelgateway --KernelGatewayApp.generate_config=True
+
+# Generate config for Jupyter Notebook
+jupyter notebook --generate-config --allow-root
+
+# Append appropriate values to both config files
+echo -e "c.JupyterWebsocketPersonality.list_kernels = True" >> ~/.jupyter/jupyter_kernel_gateway_config.py
+echo -e "c.NotebookApp.allow_root = True" >> ~/.jupyter/jupyter_notebook_config.py
+```
 1. Start a remote Jupyter Notebook or headless KernelGateway
 1. Find the token in the output of the Jupyter server logs: http://jupyter-notebook.readthedocs.io/en/latest/security.html
 
