@@ -57,6 +57,8 @@ echo -e "c.NotebookApp.allow_root = True" >> ~/.jupyter/jupyter_notebook_config.
 Then in VS Code:
 1. ctrl+shift+p
 1. Jupyter: Enter the url of local/remote Jupyter Notebook
+1. Select existing kernels from the drop-down list, or start a new kernel
+1. Select language for the kernel from drop-down list: e.g., "Python 3"
 
 
 ## [Documentation](https://github.com/DonJayamanne/vscodejupyter/wiki)
