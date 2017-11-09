@@ -4,7 +4,7 @@ An extension with rich support for [Jupyter](http://jupyter.org/)
 
 ## Quick Start
 * Install the extension
-* When using Python, install the [Python extension](https://marketplace.visualstudio.com/items?itemName=donjayamanne.python) as well. 
+* When using Python, install the [Microsoft Python extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python) as well. 
 * Install [Jupyter](http://jupyter.org/install.html)  
   + You're ready to use it.
 
