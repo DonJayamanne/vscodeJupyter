@@ -20,11 +20,12 @@ class Header extends React.Component<HeaderProps, HeaderState> {
       <header>
         <label>
           <input type="checkbox"
+            style="vertical-align: middle;"
             checked={this.props.appendResults}
             onChange={() => this.props.toggleAppendResults()} />
           Append Results
         </label>
-        <button onClick={() => this.props.clearResults()}>Clear Results</button>
+        &nbsp;<button onClick={() => this.props.clearResults()}>Clear Results</button>
       </header>
     );
   }
