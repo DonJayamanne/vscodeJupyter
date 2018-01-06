@@ -8,11 +8,17 @@ import ResultList from '../../components/ResultList'
 import * as style from './style.css';
 
 import * as io from 'socket.io-client';
+import { VariableMap } from '../../reducers/variables';
+import VariableList from '../../components/Variables';
+
+import * as Actions from '../../constants/resultActions';
 
 interface AppProps {
   settings: NotebookResultSettings;
   resultActions: typeof ResultActions;
   results: NotebookResultsState;
+  variables: VariableMap,
+  toggleVariables: () => void;
 };
 
 interface AppState {
@@ -41,19 +47,27 @@ class App extends React.Component<AppProps, AppState>{
       this.socket.emit('results.ack');
       this.props.resultActions.addResults(value);
     });
+    this.socket.on('variable', (value: NotebookOutput[]) => {
+      this.socket.emit('results.ack');
+      this.props.resultActions.addVariable(value);
+    });
   }
 
-  private toggleAppendResults() {
+  toggleAppendResults = () => {
     this.socket.emit('settings.appendResults', !this.props.settings.appendResults);
+  }
+  toggleVariable = (name: string) => {
+    this.socket.emit('settings.showVariable', { [name]: !!!this.props.settings.toggledVariables[name] });
   }
   private clearResults() {
     this.socket.emit('clearResults');
     this.props.resultActions.clearResults();
   }
   render() {
-    const { children, resultActions, settings } = this.props;
+    const { children, variables, resultActions, settings } = this.props;
     return (
       <div>
+        <VariableList variables={variables} visible={this.props.settings.showVariables} toggleVariables={this.props.toggleVariables} toggleVariable={this.toggleVariable} />
         <Header
           appendResults={settings.appendResults}
           clearResults={() => this.clearResults()}
@@ -69,13 +83,20 @@ class App extends React.Component<AppProps, AppState>{
 function mapStateToProps(state: RootState) {
   return {
     settings: state.settings,
+    variables: state.variables,
     results: state.results
   };
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch, ownProps) {
   return {
-    resultActions: bindActionCreators(ResultActions as any, dispatch)
+    resultActions: bindActionCreators(ResultActions as any, dispatch),
+    toggleVariables: (toggle: boolean) => {
+      dispatch({ type: Actions.TOGGLE_VARIABLES, payload: toggle })
+    },
+    toggleVariable: (name: string, toggle: boolean) => {
+      dispatch({ type: Actions.TOGGLE_VARIABLE, payload: { [name]: toggle } })
+    }
   };
 }
 
