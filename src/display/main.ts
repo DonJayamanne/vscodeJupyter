@@ -10,6 +10,7 @@ import { createDeferred } from '../common/helpers';
 import { Kernel } from '@jupyterlab/services';
 import { Notebook } from '../jupyterServices/notebook/contracts';
 import { formatErrorForLogging } from '../common/utils';
+import { setTimeout } from 'timers';
 
 export { ProgressBar } from './progressBar'
 
@@ -62,7 +63,58 @@ export class JupyterDisplay extends vscode.Disposable {
         this.notebookUrl = (nb && nb.baseUrl) || '';
         this.canShutdown = canShutdown;
     }
-    public showResults(results: Rx.Observable<ParsedIOMessage>): Promise<any> {
+
+    public updateVariables(executor: (code: string) => Rx.Observable<ParsedIOMessage>) {
+        // find all variabels
+        let observer = executor("%whos");
+        this.server.clearBuffer();
+
+        let reg = /([\w_]+)\s+([\w_]+)\s+(.*)/
+
+        observer.subscribe(result => {
+            var data = [result.data];
+            
+            // parse all variables
+            let variableText: string = result.data['text/plain'];
+            let lines = variableText.split('\n').slice(2);
+            let variables = lines.map(l => {
+                let match = l.match(reg);
+                return {
+                    name: match[1],
+                    type: match[2],
+                    detail: match[3],
+                    value: null
+                }
+            });
+
+            // find all classes
+            let classes = variables.filter(v => v.detail.indexOf('<class') >= 0).map(v => v.name);
+            // filter out all functions, modules, class definitions and class instances
+            variables = variables.filter(v => v.detail.indexOf('<class') == -1 && v.detail.indexOf('<function') && v.detail.indexOf('<module') && classes.every(c => v.detail.indexOf(c) != 0));
+
+            // get value of all variables
+            for (let variable of variables) {
+                // TODO: this should probably be configurable via config variables
+                let code = `
+import pandas as pd
+import numpy
+
+pd.set_option('display.max_rows', 500)
+numpy.set_printoptions(threshold=10000)
+
+${variable.name}
+                `
+                observer = executor(code);
+                observer.subscribe(variableResult => {
+                    variable.value = variableResult.data['text/plain'] || variableResult.data['text/html'];
+                    this.server.sendVariable([variable]);
+                });
+            }
+
+        });
+    }
+
+    public showResults(results: Rx.Observable<ParsedIOMessage>, executor: (code: string) => Rx.Observable<ParsedIOMessage>): Promise<any> {
         return this.server.start().then(port => {
             this.previewWindow.ServerPort = port;
             // If we need to append the results, then do so if we have any result windows open
@@ -74,6 +126,7 @@ export class JupyterDisplay extends vscode.Disposable {
                     this.server.clearBuffer();
                     results.subscribe(result => {
                         this.server.sendResults([result.data]);
+                        this.updateVariables(executor);
                     });
                     return Promise.resolve();
                 }
@@ -83,6 +136,11 @@ export class JupyterDisplay extends vscode.Disposable {
                 this.clientConnected = false;
                 results.subscribe(result => {
                     this.server.sendResults([result.data]);
+
+                    // socket is going crazy and cannot distinguish between 'results'/'variable' call so we do the first view after timeout
+                    // for some reason all variable calls are batched as "results" call
+                    // TODO: Solve how to properly isolate messages
+                    setTimeout(() => this.updateVariables(executor), 500);
 
                     if (this.clientConnected) {
                         this.server.clearBuffer();

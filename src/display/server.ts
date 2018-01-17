@@ -100,6 +100,13 @@ export class Server extends EventEmitter {
         this.broadcast('results', results);
     }
 
+    public sendVariable(data: any[]) {
+        // Add an id to each item (poor separation of concerns... but what ever)
+        let results = data.map(item => { return { id: uniqid('x'), value: {'text/plain': JSON.stringify(item) }}; });
+        this.buffer = this.buffer.concat(results);
+        this.broadcast('variable', results);
+    }
+
     public sendSetting(name: string, value: any) {
         this.broadcast(name, value);
     }
