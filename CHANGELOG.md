@@ -1,3 +1,7 @@
+### Version 1.1.5 (30 January 2018)
+* Add variable explorer
+* Improvements to the UI
+
 ### Version 1.1.4 (9 November 2017)
 * Updated the extension id of the recomended Python extension.
 * Fix to detection of Jupyter notebook [#55](https://github.com/DonJayamanne/vscodeJupyter/issues/55), [#61](https://github.com/DonJayamanne/vscodeJupyter/pull/61)
