@@ -75,7 +75,7 @@ export function selectExistingNotebook() {
     getAvailableNotebooks()
         .then(notebooks => {
             let items = notebooks.map(item => {
-                let details = item.startupFolder && item.startupFolder.length > 0 ? `Starup Folder: ${item.startupFolder}` : '';
+                let details = item.startupFolder && item.startupFolder.length > 0 ? `Startup Folder: ${item.startupFolder}` : '';
                 return {
                     label: item.baseUrl,
                     description: '',
