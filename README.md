@@ -1,3 +1,10 @@
+# Deprecated
+This extension is no longer being maintained and all of its functionality has been (or will be) placed into the [Microsoft Python extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python). 
+
+Please download the Microsoft Python Extension instead.
+
+Feel free to submit new [issues](https://github.com/Microsoft/vscode-python/issues/new) or feature requests on the Microsoft Python Extension.
+
 # Jupyter
 
 An extension with rich support for [Jupyter](http://jupyter.org/)  
@@ -7,8 +14,6 @@ An extension with rich support for [Jupyter](http://jupyter.org/)
 * When using Python, install the [Microsoft Python extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python) as well. 
 * Install [Jupyter](http://jupyter.org/install.html)  
   + You're ready to use it.
-
-### Tested with Python and JavaScript Kernels (support for others coming soon)
 
 ## Sample Python usage  
 * Create a Python file with the following text  
